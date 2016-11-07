@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">Concerts</string>
+
+    <!-- GetConcertTasks -->
+
+    <string name="base_url" translatable="false">http://api.bandsintown.com/artists/</string>
+    <string name="response_format_param" translatable="false">events.json</string>
+    <string name="api_version_param" translatable="false">api_version</string>
+    <string name="api_version_value" translatable="false">2.0</string>
+    <string name="app_id_param" translatable="false">app_id</string>
+    <string name="app_id_value" translatable="false">com.drkhannah.concerts</string>
+
+
 </resources>
