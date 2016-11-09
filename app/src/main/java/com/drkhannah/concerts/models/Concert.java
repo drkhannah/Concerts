@@ -11,7 +11,6 @@ public class Concert {
     private String mTicketURL;
     private String mTicketType;
     private String mTicketStatus;
-    private String mOnSaleDateTime;
     private String mDescription;
     private String mArtistName;
     private String mArtistImage;
@@ -29,7 +28,6 @@ public class Concert {
                    String ticketURL,
                    String ticketType,
                    String ticketStatus,
-                   String onSaleDateTime,
                    String description,
                    String artistName,
                    String artistImage,
@@ -46,7 +44,6 @@ public class Concert {
         mTicketURL = ticketURL;
         mTicketType = ticketType;
         mTicketStatus = ticketStatus;
-        mOnSaleDateTime = onSaleDateTime;
         mDescription = description;
         mArtistName = artistName;
         mArtistImage = artistImage;
@@ -81,10 +78,6 @@ public class Concert {
 
     public String getTicketStatus() {
         return mTicketStatus;
-    }
-
-    public String getOnSaleDateTime() {
-        return mOnSaleDateTime;
     }
 
     public String getDescription() {
@@ -136,7 +129,6 @@ public class Concert {
                 ", mTicketURL='" + mTicketURL + '\'' +
                 ", mTicketType='" + mTicketType + '\'' +
                 ", mTicketStatus='" + mTicketStatus + '\'' +
-                ", mOnSaleDateTime='" + mOnSaleDateTime + '\'' +
                 ", mDescription='" + mDescription + '\'' +
                 ", mArtistName='" + mArtistName + '\'' +
                 ", mArtistImage='" + mArtistImage + '\'' +

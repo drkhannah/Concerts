@@ -164,7 +164,6 @@ public class GetConcertsTask extends AsyncTask<String, Void, List<Concert>> {
         final String CONCERT_TICKET_URL = "ticket_url";
         final String CONCERT_TICKET_TYPE = "ticket_type";
         final String CONCERT_TICKET_STATUS = "ticket_status";
-        final String CONCERT_ON_SALE_DATETIME = "on_sale_datetime";
         final String CONCERT_DESCRIPTION = "description";
 
         final String ARTISTS_ARRAY = "artists";
@@ -194,7 +193,6 @@ public class GetConcertsTask extends AsyncTask<String, Void, List<Concert>> {
                 String ticketUrl = concertJsonObject.getString(CONCERT_TICKET_URL);
                 String ticketType = concertJsonObject.getString(CONCERT_TICKET_TYPE);
                 String ticketStatus = concertJsonObject.getString(CONCERT_TICKET_STATUS);
-                String onSaleDateTime = concertJsonObject.getString(CONCERT_ON_SALE_DATETIME);
                 String description = concertJsonObject.getString(CONCERT_DESCRIPTION);
 
                 //artist info
@@ -221,7 +219,6 @@ public class GetConcertsTask extends AsyncTask<String, Void, List<Concert>> {
                         ticketUrl,
                         ticketType,
                         ticketStatus,
-                        onSaleDateTime,
                         description,
                         artistName,
                         artistImage,
@@ -240,5 +237,6 @@ public class GetConcertsTask extends AsyncTask<String, Void, List<Concert>> {
         //return the List of Concerts, or null
         return (mConcertList.size() > 0) ?  mConcertList : null;
     }
+
 }
 
