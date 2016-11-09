@@ -60,7 +60,7 @@ public class GetConcertsTask extends AsyncTask<String, Void, List<Concert>> {
     // onPostExecute delivers the results of  doInBackground() on the UI thread.
     @Override
     protected void onPostExecute(List<Concert> result) {
-        mMainTextView.setText(result.get(0).toString());
+        mMainTextView.setText(result.get(0).getTitle());
     }
 
     // Build a URL to request concerts for an artist
