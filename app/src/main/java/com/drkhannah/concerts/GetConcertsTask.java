@@ -157,7 +157,7 @@ public class GetConcertsTask extends AsyncTask<String, Void, List<Concert>> {
 
     private List<Concert> parseJson(String concertsJsonStr) throws JSONException {
 
-        //Keys in concertsJsonStr
+        //Object Keys in concertsJsonStr
         final String CONCERT_TITLE = "title";
         final String CONCERT_FORMATTED_DATETIME = "formatted_datetime";
         final String CONCERT_FORMATTED_LOCATION = "formatted_location";
@@ -187,29 +187,29 @@ public class GetConcertsTask extends AsyncTask<String, Void, List<Concert>> {
                 JSONObject concertJsonObject = concertsJsonArray.getJSONObject(i);
 
                 //concert object
-                String title = concertJsonObject.getString(CONCERT_TITLE);
-                String formattedDate = concertJsonObject.getString(CONCERT_FORMATTED_DATETIME);
-                String formattedLocation = concertJsonObject.getString(CONCERT_FORMATTED_LOCATION);
-                String ticketUrl = concertJsonObject.getString(CONCERT_TICKET_URL);
-                String ticketType = concertJsonObject.getString(CONCERT_TICKET_TYPE);
-                String ticketStatus = concertJsonObject.getString(CONCERT_TICKET_STATUS);
-                String description = concertJsonObject.getString(CONCERT_DESCRIPTION);
+                String title = concertJsonObject.optString(CONCERT_TITLE, mContext.getString(R.string.no_title_available));
+                String formattedDate = concertJsonObject.optString(CONCERT_FORMATTED_DATETIME, mContext.getString(R.string.no_date_available));
+                String formattedLocation = concertJsonObject.optString(CONCERT_FORMATTED_LOCATION, mContext.getString(R.string.no_location_available));
+                String ticketUrl = concertJsonObject.optString(CONCERT_TICKET_URL, mContext.getString(R.string.no_ticket_url_available));
+                String ticketType = concertJsonObject.optString(CONCERT_TICKET_TYPE, mContext.getString(R.string.no_ticket_type_available));
+                String ticketStatus = concertJsonObject.optString(CONCERT_TICKET_STATUS, mContext.getString(R.string.no_ticket_status_available));
+                String description = concertJsonObject.optString(CONCERT_DESCRIPTION, mContext.getString(R.string.no_description_available));
 
                 //artist info
                 JSONArray artistsJsonArray = concertJsonObject.getJSONArray(ARTISTS_ARRAY);
                 JSONObject firstArtistJsonObject = artistsJsonArray.getJSONObject(0);
-                String artistName = firstArtistJsonObject.getString(ARTIST_NAME);
-                String artistImage = firstArtistJsonObject.getString(ARTIST_IMAGE);
-                String artistWebsite = firstArtistJsonObject.getString(ARTIST_WEBSITE);
+                String artistName = firstArtistJsonObject.optString(ARTIST_NAME, mContext.getString(R.string.no_artist_name_available));
+                String artistImage = firstArtistJsonObject.optString(ARTIST_IMAGE, mContext.getString(R.string.no_artist_image_available));
+                String artistWebsite = firstArtistJsonObject.optString(ARTIST_WEBSITE, mContext.getString(R.string.no_artist_website_available));
 
                 //venue info
                 JSONObject venue = concertJsonObject.getJSONObject(VENUE_OBJECT);
-                String venueName = venue.getString(VENUE_NAME);
-                String venuePlace = venue.getString(VENUE_PLACE);
-                String venueCity = venue.getString(VENUE_CITY);
-                String venueCountry = venue.getString(VENUE_COUNTRY);
-                String venueLongitude = venue.getString(VENUE_LONGITUDE);
-                String venueLatitude = venue.getString(VENUE_LATITUDE);
+                String venueName = venue.optString(VENUE_NAME, mContext.getString(R.string.no_venue_name_available));
+                String venuePlace = venue.optString(VENUE_PLACE, mContext.getString(R.string.no_venue_place_available));
+                String venueCity = venue.optString(VENUE_CITY, mContext.getString(R.string.no_venue_city_available));
+                String venueCountry = venue.optString(VENUE_COUNTRY, mContext.getString(R.string.no_venue_country_available));
+                String venueLongitude = venue.optString(VENUE_LONGITUDE, mContext.getString(R.string.no_longitude_available));
+                String venueLatitude = venue.optString(VENUE_LATITUDE, mContext.getString(R.string.no_latitude_available));
 
                 //create a Concert Object out of the response
                 Concert parsedConcert = new Concert(

@@ -9,4 +9,22 @@
     <string name="app_id_param" translatable="false">app_id</string>
     <string name="app_id_value" translatable="false">com.drkhannah.concerts</string>
 
+    <!-- BandsInTown API events.json response defaults-->
+    <string name="no_title_available">No Title Available</string>
+    <string name="no_date_available">No Date Available</string>
+    <string name="no_location_available">No Location Available</string>
+    <string name="no_ticket_url_available">No Ticket URL Available</string>
+    <string name="no_ticket_type_available">No Ticket Type Available</string>
+    <string name="no_ticket_status_available">No Ticket Status Available</string>
+    <string name="no_description_available">No Description Available</string>
+    <string name="no_artist_name_available">No Artist Name Available</string>
+    <string name="no_artist_image_available">No Artist Image Available</string>
+    <string name="no_artist_website_available">No Artist Website Available</string>
+    <string name="no_venue_name_available">No Venue Name Available</string>
+    <string name="no_venue_place_available">No Venue Place Available</string>
+    <string name="no_venue_city_available">No Venue City Available</string>
+    <string name="no_venue_country_available">No Venue Country Available</string>
+    <string name="no_longitude_available" translatable="false">0.00</string>
+    <string name="no_latitude_available" translatable="false">0.00</string>
+
 </resources>
