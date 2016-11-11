@@ -154,11 +154,12 @@ public class GetConcertsTask extends AsyncTask<String, Void, List<Concert>> {
             final JSONArray concertsJsonArray = new JSONArray(concertsJsonStr);
 
             if (concertsJsonArray.length() > 0) {
+                //loop through concertsJsonArray
                 for (int i = 0; i < concertsJsonArray.length(); i++) {
                     //get a concert object from the response
                     JSONObject concertJsonObject = concertsJsonArray.getJSONObject(i);
 
-                    //concert object
+                    //concert object in response
                     String title = concertJsonObject.optString(mContext.getString(R.string.response_object_key_title), mContext.getString(R.string.no_title_available));
                     String formattedDate = concertJsonObject.optString(mContext.getString(R.string.response_object_key_formatted_datetime), mContext.getString(R.string.no_date_available));
                     String formattedLocation = concertJsonObject.optString(mContext.getString(R.string.response_object_key_formatted_location), mContext.getString(R.string.no_location_available));
@@ -167,14 +168,14 @@ public class GetConcertsTask extends AsyncTask<String, Void, List<Concert>> {
                     String ticketStatus = concertJsonObject.optString(mContext.getString(R.string.response_object_key_ticket_status), mContext.getString(R.string.no_ticket_status_available));
                     String description = concertJsonObject.optString(mContext.getString(R.string.response_object_key_description), mContext.getString(R.string.no_description_available));
 
-                    //artist info
+                    //artist array in response
                     JSONArray artistsJsonArray = concertJsonObject.getJSONArray(mContext.getString(R.string.response_object_key_artists));
                     JSONObject firstArtistJsonObject = artistsJsonArray.getJSONObject(0);
                     String artistName = firstArtistJsonObject.optString(mContext.getString(R.string.response_object_key_name), mContext.getString(R.string.no_artist_name_available));
                     String artistImage = firstArtistJsonObject.optString(mContext.getString(R.string.response_object_key_thumb_url), mContext.getString(R.string.no_artist_image_available));
                     String artistWebsite = firstArtistJsonObject.optString(mContext.getString(R.string.response_object_key_website), mContext.getString(R.string.no_artist_website_available));
 
-                    //venue info
+                    //venue object in response
                     JSONObject venue = concertJsonObject.getJSONObject(mContext.getString(R.string.response_object_key_venue));
                     String venueName = venue.optString(mContext.getString(R.string.response_object_key_venue_name), mContext.getString(R.string.no_venue_name_available));
                     String venuePlace = venue.optString(mContext.getString(R.string.response_object_key_place), mContext.getString(R.string.no_venue_place_available));
