@@ -26,5 +26,6 @@
     <string name="no_venue_country_available">No Venue Country Available</string>
     <string name="no_longitude_available" translatable="false">0.00</string>
     <string name="no_latitude_available" translatable="false">0.00</string>
+    <string name="null_response_returned">Null response returned</string>
 
 </resources>

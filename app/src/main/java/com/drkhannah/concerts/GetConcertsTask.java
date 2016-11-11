@@ -49,22 +49,21 @@ public class GetConcertsTask extends AsyncTask<String, Void, List<Concert>> {
     protected List<Concert> doInBackground(String... params) {
 
         // params comes from the execute() call: params[0] is the artist.
-        try {
-            return downloadConcerts(params[0]);
-        } catch (IOException e) {
-            Log.e(LOG_TAG, "Error connecting to URL", e);
-            return null;
-        }
+        return downloadConcerts(params[0]);
     }
 
     // onPostExecute delivers the results of  doInBackground() on the UI thread.
     @Override
     protected void onPostExecute(List<Concert> result) {
-        mMainTextView.setText(result.get(0).getTitle());
+        if (result != null) {
+            mMainTextView.setText(result.get(0).getTitle());
+        } else {
+            mMainTextView.setText(R.string.null_response_returned);
+        }
     }
 
     // Build a URL to request concerts for an artist
-    private List<Concert> downloadConcerts(String artistToSearch) throws IOException {
+    private List<Concert> downloadConcerts(String artistToSearch) {
 
         // Declared outside try/catch so they can be closed in the finally block
         HttpURLConnection urlConnection = null;
@@ -123,17 +122,12 @@ public class GetConcertsTask extends AsyncTask<String, Void, List<Concert>> {
                 // nothing in the StringBuffer so return null
                 return null;
             }
-
             //convert the buffer to a string
             String concertsJsonStr = buffer.toString();
 
+            //return a parsed response List<Concert>
             Log.d(LOG_TAG, "RESPONSE FROM BANDSINTOWN: " + concertsJsonStr);
-
-            try {
-                return parseJson(concertsJsonStr);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+            return parseJson(concertsJsonStr);
 
         } catch (IOException e) {
             Log.e(LOG_TAG, "Error ", e);
@@ -152,10 +146,9 @@ public class GetConcertsTask extends AsyncTask<String, Void, List<Concert>> {
                 }
             }
         }
-        return null;
     }
 
-    private List<Concert> parseJson(String concertsJsonStr) throws JSONException {
+    private List<Concert> parseJson(String concertsJsonStr) {
 
         //Object Keys in concertsJsonStr
         final String CONCERT_TITLE = "title";
@@ -180,63 +173,70 @@ public class GetConcertsTask extends AsyncTask<String, Void, List<Concert>> {
         final String VENUE_LATITUDE = "latitude";
 
         //concertsJsonStr starts with a jsonArray
-        final JSONArray concertsJsonArray = new JSONArray(concertsJsonStr);
+        final JSONArray concertsJsonArray;
 
-        if (concertsJsonArray.length() > 0) {
-            for (int i = 0; i < concertsJsonArray.length(); i++) {
-                JSONObject concertJsonObject = concertsJsonArray.getJSONObject(i);
+        try {
 
-                //concert object
-                String title = concertJsonObject.optString(CONCERT_TITLE, mContext.getString(R.string.no_title_available));
-                String formattedDate = concertJsonObject.optString(CONCERT_FORMATTED_DATETIME, mContext.getString(R.string.no_date_available));
-                String formattedLocation = concertJsonObject.optString(CONCERT_FORMATTED_LOCATION, mContext.getString(R.string.no_location_available));
-                String ticketUrl = concertJsonObject.optString(CONCERT_TICKET_URL, mContext.getString(R.string.no_ticket_url_available));
-                String ticketType = concertJsonObject.optString(CONCERT_TICKET_TYPE, mContext.getString(R.string.no_ticket_type_available));
-                String ticketStatus = concertJsonObject.optString(CONCERT_TICKET_STATUS, mContext.getString(R.string.no_ticket_status_available));
-                String description = concertJsonObject.optString(CONCERT_DESCRIPTION, mContext.getString(R.string.no_description_available));
+            concertsJsonArray = new JSONArray(concertsJsonStr);
+            if (concertsJsonArray.length() > 0) {
+                for (int i = 0; i < concertsJsonArray.length(); i++) {
+                    JSONObject concertJsonObject = concertsJsonArray.getJSONObject(i);
 
-                //artist info
-                JSONArray artistsJsonArray = concertJsonObject.getJSONArray(ARTISTS_ARRAY);
-                JSONObject firstArtistJsonObject = artistsJsonArray.getJSONObject(0);
-                String artistName = firstArtistJsonObject.optString(ARTIST_NAME, mContext.getString(R.string.no_artist_name_available));
-                String artistImage = firstArtistJsonObject.optString(ARTIST_IMAGE, mContext.getString(R.string.no_artist_image_available));
-                String artistWebsite = firstArtistJsonObject.optString(ARTIST_WEBSITE, mContext.getString(R.string.no_artist_website_available));
+                    //concert object
+                    String title = concertJsonObject.optString(CONCERT_TITLE, mContext.getString(R.string.no_title_available));
+                    String formattedDate = concertJsonObject.optString(CONCERT_FORMATTED_DATETIME, mContext.getString(R.string.no_date_available));
+                    String formattedLocation = concertJsonObject.optString(CONCERT_FORMATTED_LOCATION, mContext.getString(R.string.no_location_available));
+                    String ticketUrl = concertJsonObject.optString(CONCERT_TICKET_URL, mContext.getString(R.string.no_ticket_url_available));
+                    String ticketType = concertJsonObject.optString(CONCERT_TICKET_TYPE, mContext.getString(R.string.no_ticket_type_available));
+                    String ticketStatus = concertJsonObject.optString(CONCERT_TICKET_STATUS, mContext.getString(R.string.no_ticket_status_available));
+                    String description = concertJsonObject.optString(CONCERT_DESCRIPTION, mContext.getString(R.string.no_description_available));
 
-                //venue info
-                JSONObject venue = concertJsonObject.getJSONObject(VENUE_OBJECT);
-                String venueName = venue.optString(VENUE_NAME, mContext.getString(R.string.no_venue_name_available));
-                String venuePlace = venue.optString(VENUE_PLACE, mContext.getString(R.string.no_venue_place_available));
-                String venueCity = venue.optString(VENUE_CITY, mContext.getString(R.string.no_venue_city_available));
-                String venueCountry = venue.optString(VENUE_COUNTRY, mContext.getString(R.string.no_venue_country_available));
-                String venueLongitude = venue.optString(VENUE_LONGITUDE, mContext.getString(R.string.no_longitude_available));
-                String venueLatitude = venue.optString(VENUE_LATITUDE, mContext.getString(R.string.no_latitude_available));
+                    //artist info
+                    JSONArray artistsJsonArray = concertJsonObject.getJSONArray(ARTISTS_ARRAY);
+                    JSONObject firstArtistJsonObject = artistsJsonArray.getJSONObject(0);
+                    String artistName = firstArtistJsonObject.optString(ARTIST_NAME, mContext.getString(R.string.no_artist_name_available));
+                    String artistImage = firstArtistJsonObject.optString(ARTIST_IMAGE, mContext.getString(R.string.no_artist_image_available));
+                    String artistWebsite = firstArtistJsonObject.optString(ARTIST_WEBSITE, mContext.getString(R.string.no_artist_website_available));
 
-                //create a Concert Object out of the response
-                Concert parsedConcert = new Concert(
-                        title,
-                        formattedDate,
-                        formattedLocation,
-                        ticketUrl,
-                        ticketType,
-                        ticketStatus,
-                        description,
-                        artistName,
-                        artistImage,
-                        artistWebsite,
-                        venueName,
-                        venuePlace,
-                        venueCity,
-                        venueCountry,
-                        venueLongitude,
-                        venueLatitude);
+                    //venue info
+                    JSONObject venue = concertJsonObject.getJSONObject(VENUE_OBJECT);
+                    String venueName = venue.optString(VENUE_NAME, mContext.getString(R.string.no_venue_name_available));
+                    String venuePlace = venue.optString(VENUE_PLACE, mContext.getString(R.string.no_venue_place_available));
+                    String venueCity = venue.optString(VENUE_CITY, mContext.getString(R.string.no_venue_city_available));
+                    String venueCountry = venue.optString(VENUE_COUNTRY, mContext.getString(R.string.no_venue_country_available));
+                    String venueLongitude = venue.optString(VENUE_LONGITUDE, mContext.getString(R.string.no_longitude_available));
+                    String venueLatitude = venue.optString(VENUE_LATITUDE, mContext.getString(R.string.no_latitude_available));
 
-                //add the Concert Object to the List of Concerts
-                mConcertList.add(parsedConcert);
+                    //create a Concert Object out of the response
+                    Concert parsedConcert = new Concert(
+                            title,
+                            formattedDate,
+                            formattedLocation,
+                            ticketUrl,
+                            ticketType,
+                            ticketStatus,
+                            description,
+                            artistName,
+                            artistImage,
+                            artistWebsite,
+                            venueName,
+                            venuePlace,
+                            venueCity,
+                            venueCountry,
+                            venueLongitude,
+                            venueLatitude);
+
+                    //add the Concert Object to the List of Concerts
+                    mConcertList.add(parsedConcert);
+                }
             }
+        } catch (JSONException e) {
+            e.printStackTrace();
+            Log.e(LOG_TAG, "Error parsing response string", e);
         }
-        //return the List of Concerts, or null
-        return (mConcertList.size() > 0) ?  mConcertList : null;
-    }
 
+        //return the List of Concerts, or null
+        return (mConcertList.size() > 0) ? mConcertList : null;
+    }
 }
 
