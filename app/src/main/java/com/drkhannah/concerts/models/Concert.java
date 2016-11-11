@@ -5,6 +5,7 @@ package com.drkhannah.concerts.models;
  */
 
 public class Concert {
+
     private String mTitle;
     private String mFormattedDateTime;
     private String mFormattedLocation;

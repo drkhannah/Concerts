@@ -155,6 +155,7 @@ public class GetConcertsTask extends AsyncTask<String, Void, List<Concert>> {
 
             if (concertsJsonArray.length() > 0) {
                 for (int i = 0; i < concertsJsonArray.length(); i++) {
+                    //get a concert object from the response
                     JSONObject concertJsonObject = concertsJsonArray.getJSONObject(i);
 
                     //concert object
