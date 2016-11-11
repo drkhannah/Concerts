@@ -151,33 +151,31 @@ public class GetConcertsTask extends AsyncTask<String, Void, List<Concert>> {
     private List<Concert> parseJson(String concertsJsonStr) {
 
         //Object Keys in concertsJsonStr
-        final String CONCERT_TITLE = "title";
-        final String CONCERT_FORMATTED_DATETIME = "formatted_datetime";
-        final String CONCERT_FORMATTED_LOCATION = "formatted_location";
-        final String CONCERT_TICKET_URL = "ticket_url";
-        final String CONCERT_TICKET_TYPE = "ticket_type";
-        final String CONCERT_TICKET_STATUS = "ticket_status";
-        final String CONCERT_DESCRIPTION = "description";
+        final String CONCERT_TITLE = mContext.getString(R.string.response_object_key_title);
+        final String CONCERT_FORMATTED_DATETIME = mContext.getString(R.string.response_object_key_formatted_datetime);
+        final String CONCERT_FORMATTED_LOCATION = mContext.getString(R.string.response_object_key_formatted_location);
+        final String CONCERT_TICKET_URL = mContext.getString(R.string.response_object_key_ticket_url);
+        final String CONCERT_TICKET_TYPE = mContext.getString(R.string.response_object_key_ticket_type);
+        final String CONCERT_TICKET_STATUS = mContext.getString(R.string.response_object_key_ticket_status);
+        final String CONCERT_DESCRIPTION = mContext.getString(R.string.response_object_key_description);
 
-        final String ARTISTS_ARRAY = "artists";
-        final String ARTIST_NAME = "name";
-        final String ARTIST_IMAGE = "thumb_url";
-        final String ARTIST_WEBSITE = "website";
+        final String ARTISTS_ARRAY = mContext.getString(R.string.response_object_key_artists);
+        final String ARTIST_NAME = mContext.getString(R.string.response_object_key_name);
+        final String ARTIST_IMAGE = mContext.getString(R.string.response_object_key_thumb_url);
+        final String ARTIST_WEBSITE = mContext.getString(R.string.response_object_key_website);
 
-        final String VENUE_OBJECT = "venue";
-        final String VENUE_NAME = "name";
-        final String VENUE_PLACE = "place";
-        final String VENUE_CITY = "city";
-        final String VENUE_COUNTRY = "country";
-        final String VENUE_LONGITUDE = "longitude";
-        final String VENUE_LATITUDE = "latitude";
-
-        //concertsJsonStr starts with a jsonArray
-        final JSONArray concertsJsonArray;
+        final String VENUE_OBJECT = mContext.getString(R.string.response_object_key_venue);
+        final String VENUE_NAME = mContext.getString(R.string.response_object_key_venue_name);
+        final String VENUE_PLACE = mContext.getString(R.string.response_object_key_place);
+        final String VENUE_CITY = mContext.getString(R.string.response_object_key_city);
+        final String VENUE_COUNTRY = mContext.getString(R.string.response_object_key_country);
+        final String VENUE_LONGITUDE = mContext.getString(R.string.response_object_key_longitude);
+        final String VENUE_LATITUDE = mContext.getString(R.string.response_object_key_latitude);
 
         try {
+            //concertsJsonStr starts with a jsonArray
+            final JSONArray concertsJsonArray = new JSONArray(concertsJsonStr);
 
-            concertsJsonArray = new JSONArray(concertsJsonStr);
             if (concertsJsonArray.length() > 0) {
                 for (int i = 0; i < concertsJsonArray.length(); i++) {
                     JSONObject concertJsonObject = concertsJsonArray.getJSONObject(i);
