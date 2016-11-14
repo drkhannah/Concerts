@@ -39,7 +39,7 @@
     <string name="response_object_key_description" translatable="false">description</string>
     <string name="response_object_key_artists" translatable="false">artists</string>
     <string name="response_object_key_name" translatable="false">name</string>
-    <string name="response_object_key_thumb_url" translatable="false">thumb_url</string>
+    <string name="response_object_key_thumb_url" translatable="false">image_url</string>
     <string name="response_object_key_website" translatable="false">website</string>
     <string name="response_object_key_venue" translatable="false">venue</string>
     <string name="response_object_key_venue_name" translatable="false">name</string>

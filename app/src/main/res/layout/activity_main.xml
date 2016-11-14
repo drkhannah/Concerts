@@ -11,10 +11,11 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.drkhannah.concerts.MainActivity">
 
-    <TextView
-        android:id="@+id/main_textview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Network request not made yet"/>
+    <!-- RecyclerView List of Concerts -->
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/concerts_recyclerview"
+        android:scrollbars="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 
 </RelativeLayout>

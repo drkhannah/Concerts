@@ -4,8 +4,8 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.TextView;
 
+import com.drkhannah.concerts.adapters.ConcertsRecyclerViewAdapter;
 import com.drkhannah.concerts.models.Concert;
 
 import org.json.JSONArray;
@@ -29,18 +29,18 @@ public class GetConcertsTask extends AsyncTask<String, Void, List<Concert>> {
 
     private static final String LOG_TAG = GetConcertsTask.class.getSimpleName();
 
-    private TextView mMainTextView;
+    private ConcertsRecyclerViewAdapter mConcertsRecyclerViewAdapter;
+    private List<Concert> mConcertList = new ArrayList<>();
     private Context mContext;
 
-    private List<Concert> mConcertList = new ArrayList<>();
 
     /**
      * Creates a new asynchronous task. This constructor must be invoked on the UI thread.
      * This receives a TextView and sets its text in onPostExecute()
      */
-    public GetConcertsTask(Context context, TextView mainTextView) {
+    public GetConcertsTask(Context context, ConcertsRecyclerViewAdapter concertsRecyclerViewAdapter) {
         super();
-        mMainTextView = mainTextView;
+        mConcertsRecyclerViewAdapter = concertsRecyclerViewAdapter;
         mContext = context;
     }
 
@@ -55,9 +55,9 @@ public class GetConcertsTask extends AsyncTask<String, Void, List<Concert>> {
     @Override
     protected void onPostExecute(List<Concert> result) {
         if (result != null) {
-            mMainTextView.setText(result.get(0).getTitle());
+            mConcertsRecyclerViewAdapter.updateData(result);
         } else {
-            mMainTextView.setText(R.string.null_response_returned);
+            mConcertsRecyclerViewAdapter.updateData(null);
         }
     }
 
