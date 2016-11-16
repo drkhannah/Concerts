@@ -36,11 +36,12 @@ public class ConcertsRecyclerViewAdapter extends RecyclerView.Adapter<ConcertsRe
         mConcertList = concertList;
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    //This ViewHolder object will be used in onBindViewHolder
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         // each data item is a Concert object
         public TextView mConcertTitleView;
         public TextView mConcertFormattedDateView;
-        public TextView mConcertFormattedLocationView;
+        public TextView mConcertTicketStatusView;
         public ImageView mArtistImageView;
 
         //ViewHolder constructor
@@ -48,34 +49,30 @@ public class ConcertsRecyclerViewAdapter extends RecyclerView.Adapter<ConcertsRe
             super(view);
             mConcertTitleView = (TextView) view.findViewById(R.id.concert_title);
             mConcertFormattedDateView = (TextView) view.findViewById(R.id.concert_formatted_date);
-            mConcertFormattedLocationView = (TextView) view.findViewById(R.id.concert_formatted_location);
+            mConcertTicketStatusView = (TextView) view.findViewById(R.id.concert_ticket_status);
             mArtistImageView = (ImageView) view.findViewById(R.id.artist_image);
-            view.setOnClickListener(this);
-        }
-
-        //called when a list item is clicked
-        @Override
-        public void onClick(View view) {
-            //start the detail activity
         }
     }
 
 
+    // create a new ViewHolder object that uses one of two layout resources:
+    // recyclerview_listitem_with_image if it is the first item in the list
+    // recyclerview_listitem_no_image for every other item in the list
     @Override
     public ConcertsRecyclerViewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (parent instanceof RecyclerView) {
             int layoutId = -1;
             switch (viewType) {
                 case VIEW_TYPE_WITH_IMAGE: {
-                    layoutId = R.layout.recycler_view_list_item_with_image;
+                    layoutId = R.layout.recyclerview_listitem_with_image;
                     break;
                 }
                 case VIEW_TYPE_NO_IMAGE: {
-                    layoutId = R.layout.recycler_view_list_item_no_image;
+                    layoutId = R.layout.recyclerview_listitem_no_image;
                 }
             }
             View view = LayoutInflater.from(parent.getContext()).inflate(layoutId, parent, false);
-            view.setFocusable(true);
+            view.setClickable(true);
             return new ViewHolder(view);
         } else {
             throw new RuntimeException("NOT BOUND TO RECYCLERVIEW");
@@ -83,6 +80,7 @@ public class ConcertsRecyclerViewAdapter extends RecyclerView.Adapter<ConcertsRe
     }
 
 
+    //bind data to a ViewHolder object
     @Override
     public void onBindViewHolder(ConcertsRecyclerViewAdapter.ViewHolder holder, int position) {
         Concert concert = mConcertList.get(position);
@@ -93,7 +91,7 @@ public class ConcertsRecyclerViewAdapter extends RecyclerView.Adapter<ConcertsRe
         }
         holder.mConcertTitleView.setText(concert.getTitle());
         holder.mConcertFormattedDateView.setText(concert.getFormattedDateTime());
-        holder.mConcertFormattedLocationView.setText(concert.getFormattedLocation());
+        holder.mConcertTicketStatusView.setText(concert.getTicketStatus());
     }
 
 

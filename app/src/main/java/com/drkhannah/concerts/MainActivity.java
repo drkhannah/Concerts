@@ -52,5 +52,6 @@ public class MainActivity extends AppCompatActivity {
         // specify an adapter for the RecyclerView
         mConcertsRecyclerViewAdapter = new ConcertsRecyclerViewAdapter(this, new ArrayList<Concert>());
         mConcertsRecyclerView.setAdapter(mConcertsRecyclerViewAdapter);
+
     }
 }
