@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.widget.TextView;
 
 import com.drkhannah.concerts.adapters.ConcertsRecyclerViewAdapter;
 import com.drkhannah.concerts.models.Concert;
@@ -21,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView mConcertsRecyclerView;
     private ConcertsRecyclerViewAdapter mConcertsRecyclerViewAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
+    private TextView mEmptyView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,30 +30,34 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         setupRecyclerView();
-
-        //Check network connection before "executing" GetConcertsTask
-        ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
-        if (networkInfo != null && networkInfo.isConnected()) {
-            GetConcertsTask getConcertsTask = new GetConcertsTask(this, mConcertsRecyclerViewAdapter);
-            getConcertsTask.execute("nofx");
-        } else {
-            Log.e(LOG_TAG, "Not connected to network");
-        }
+        getConcerts();
 
     }
 
     private void setupRecyclerView() {
         //get a handle to the RecyclerView in activity_main.xml
         mConcertsRecyclerView = (RecyclerView) findViewById(R.id.concerts_recyclerview);
+        mEmptyView = (TextView) findViewById(R.id.empty_view);
 
         // use a linear layout manager for the RecyclerView
         mLayoutManager = new LinearLayoutManager(this);
         mConcertsRecyclerView.setLayoutManager(mLayoutManager);
 
         // specify an adapter for the RecyclerView
-        mConcertsRecyclerViewAdapter = new ConcertsRecyclerViewAdapter(this, new ArrayList<Concert>());
+        mConcertsRecyclerViewAdapter = new ConcertsRecyclerViewAdapter(this, new ArrayList<Concert>(), mEmptyView);
         mConcertsRecyclerView.setAdapter(mConcertsRecyclerViewAdapter);
 
+    }
+
+    private void getConcerts() {
+        //Check network connection before "executing" GetConcertsTask
+        ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+        if (networkInfo != null && networkInfo.isConnected()) {
+            GetConcertsTask getConcertsTask = new GetConcertsTask(this, mConcertsRecyclerViewAdapter);
+            getConcertsTask.execute("mike jones");
+        } else {
+            Log.e(LOG_TAG, "Not connected to network");
+        }
     }
 }

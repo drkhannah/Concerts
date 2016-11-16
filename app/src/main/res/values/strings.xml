@@ -48,5 +48,6 @@
     <string name="response_object_key_country" translatable="false">country</string>
     <string name="response_object_key_longitude" translatable="false">longitude</string>
     <string name="response_object_key_latitude" translatable="false">latitude</string>
+    <string name="no_data_available">no data available</string>
 
 </resources>
