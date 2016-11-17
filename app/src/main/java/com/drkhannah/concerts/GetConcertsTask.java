@@ -5,7 +5,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.drkhannah.concerts.adapters.ConcertsRecyclerViewAdapter;
 import com.drkhannah.concerts.models.Concert;
 
 import org.json.JSONArray;
@@ -29,18 +28,15 @@ public class GetConcertsTask extends AsyncTask<String, Void, List<Concert>> {
 
     private static final String LOG_TAG = GetConcertsTask.class.getSimpleName();
 
-    private ConcertsRecyclerViewAdapter mConcertsRecyclerViewAdapter;
     private List<Concert> mConcertList = new ArrayList<>();
     private Context mContext;
-
 
     /**
      * Creates a new asynchronous task. This constructor must be invoked on the UI thread.
      * This receives a TextView and sets its text in onPostExecute()
      */
-    public GetConcertsTask(Context context, ConcertsRecyclerViewAdapter concertsRecyclerViewAdapter) {
+    public GetConcertsTask(Context context) {
         super();
-        mConcertsRecyclerViewAdapter = concertsRecyclerViewAdapter;
         mContext = context;
     }
 
@@ -54,11 +50,7 @@ public class GetConcertsTask extends AsyncTask<String, Void, List<Concert>> {
     // onPostExecute delivers the results of  doInBackground() on the UI thread.
     @Override
     protected void onPostExecute(List<Concert> result) {
-        if (result != null) {
-            mConcertsRecyclerViewAdapter.updateData(result);
-        } else {
-            mConcertsRecyclerViewAdapter.updateData(null);
-        }
+        ((GetConcertsTaskResultListener) mContext).getConcertsTaskResult(result);
     }
 
     // Build a URL to request concerts for an artist
@@ -213,6 +205,11 @@ public class GetConcertsTask extends AsyncTask<String, Void, List<Concert>> {
         }
         //return the List of Concerts, or null
         return (mConcertList.size() > 0) ? mConcertList : null;
+    }
+
+    //interface to listen for result of AsyncTask
+    public interface GetConcertsTaskResultListener {
+        void getConcertsTaskResult(List<Concert> result);
     }
 }
 

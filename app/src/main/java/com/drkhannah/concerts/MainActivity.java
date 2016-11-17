@@ -8,20 +8,21 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
 
 import com.drkhannah.concerts.adapters.ConcertsRecyclerViewAdapter;
 import com.drkhannah.concerts.models.Concert;
 
-import java.util.ArrayList;
+import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements GetConcertsTask.GetConcertsTaskResultListener {
 
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
 
     private RecyclerView mConcertsRecyclerView;
     private ConcertsRecyclerViewAdapter mConcertsRecyclerViewAdapter;
-    private RecyclerView.LayoutManager mLayoutManager;
+    private RecyclerView.LayoutManager mLinearLayoutManager;
     private TextView mEmptyView;
 
     @Override
@@ -31,7 +32,6 @@ public class MainActivity extends AppCompatActivity {
 
         setupRecyclerView();
         getConcerts();
-
     }
 
     private void setupRecyclerView() {
@@ -40,11 +40,11 @@ public class MainActivity extends AppCompatActivity {
         mEmptyView = (TextView) findViewById(R.id.empty_view);
 
         // use a linear layout manager for the RecyclerView
-        mLayoutManager = new LinearLayoutManager(this);
-        mConcertsRecyclerView.setLayoutManager(mLayoutManager);
+        mLinearLayoutManager = new LinearLayoutManager(this);
+        mConcertsRecyclerView.setLayoutManager(mLinearLayoutManager);
 
         // specify an adapter for the RecyclerView
-        mConcertsRecyclerViewAdapter = new ConcertsRecyclerViewAdapter(this, new ArrayList<Concert>(), mEmptyView);
+        mConcertsRecyclerViewAdapter = new ConcertsRecyclerViewAdapter(this);
         mConcertsRecyclerView.setAdapter(mConcertsRecyclerViewAdapter);
 
     }
@@ -54,10 +54,25 @@ public class MainActivity extends AppCompatActivity {
         ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
         if (networkInfo != null && networkInfo.isConnected()) {
-            GetConcertsTask getConcertsTask = new GetConcertsTask(this, mConcertsRecyclerViewAdapter);
-            getConcertsTask.execute("mike jones");
+            GetConcertsTask getConcertsTask = new GetConcertsTask(this);
+            getConcertsTask.execute("Billy Joel");
         } else {
             Log.e(LOG_TAG, "Not connected to network");
         }
+    }
+
+    //method of GetConcertsTaskResultListener
+    @Override
+    public void getConcertsTaskResult(List<Concert> result) {
+        if (result != null) {
+            mConcertsRecyclerViewAdapter.updateData(result);
+            mConcertsRecyclerView.setVisibility(View.VISIBLE);
+            mEmptyView.setVisibility(View.GONE);
+        } else {
+            mConcertsRecyclerViewAdapter.updateData(null);
+            mConcertsRecyclerView.setVisibility(View.GONE);
+            mEmptyView.setVisibility(View.VISIBLE);
+        }
+
     }
 }

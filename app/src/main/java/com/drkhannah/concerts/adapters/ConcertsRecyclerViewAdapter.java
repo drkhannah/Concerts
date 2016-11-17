@@ -12,6 +12,7 @@ import com.drkhannah.concerts.R;
 import com.drkhannah.concerts.models.Concert;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -26,16 +27,12 @@ public class ConcertsRecyclerViewAdapter extends RecyclerView.Adapter<ConcertsRe
     private static final int VIEW_TYPE_WITH_IMAGE = 0;
     private static final int VIEW_TYPE_NO_IMAGE = 1;
 
-    private List<Concert> mConcertList;
-    private final TextView mEmptyView;
+    private List<Concert> mConcertList = new ArrayList<>();
     private Context mContext;
 
-
     //constructor
-    public ConcertsRecyclerViewAdapter(Context context,  List<Concert> concertList, TextView emptyView) {
+    public ConcertsRecyclerViewAdapter(Context context) {
         mContext = context;
-        mConcertList = concertList;
-        mEmptyView = emptyView;
     }
 
     //This ViewHolder object will be used in onBindViewHolder
@@ -113,11 +110,5 @@ public class ConcertsRecyclerViewAdapter extends RecyclerView.Adapter<ConcertsRe
     public void updateData(List<Concert> updatedConcerts) {
         mConcertList = updatedConcerts;
         notifyDataSetChanged();
-        if (mConcertList.size() > 0) {
-            mEmptyView.setVisibility(View.GONE);
-        } else {
-            mEmptyView.setVisibility(View.VISIBLE);
-
-        }
     }
 }
