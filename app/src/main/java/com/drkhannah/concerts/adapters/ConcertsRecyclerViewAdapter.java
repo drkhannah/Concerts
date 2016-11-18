@@ -53,25 +53,30 @@ public class ConcertsRecyclerViewAdapter extends RecyclerView.Adapter<ConcertsRe
         }
     }
 
+    //get an item's view type
+    @Override
+    public int getItemViewType(int position) {
+        return (position == 0) ? VIEW_TYPE_WITH_IMAGE : VIEW_TYPE_NO_IMAGE;
+    }
 
     // create a new ViewHolder object that uses one of two layout resources:
-    // recyclerview_listitem_with_image if it is the first item in the list
-    // recyclerview_listitem_no_image for every other item in the list
+    // recyclerview_item_view_with_image if it is the first item in the list
+    // recyclerview_item_view_no_image for every other item in the list
     @Override
     public ConcertsRecyclerViewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (parent instanceof RecyclerView) {
             int layoutId = -1;
             switch (viewType) {
                 case VIEW_TYPE_WITH_IMAGE: {
-                    layoutId = R.layout.recyclerview_listitem_with_image;
+                    layoutId = R.layout.recyclerview_item_view_with_image;
                     break;
                 }
                 case VIEW_TYPE_NO_IMAGE: {
-                    layoutId = R.layout.recyclerview_listitem_no_image;
+                    layoutId = R.layout.recyclerview_item_view_no_image;
+                    break;
                 }
             }
             View view = LayoutInflater.from(parent.getContext()).inflate(layoutId, parent, false);
-            view.setClickable(true);
             return new ViewHolder(view);
         } else {
             throw new RuntimeException("NOT BOUND TO RECYCLERVIEW");
@@ -98,12 +103,6 @@ public class ConcertsRecyclerViewAdapter extends RecyclerView.Adapter<ConcertsRe
     @Override
     public int getItemCount() {
         return (mConcertList.size() > 0) ? mConcertList.size() : 0;
-    }
-
-    //get an item's view type
-    @Override
-    public int getItemViewType(int position) {
-        return (position == 0) ? VIEW_TYPE_WITH_IMAGE : VIEW_TYPE_NO_IMAGE;
     }
 
     //update the adapters data

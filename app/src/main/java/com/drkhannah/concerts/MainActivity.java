@@ -16,7 +16,7 @@ import com.drkhannah.concerts.models.Concert;
 
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements GetConcertsTask.GetConcertsTaskResultListener {
+public class MainActivity extends AppCompatActivity implements GetConcertsTask.GetConcertsTaskResultCallback {
 
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
 
@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity implements GetConcertsTask.G
         }
     }
 
-    //method of GetConcertsTaskResultListener
+    //method of GetConcertsTaskResultCallback
     @Override
     public void getConcertsTaskResult(List<Concert> result) {
         if (result != null) {

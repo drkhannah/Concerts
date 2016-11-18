@@ -48,9 +48,10 @@ public class GetConcertsTask extends AsyncTask<String, Void, List<Concert>> {
     }
 
     // onPostExecute delivers the results of  doInBackground() on the UI thread.
+    //pass the result to GetConcertsTaskResultCallback.getConcertsTaskResult();
     @Override
     protected void onPostExecute(List<Concert> result) {
-        ((GetConcertsTaskResultListener) mContext).getConcertsTaskResult(result);
+        ((GetConcertsTaskResultCallback) mContext).getConcertsTaskResult(result);
     }
 
     // Build a URL to request concerts for an artist
@@ -208,7 +209,7 @@ public class GetConcertsTask extends AsyncTask<String, Void, List<Concert>> {
     }
 
     //interface to listen for result of AsyncTask
-    public interface GetConcertsTaskResultListener {
+    public interface GetConcertsTaskResultCallback {
         void getConcertsTaskResult(List<Concert> result);
     }
 }
