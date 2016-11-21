@@ -1,10 +1,13 @@
 package com.drkhannah.concerts.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by dhannah on 11/9/16.
  */
 
-public class Concert {
+public class Concert implements Parcelable {
 
     private String mTitle;
     private String mFormattedDateTime;
@@ -141,5 +144,83 @@ public class Concert {
                 ", mVenueLongitude='" + mVenueLongitude + '\'' +
                 ", mVenueLatitude='" + mVenueLatitude + '\'' +
                 '}';
+    }
+
+    //Everything below deals with the Parcelable interface
+
+    //Concert constructor that receives a Parcel object
+    protected Concert(Parcel in) {
+        mTitle = in.readString();
+        mFormattedDateTime = in.readString();
+        mFormattedLocation = in.readString();
+        mTicketURL = in.readString();
+        mTicketType = in.readString();
+        mTicketStatus = in.readString();
+        mDescription = in.readString();
+        mArtistName = in.readString();
+        mArtistImage = in.readString();
+        mArtistWebsite = in.readString();
+        mVenueName = in.readString();
+        mVenuePlace = in.readString();
+        mVenueCity = in.readString();
+        mVenueCountry = in.readString();
+        mVenueLongitude = in.readString();
+        mVenueLatitude = in.readString();
+    }
+
+    // this is used to regenerate your object. All Parcelables must have a CREATOR that implements these two methods
+    public static final Creator<Concert> CREATOR = new Creator<Concert>() {
+        @Override
+        public Concert createFromParcel(Parcel in) {
+            return new Concert(in);
+        }
+
+        @Override
+        public Concert[] newArray(int size) {
+            return new Concert[size];
+        }
+    };
+
+    /**
+     * Describe the kinds of special objects contained in this Parcelable
+     * instance's marshaled representation. For example, if the object will
+     * include a file descriptor in the output of {@link #writeToParcel(Parcel, int)},
+     * the return value of this method must include the
+     * {@link #CONTENTS_FILE_DESCRIPTOR} bit.
+     *
+     * @return a bitmask indicating the set of special object types marshaled
+     * by this Parcelable object instance.
+     * @see #CONTENTS_FILE_DESCRIPTOR
+     */
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    /**
+     * Flatten this object in to a Parcel.
+     *
+     * @param dest  The Parcel in which the object should be written.
+     * @param flags Additional flags about how the object should be written.
+     *              May be 0 or {@link #PARCELABLE_WRITE_RETURN_VALUE}.
+     */
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(mTitle);
+        dest.writeString(mFormattedDateTime);
+        dest.writeString(mFormattedLocation);
+        dest.writeString(mTicketURL);
+        dest.writeString(mTicketType);
+        dest.writeString(mTicketStatus);
+        dest.writeString(mDescription);
+        dest.writeString(mArtistName);
+        dest.writeString(mArtistImage);
+        dest.writeString(mArtistWebsite);
+        dest.writeString(mVenueName);
+        dest.writeString(mVenuePlace);
+        dest.writeString(mVenueCity);
+        dest.writeString(mVenueCountry);
+        dest.writeString(mVenueLongitude);
+        dest.writeString(mVenueLatitude);
     }
 }

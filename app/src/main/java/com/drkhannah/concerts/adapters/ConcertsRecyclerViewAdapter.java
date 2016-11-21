@@ -1,6 +1,7 @@
 package com.drkhannah.concerts.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.drkhannah.concerts.ConcertDetailActivity;
 import com.drkhannah.concerts.R;
 import com.drkhannah.concerts.models.Concert;
 import com.squareup.picasso.Picasso;
@@ -36,20 +38,40 @@ public class ConcertsRecyclerViewAdapter extends RecyclerView.Adapter<ConcertsRe
     }
 
     //This ViewHolder object will be used in onBindViewHolder
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         // each data item is a Concert object
-        public TextView mConcertTitleView;
-        public TextView mConcertFormattedDateView;
-        public TextView mConcertTicketStatusView;
-        public ImageView mArtistImageView;
+        private TextView mConcertTitleView;
+        private TextView mConcertFormattedDateView;
+        private TextView mConcertTicketStatusView;
+        private ImageView mArtistImageView;
 
         //ViewHolder constructor
-        public ViewHolder(View view) {
+        ViewHolder(View view) {
             super(view);
             mConcertTitleView = (TextView) view.findViewById(R.id.concert_title);
             mConcertFormattedDateView = (TextView) view.findViewById(R.id.concert_formatted_date);
             mConcertTicketStatusView = (TextView) view.findViewById(R.id.concert_ticket_status);
             mArtistImageView = (ImageView) view.findViewById(R.id.artist_image);
+            view.setOnClickListener(this);
+        }
+
+        /**
+         * Called when a view has been clicked.
+         *
+         * @param v The view that was clicked.
+         */
+        @Override
+        public void onClick(View v) {
+            //get a Concert object from mConcertList using the adapter position
+            int adapterPosition = getAdapterPosition();
+            Concert concert = mConcertList.get(adapterPosition);
+
+            //create an explicit Intent to start ConcertDetailActivity
+            //include the Concert object in the Intent
+            Intent intent = new Intent();
+            intent.setClass(mContext, ConcertDetailActivity.class);
+            intent.putExtra(mContext.getString(R.string.extra_concert), concert);
+            mContext.startActivity(intent);
         }
     }
 

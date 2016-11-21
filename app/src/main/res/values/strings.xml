@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">Concerts</string>
 
+    <!--activity titles-->
+    <string name="concert_details_activity_title">Details</string>
+
     <!-- GetConcertTasks -->
     <string name="base_url" translatable="false">http://api.bandsintown.com/artists/</string>
     <string name="response_format_param" translatable="false">events.json</string>
@@ -49,5 +52,9 @@
     <string name="response_object_key_longitude" translatable="false">longitude</string>
     <string name="response_object_key_latitude" translatable="false">latitude</string>
     <string name="no_data_available">no data available</string>
+
+    <!--custom Intent Extras-->
+    <string name="extra_concert" translatable="false">concert</string>
+
 
 </resources>
