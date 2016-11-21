@@ -46,7 +46,6 @@ public class MainActivity extends AppCompatActivity implements GetConcertsTask.G
         // specify an adapter for the RecyclerView
         mConcertsRecyclerViewAdapter = new ConcertsRecyclerViewAdapter(this);
         mConcertsRecyclerView.setAdapter(mConcertsRecyclerViewAdapter);
-
     }
 
     private void getConcerts() {
@@ -73,6 +72,5 @@ public class MainActivity extends AppCompatActivity implements GetConcertsTask.G
             mConcertsRecyclerView.setVisibility(View.GONE);
             mEmptyView.setVisibility(View.VISIBLE);
         }
-
     }
 }
