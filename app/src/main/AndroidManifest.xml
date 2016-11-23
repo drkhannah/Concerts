@@ -27,13 +27,8 @@
 
         <activity
             android:name=".ConcertDetailActivity"
-            android:exported="false"
             android:label="@string/concert_details_activity_title"
             android:parentActivityName=".MainActivity">
-            <!--Only needed for android 4.0 API 15 and lower -->
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.drkhannah.concerts.MainActivity"/>
         </activity>
 
     </application>

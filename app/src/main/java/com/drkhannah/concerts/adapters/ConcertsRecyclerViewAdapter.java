@@ -55,21 +55,14 @@ public class ConcertsRecyclerViewAdapter extends RecyclerView.Adapter<ConcertsRe
             view.setOnClickListener(this);
         }
 
-        /**
-         * Called when a view has been clicked.
-         *
-         * @param v The view that was clicked.
-         */
         @Override
         public void onClick(View v) {
             //get a Concert object from mConcertList using the adapter position
-            int adapterPosition = getAdapterPosition();
-            Concert concert = mConcertList.get(adapterPosition);
+            Concert concert = mConcertList.get(getAdapterPosition());
 
             //create an explicit Intent to start ConcertDetailActivity
             //include the Concert object in the Intent
-            Intent intent = new Intent();
-            intent.setClass(mContext, ConcertDetailActivity.class);
+            Intent intent = new Intent(mContext, ConcertDetailActivity.class);
             intent.putExtra(mContext.getString(R.string.extra_concert), concert);
             mContext.startActivity(intent);
         }
