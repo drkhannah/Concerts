@@ -105,7 +105,9 @@ public class ConcertsRecyclerViewAdapter extends RecyclerView.Adapter<ConcertsRe
         Concert concert = mConcertList.get(position);
         switch (getItemViewType(position)) {
             case VIEW_TYPE_WITH_IMAGE: {
-                Picasso.with(mContext).load(concert.getArtistImage()).into(holder.mArtistImageView);
+                Picasso.with(mContext)
+                        .load(concert.getArtistImage())
+                        .into(holder.mArtistImageView);
             }
         }
         holder.mConcertTitleView.setText(concert.getTitle());
