@@ -1,26 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.drkhannah.concerts.MainActivity">
+    android:fitsSystemWindows="true"
+    tools:context=".MainActivity">
 
-    <!-- RecyclerView List of Concerts -->
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/concerts_recyclerview"
-        android:scrollbars="vertical"
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appbar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:clickable="true"/>
+        android:layout_height="wrap_content"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:elevation="@dimen/appbar_elevation">
 
-    <!-- TextView only to be shown when ConcertsRecyclerViewAdapter is empty -->
-    <TextView
-        android:id="@+id/empty_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="@string/no_data_available" />
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
 
-</RelativeLayout>
+    </android.support.design.widget.AppBarLayout>
+
+    <include layout="@layout/recyclerview_concert_list"/>
+
+</android.support.design.widget.CoordinatorLayout>

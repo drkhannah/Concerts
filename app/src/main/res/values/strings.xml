@@ -55,6 +55,7 @@
 
     <!--custom Intent Extras-->
     <string name="extra_concert" translatable="false">concert</string>
+    <string name="action_get_concerts">Get Concerts</string>
 
 
 </resources>

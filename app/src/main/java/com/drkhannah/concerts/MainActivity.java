@@ -7,7 +7,10 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
@@ -30,8 +33,33 @@ public class MainActivity extends AppCompatActivity implements GetConcertsTask.G
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
         setupRecyclerView();
-        getConcerts();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        //inflate main_menu layout
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    //respond to Toolbar Actions
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_get_concerts:
+                // User chose the "Get Concerts" item
+                getConcerts();
+                return true;
+
+            default:
+                // If we got here, the user's action was not recognized.
+                // Invoke the superclass to handle it.
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     private void setupRecyclerView() {
