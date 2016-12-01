@@ -51,7 +51,9 @@ public class ConcertDetailActivity extends AppCompatActivity {
         descriptionTextView.setText(concert.getDescription());
         artistNameTextView.setText(concert.getArtistName());
 
-        Picasso.with(this).load(concert.getArtistImage()).into(artistImageView);
+        Picasso.with(this)
+                .load(concert.getArtistImage())
+                .into(artistImageView);
 
         artistWebsiteTextView.setText(concert.getArtistWebsite());
         venueNameTextView.setText(concert.getVenueName());
