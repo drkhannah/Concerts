@@ -55,7 +55,11 @@
 
     <!--custom Intent Extras-->
     <string name="extra_concert" translatable="false">concert</string>
+
+    <!--Action Button Titles-->
     <string name="action_get_concerts">Get Concerts</string>
+    <string name="action_show_map">Show Map</string>
+    <string name="action_share_concert">Share</string>
 
 
 </resources>
