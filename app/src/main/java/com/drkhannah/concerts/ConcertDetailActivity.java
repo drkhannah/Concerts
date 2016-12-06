@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.drkhannah.concerts.models.Concert;
 import com.squareup.picasso.Picasso;
@@ -27,21 +28,19 @@ public class ConcertDetailActivity extends AppCompatActivity {
     TextView mVenueNameTextView;
     String mGeo;
 
-    ShareActionProvider mShareActionProvider;
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_concert_detail);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-
         //get the Intent and its Extras that started this Activity
         Intent receivedIntent = getIntent();
         Concert concert = (Concert) receivedIntent.getParcelableExtra(getString(R.string.extra_concert));
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle(concert.getArtistName());
 
         //get references to View's in activity_concert_detail
         mTitleTextView = (TextView) findViewById(R.id.concert_detail_title);
@@ -128,6 +127,9 @@ public class ConcertDetailActivity extends AppCompatActivity {
                     }
                 }
                 return true;
+            case android.R.id.home:
+                Toast.makeText(this, "Up Button Clicked", Toast.LENGTH_LONG).show();
+                return super.onOptionsItemSelected(item);
             default:
                 // If we got here, the user's action was not recognized.
                 // Invoke the superclass to handle it.
