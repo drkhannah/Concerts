@@ -6,19 +6,11 @@
         android:id="@+id/action_map"
         android:icon="@drawable/ic_map_white_24dp"
         android:title="@string/action_show_map"
-        app:showAsAction="ifRoom"
-        >
-        <shape
-            android:shape="rectangle">
-            <solid android:color="@android:color/darker_gray" />
-            <corners android:radius="5dp"/>
-        </shape>
-
-    </item>
+        app:showAsAction="ifRoom"/>
 
     <item
         android:id="@+id/action_share"
         android:title="@string/action_share_concert"
-        app:showAsAction="ifRoom"
-        app:actionProviderClass="android.support.v7.widget.ShareActionProvider"/>
+        app:actionProviderClass="android.support.v7.widget.ShareActionProvider"
+        app:showAsAction="ifRoom"/>
 </menu>
