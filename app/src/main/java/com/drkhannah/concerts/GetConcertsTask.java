@@ -34,7 +34,6 @@ public class GetConcertsTask extends AsyncTask<String, Void, List<Concert>> {
 
     /**
      * Creates a new asynchronous task. This constructor must be invoked on the UI thread.
-     * This receives a TextView and sets its text in onPostExecute()
      */
     public GetConcertsTask(Context context, ConcertListFragment concertListFragment) {
         super();

@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.drkhannah.concerts.R;
 import com.drkhannah.concerts.models.Concert;
 import com.squareup.picasso.Picasso;
 

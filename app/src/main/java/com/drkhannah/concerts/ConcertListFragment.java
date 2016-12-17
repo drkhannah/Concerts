@@ -22,7 +22,7 @@ import com.drkhannah.concerts.models.Concert;
 import java.util.List;
 
 
-public class ConcertListFragment extends Fragment implements GetConcertsTask.GetConcertsTaskResultCallback{
+public class ConcertListFragment extends Fragment implements GetConcertsTask.GetConcertsTaskResultCallback {
 
     private static final String LOG_TAG = ConcertListFragment.class.getSimpleName();
 
