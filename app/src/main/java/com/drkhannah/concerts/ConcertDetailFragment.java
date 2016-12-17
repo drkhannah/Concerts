@@ -38,6 +38,7 @@ public class ConcertDetailFragment extends Fragment {
         // Required empty public constructor
     }
 
+    //use this to creage a new instance of this fragment and pass it initialization arguments
     public static ConcertDetailFragment newInstance(Concert concert) {
         ConcertDetailFragment fragment = new ConcertDetailFragment();
         Bundle args = new Bundle();
@@ -50,6 +51,7 @@ public class ConcertDetailFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+        //get the fragment arguments
         if (getArguments() != null) {
             mConcert = getArguments().getParcelable(ARG_CONCERT);
         }
@@ -113,7 +115,7 @@ public class ConcertDetailFragment extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         //inflate detail_menu layout
         inflater.inflate(R.menu.menu_detail, menu);
-        createShareProviderMenuAction(menu);
+        createShareActionProvider(menu);
     }
 
     //respond to Toolbar Actions
@@ -141,7 +143,7 @@ public class ConcertDetailFragment extends Fragment {
         activity.getSupportActionBar().setTitle(mConcert.getArtistName());
     }
 
-    private void createShareProviderMenuAction(Menu menu) {
+    private void createShareActionProvider(Menu menu) {
         //Get the Share Action Button's ShareActionProvider
         MenuItem shareItem = menu.findItem(R.id.action_share);
         ShareActionProvider shareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(shareItem);
