@@ -31,6 +31,10 @@ public class ConcertListFragment extends Fragment implements GetConcertsTask.Get
     private RecyclerView.LayoutManager mLinearLayoutManager;
     private TextView mEmptyView;
 
+    public ConcertListFragment() {
+        //Required empty constructor
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
