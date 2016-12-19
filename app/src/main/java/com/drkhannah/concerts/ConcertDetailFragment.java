@@ -23,7 +23,6 @@ import com.drkhannah.concerts.models.Concert;
 import com.squareup.picasso.Picasso;
 
 public class ConcertDetailFragment extends Fragment {
-
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_CONCERT = "concert";
 
