@@ -29,13 +29,14 @@ public class ConcertDetailFragment extends Fragment {
     private TextView mTitleTextView;
     private TextView mTicketUrlTextView;
     private TextView mVenueNameTextView;
+    private ImageView mArtistImageView;
     private String mGeo;
 
     public ConcertDetailFragment() {
         // Required empty public constructor
     }
 
-    //use this to creage a new instance of this fragment and pass it initialization arguments
+    //use this to create a new instance of this fragment and pass it initialization arguments
     public static ConcertDetailFragment newInstance(Concert concert) {
         ConcertDetailFragment fragment = new ConcertDetailFragment();
         Bundle args = new Bundle();
@@ -47,7 +48,10 @@ public class ConcertDetailFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //allows us to add a menu to the App Bar from this fragment
         setHasOptionsMenu(true);
+
         //get the fragment arguments
         if (getArguments() != null) {
             mConcert = getArguments().getParcelable(ARG_CONCERT);
@@ -59,6 +63,17 @@ public class ConcertDetailFragment extends Fragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_concert_detail, container, false);
 
+        if (!MainActivity.isTwoPane()) {
+            //the concert_detail_artist_image ImageView is in the ConcertDetailActivity's Toolbar
+            mArtistImageView = (ImageView) getActivity().findViewById(R.id.concert_detail_artist_image);
+        } else {
+            mArtistImageView = (ImageView) rootView.findViewById(R.id.concert_detail_artist_image);
+        }
+
+        Picasso.with(getActivity())
+                .load(mConcert.getArtistImage())
+                .into(mArtistImageView);
+
         //get references to View's in activity_concert_detail
         mTitleTextView = (TextView) rootView.findViewById(R.id.concert_detail_title);
         TextView formattedDateTextView = (TextView) rootView.findViewById(R.id.concert_detail_formatted_date);
@@ -68,11 +83,6 @@ public class ConcertDetailFragment extends Fragment {
         TextView ticketStatusTextView = (TextView) rootView.findViewById(R.id.concert_detail_ticket_status);
         TextView descriptionTextView = (TextView) rootView.findViewById(R.id.concert_detail_description);
         TextView artistNameTextView = (TextView) rootView.findViewById(R.id.concert_detail_artist_name);
-
-        //the concert_detail_artist_image view is in the ConcertDetailActivity's layout
-        //so you need to use getActivity().findViewById to get a handle to it
-        ImageView artistImageView = (ImageView) getActivity().findViewById(R.id.concert_detail_artist_image);
-
         TextView artistWebsiteTextView = (TextView) rootView.findViewById(R.id.concert_detail_artist_website);
         mVenueNameTextView = (TextView) rootView.findViewById(R.id.concert_detail_venue_name);
         TextView venuePlaceTextView = (TextView) rootView.findViewById(R.id.concert_detail_venue_place);
@@ -88,10 +98,6 @@ public class ConcertDetailFragment extends Fragment {
         ticketStatusTextView.setText(mConcert.getTicketStatus());
         descriptionTextView.setText(mConcert.getDescription());
         artistNameTextView.setText(mConcert.getArtistName());
-
-        Picasso.with(getActivity())
-                .load(mConcert.getArtistImage())
-                .into(artistImageView);
 
         artistWebsiteTextView.setText(mConcert.getArtistWebsite());
         mVenueNameTextView.setText(mConcert.getVenueName());

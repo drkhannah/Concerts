@@ -3,6 +3,200 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <include layout="@layout/content_concert_detail"/>
+    <android.support.v4.widget.NestedScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/concert_detail_nested_scrollview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/label_concert_detail_title"
+                style="@style/DetailLables"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Title:"/>
+
+            <TextView
+                android:id="@+id/concert_detail_title"
+                style="@style/Details"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+
+            <TextView
+                android:id="@+id/label_concert_detail_formatted_date"
+                style="@style/DetailLables"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Date:"/>
+
+            <TextView
+                android:id="@+id/concert_detail_formatted_date"
+                style="@style/Details"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+
+            <TextView
+                android:id="@+id/label_concert_detail_formatted_location"
+                style="@style/DetailLables"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Location:"/>
+
+            <TextView
+                android:id="@+id/concert_detail_formatted_location"
+                style="@style/Details"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+
+            <TextView
+                android:id="@+id/label_concert_detail_ticket_url"
+                style="@style/DetailLables"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ticket URL:"/>
+
+            <TextView
+                android:id="@+id/concert_detail_ticket_url"
+                style="@style/Details"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:autoLink="web"/>
+
+
+            <TextView
+                android:id="@+id/label_concert_detail_ticket_type"
+                style="@style/DetailLables"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ticket Type:"/>
+
+            <TextView
+                android:id="@+id/concert_detail_ticket_type"
+                style="@style/Details"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+
+            <TextView
+                android:id="@+id/label_concert_detail_ticket_status"
+                style="@style/DetailLables"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ticket Status:"/>
+
+            <TextView
+                android:id="@+id/concert_detail_ticket_status"
+                style="@style/Details"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+
+            <TextView
+                android:id="@+id/label_concert_detail_description"
+                style="@style/DetailLables"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Description:"/>
+
+            <TextView
+                android:id="@+id/concert_detail_description"
+                style="@style/Details"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+
+            <TextView
+                android:id="@+id/label_concert_detail_artist_name"
+                style="@style/DetailLables"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Artist Name:"/>
+
+            <TextView
+                android:id="@+id/concert_detail_artist_name"
+                style="@style/Details"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+
+            <TextView
+                android:id="@+id/label_concert_detail_artist_website"
+                style="@style/DetailLables"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Artist Website:"/>
+
+            <TextView
+                android:id="@+id/concert_detail_artist_website"
+                style="@style/Details"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+
+            <TextView
+                android:id="@+id/label_concert_detail_venue_name"
+                style="@style/DetailLables"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Venue Name:"/>
+
+            <TextView
+                android:id="@+id/concert_detail_venue_name"
+                style="@style/Details"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+
+            <TextView
+                android:id="@+id/label_concert_detail_venue_place"
+                style="@style/DetailLables"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Venue Place:"/>
+
+            <TextView
+                android:id="@+id/concert_detail_venue_place"
+                style="@style/Details"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+
+            <TextView
+                android:id="@+id/label_concert_detail_venue_city"
+                style="@style/DetailLables"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Venue City:"/>
+
+            <TextView
+                android:id="@+id/concert_detail_venue_city"
+                style="@style/Details"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+
+            <TextView
+                android:id="@+id/label_concert_detail_venue_country"
+                style="@style/DetailLables"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Venue Country:"/>
+
+            <TextView
+                android:id="@+id/concert_detail_venue_country"
+                style="@style/Details"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
 
 </FrameLayout>
