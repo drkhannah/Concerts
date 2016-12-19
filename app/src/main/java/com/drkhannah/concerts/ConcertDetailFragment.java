@@ -6,9 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.ShareActionProvider;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -70,7 +68,11 @@ public class ConcertDetailFragment extends Fragment {
         TextView ticketStatusTextView = (TextView) rootView.findViewById(R.id.concert_detail_ticket_status);
         TextView descriptionTextView = (TextView) rootView.findViewById(R.id.concert_detail_description);
         TextView artistNameTextView = (TextView) rootView.findViewById(R.id.concert_detail_artist_name);
-        ImageView artistImageView = (ImageView) rootView.findViewById(R.id.concert_detail_artist_image);
+
+        //the concert_detail_artist_image view is in the ConcertDetailActivity's layout
+        //so you need to use getActivity().findViewById to get a handle to it
+        ImageView artistImageView = (ImageView) getActivity().findViewById(R.id.concert_detail_artist_image);
+
         TextView artistWebsiteTextView = (TextView) rootView.findViewById(R.id.concert_detail_artist_website);
         mVenueNameTextView = (TextView) rootView.findViewById(R.id.concert_detail_venue_name);
         TextView venuePlaceTextView = (TextView) rootView.findViewById(R.id.concert_detail_venue_place);
@@ -103,9 +105,8 @@ public class ConcertDetailFragment extends Fragment {
                 .append(mConcert.getVenueLatitude())
                 .append(",")
                 .append(mConcert.getVenueLongitude())
-                .append("?").toString();
-
-        setupAppBar(rootView);
+                .append("?")
+                .toString();
 
         return rootView;
     }
@@ -132,14 +133,6 @@ public class ConcertDetailFragment extends Fragment {
                 // Invoke the superclass to handle it.
                 return super.onOptionsItemSelected(item);
         }
-    }
-
-    private void setupAppBar(View rootView) {
-        AppCompatActivity activity = (AppCompatActivity)getActivity();
-        Toolbar toolbar = (Toolbar) rootView.findViewById(R.id.toolbar);
-        activity.setSupportActionBar(toolbar);
-        activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        activity.getSupportActionBar().setTitle(mConcert.getArtistName());
     }
 
     private void createShareActionProvider(Menu menu) {
