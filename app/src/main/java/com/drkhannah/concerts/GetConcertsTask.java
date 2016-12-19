@@ -30,15 +30,13 @@ public class GetConcertsTask extends AsyncTask<String, Void, List<Concert>> {
 
     private List<Concert> mConcertList = new ArrayList<>();
     private Context mContext;
-    private ConcertListFragment mConcertListFragment;
 
     /**
      * Creates a new asynchronous task. This constructor must be invoked on the UI thread.
      */
-    public GetConcertsTask(Context context, ConcertListFragment concertListFragment) {
+    public GetConcertsTask(Context context) {
         super();
         mContext = context;
-        mConcertListFragment = concertListFragment;
     }
 
     //creates a new thread
@@ -52,7 +50,7 @@ public class GetConcertsTask extends AsyncTask<String, Void, List<Concert>> {
     //pass the result to GetConcertsTaskResultCallback.getConcertsTaskResult();
     @Override
     protected void onPostExecute(List<Concert> result) {
-        mConcertListFragment.getConcertsTaskResult(result);
+        ((GetConcertsTaskResultCallback) mContext).getConcertsTaskResult(result);
     }
 
     // Build a URL to request concerts for an artist

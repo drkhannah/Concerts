@@ -4,7 +4,6 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -23,7 +22,7 @@ import com.drkhannah.concerts.models.Concert;
 import java.util.List;
 
 
-public class ConcertListFragment extends Fragment implements GetConcertsTask.GetConcertsTaskResultCallback {
+public class ConcertListFragment extends Fragment {
 
     private static final String LOG_TAG = ConcertListFragment.class.getSimpleName();
 
@@ -37,7 +36,7 @@ public class ConcertListFragment extends Fragment implements GetConcertsTask.Get
     }
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
     }
@@ -88,16 +87,15 @@ public class ConcertListFragment extends Fragment implements GetConcertsTask.Get
         ConnectivityManager connMgr = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
         if (networkInfo != null && networkInfo.isConnected()) {
-            GetConcertsTask getConcertsTask = new GetConcertsTask(getActivity(), this);
+            GetConcertsTask getConcertsTask = new GetConcertsTask(getActivity());
             getConcertsTask.execute("Billy Joel");
         } else {
             Log.e(LOG_TAG, "Not connected to network");
         }
     }
 
-    //method of GetConcertsTaskResultCallback
-    @Override
-    public void getConcertsTaskResult(List<Concert> result) {
+    //called by MainActivity to pass the result from GetConcertsTaskResultCallback.getConcertsTaskResult()
+    public void getConcertTaskResultFromMainActivity(List<Concert> result) {
         if (result != null) {
             mConcertsRecyclerViewAdapter.updateData(result);
             mConcertsRecyclerView.setVisibility(View.VISIBLE);
@@ -108,5 +106,4 @@ public class ConcertListFragment extends Fragment implements GetConcertsTask.Get
             mEmptyView.setVisibility(View.VISIBLE);
         }
     }
-
 }
