@@ -5,7 +5,6 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -23,7 +22,7 @@ import com.drkhannah.concerts.models.Concert;
 import java.util.List;
 
 
-public class ConcertListFragment extends Fragment {
+public class ConcertListFragment extends Fragment implements GetConcertsTask.GetConcertsTaskResultCallback {
 
     private static final String LOG_TAG = ConcertListFragment.class.getSimpleName();
 
@@ -40,7 +39,6 @@ public class ConcertListFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        AppCompatActivity activity = (AppCompatActivity) getActivity();
     }
 
     @Override
@@ -96,14 +94,14 @@ public class ConcertListFragment extends Fragment {
         }
     }
 
-    //called by MainActivity to pass the result from GetConcertsTaskResultCallback.getConcertsTaskResult()
-    public void getConcertTaskResultFromMainActivity(List<Concert> result) {
+    //implementation of GetConcertsTaskResultCallback.getConcertsTaskResult()
+    @Override
+    public void getConcertsTaskResult(List<Concert> result) {
         if (result != null) {
             mConcertsRecyclerViewAdapter.updateData(result);
             mConcertsRecyclerView.setVisibility(View.VISIBLE);
             mEmptyView.setVisibility(View.GONE);
         } else {
-            mConcertsRecyclerViewAdapter.updateData(null);
             mConcertsRecyclerView.setVisibility(View.GONE);
             mEmptyView.setVisibility(View.VISIBLE);
         }

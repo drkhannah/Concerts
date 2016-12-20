@@ -3,6 +3,7 @@ package com.drkhannah.concerts;
 import android.content.Context;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import com.drkhannah.concerts.models.Concert;
@@ -50,7 +51,14 @@ public class GetConcertsTask extends AsyncTask<String, Void, List<Concert>> {
     //pass the result to GetConcertsTaskResultCallback.getConcertsTaskResult();
     @Override
     protected void onPostExecute(List<Concert> result) {
-        ((GetConcertsTaskResultCallback) mContext).getConcertsTaskResult(result);
+        //get ConcertListFragment in MainActivity by its id
+        AppCompatActivity activity = (AppCompatActivity) mContext;
+        ConcertListFragment concertListFragment = (ConcertListFragment) activity
+                .getSupportFragmentManager()
+                .findFragmentById(R.id.fragment_concert_list);
+
+        //pass the result to the ConcertListFragment
+        concertListFragment.getConcertsTaskResult(result);
     }
 
     // Build a URL to request concerts for an artist

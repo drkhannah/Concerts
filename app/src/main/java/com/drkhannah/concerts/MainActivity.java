@@ -9,10 +9,7 @@ import android.support.v7.widget.Toolbar;
 import com.drkhannah.concerts.adapters.ConcertsRecyclerViewAdapter;
 import com.drkhannah.concerts.models.Concert;
 
-import java.util.List;
-
-public class MainActivity extends AppCompatActivity implements GetConcertsTask.GetConcertsTaskResultCallback,
-        ConcertsRecyclerViewAdapter.ConcertsRecyclerViewAdapterItemClick {
+public class MainActivity extends AppCompatActivity implements ConcertsRecyclerViewAdapter.ConcertsRecyclerViewAdapterItemClick {
 
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
     private static final String DETAIL_FRAGMENT_TAG = "detail_fragment";
@@ -47,13 +44,6 @@ public class MainActivity extends AppCompatActivity implements GetConcertsTask.G
                     .commit();
         }
         super.onPause();
-    }
-
-    //implementation of GetConcertsTaskResultCallback.getConcertsTaskResult()
-    @Override
-    public void getConcertsTaskResult(List<Concert> result) {
-            ConcertListFragment concertListFragment = (ConcertListFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_concert_list);
-            concertListFragment.getConcertTaskResultFromMainActivity(result);
     }
 
     //fired when user clicks an item in the ConcertsRecyclerViewAdapter
