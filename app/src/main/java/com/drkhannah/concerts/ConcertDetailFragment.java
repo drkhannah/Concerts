@@ -48,7 +48,6 @@ public class ConcertDetailFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         //allows us to add a menu to the App Bar from this fragment
         setHasOptionsMenu(true);
 
@@ -63,7 +62,7 @@ public class ConcertDetailFragment extends Fragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_concert_detail, container, false);
 
-        if (!MainActivity.isTwoPane()) {
+        if (getActivity() instanceof ConcertDetailActivity) {
             //the concert_detail_artist_image ImageView is in the ConcertDetailActivity's Toolbar
             mArtistImageView = (ImageView) getActivity().findViewById(R.id.concert_detail_artist_image);
         } else {

@@ -1,7 +1,6 @@
 package com.drkhannah.concerts.adapters;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.drkhannah.concerts.ConcertDetailActivity;
 import com.drkhannah.concerts.MainActivity;
 import com.drkhannah.concerts.R;
 import com.drkhannah.concerts.models.Concert;
@@ -60,17 +58,8 @@ public class ConcertsRecyclerViewAdapter extends RecyclerView.Adapter<ConcertsRe
         public void onClick(View v) {
             //get a Concert object from mConcertList using the adapter position
             Concert concert = mConcertList.get(getAdapterPosition());
-
-            if (MainActivity.isTwoPane()) {
-                //communicate the selected concert back to the MainActivity so it can send it to the ConcertDetailFragment
-                ((ConcertsRecyclerViewAdatperItemClick) mContext).onConcertsRecyclerViewItemClick(concert);
-            } else {
-                //create an explicit Intent to start ConcertDetailActivity
-                //include the Concert object in the Intent
-                Intent intent = new Intent(mContext, ConcertDetailActivity.class);
-                intent.putExtra(mContext.getString(R.string.extra_concert), concert);
-                mContext.startActivity(intent);
-            }
+            //handle item selection back in MainActivity
+            ((ConcertsRecyclerViewAdapterItemClick) mContext).onConcertsRecyclerViewItemClick(concert);
         }
     }
 
@@ -89,7 +78,7 @@ public class ConcertsRecyclerViewAdapter extends RecyclerView.Adapter<ConcertsRe
             int layoutId = -1;
             switch (viewType) {
                 case VIEW_TYPE_WITH_IMAGE: {
-                    if (!MainActivity.isTwoPane()) {
+                    if (!((MainActivity) mContext).isTwoPane()) {
                         layoutId = R.layout.recyclerview_item_view_with_image;
                     } else {
                         layoutId = R.layout.recyclerview_item_view_no_image;
@@ -115,7 +104,7 @@ public class ConcertsRecyclerViewAdapter extends RecyclerView.Adapter<ConcertsRe
         Concert concert = mConcertList.get(position);
         switch (getItemViewType(position)) {
             case VIEW_TYPE_WITH_IMAGE: {
-                if (!MainActivity.isTwoPane()) {
+                if (!((MainActivity) mContext).isTwoPane()) {
                     Picasso.with(mContext)
                             .load(concert.getArtistImage())
                             .into(holder.mArtistImageView);
@@ -140,8 +129,8 @@ public class ConcertsRecyclerViewAdapter extends RecyclerView.Adapter<ConcertsRe
         notifyDataSetChanged();
     }
 
-    //interface to pass selected concert back to MainActivity
-    public interface ConcertsRecyclerViewAdatperItemClick {
+    //interface to communicate the selected concert back to MainActivity
+    public interface ConcertsRecyclerViewAdapterItemClick {
         void onConcertsRecyclerViewItemClick(Concert concert);
     }
 }
