@@ -102,6 +102,7 @@ public class ConcertListFragment extends Fragment implements GetConcertsTask.Get
             mConcertsRecyclerView.setVisibility(View.VISIBLE);
             mEmptyView.setVisibility(View.GONE);
         } else {
+            mConcertsRecyclerViewAdapter.updateData(result);
             mConcertsRecyclerView.setVisibility(View.GONE);
             mEmptyView.setVisibility(View.VISIBLE);
         }

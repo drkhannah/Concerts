@@ -9,14 +9,14 @@
     tools:context=".MainActivity">
 
     <!--ConcertListFragment Static Fragment-->
-    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
-              android:id="@+id/fragment_concert_list"
-              android:name="com.drkhannah.concerts.ConcertListFragment"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              app:layout_behavior="@string/appbar_scrolling_view_behavior"
-              tools:layout="@layout/fragment_main"
-              tools:ignore="MergeRootFrame"/>
+    <fragment
+        android:id="@+id/fragment_concert_list"
+        android:name="com.drkhannah.concerts.ConcertListFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:ignore="MergeRootFrame"
+        tools:layout="@layout/fragment_main"/>
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appbar"
