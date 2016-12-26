@@ -66,7 +66,7 @@ public class ConcertsRecyclerViewAdapter extends RecyclerView.Adapter<ConcertsRe
     //get an item's view type
     @Override
     public int getItemViewType(int position) {
-        return (position == 0) ? VIEW_TYPE_WITH_IMAGE : VIEW_TYPE_NO_IMAGE;
+        return (position == 0 && !((MainActivity) mContext).isTwoPane()) ? VIEW_TYPE_WITH_IMAGE : VIEW_TYPE_NO_IMAGE;
     }
 
     // create a new ViewHolder object that uses one of two layout resources:
@@ -78,11 +78,7 @@ public class ConcertsRecyclerViewAdapter extends RecyclerView.Adapter<ConcertsRe
             int layoutId = -1;
             switch (viewType) {
                 case VIEW_TYPE_WITH_IMAGE: {
-                    if (!((MainActivity) mContext).isTwoPane()) {
-                        layoutId = R.layout.recyclerview_item_view_with_image;
-                    } else {
-                        layoutId = R.layout.recyclerview_item_view_no_image;
-                    }
+                    layoutId = R.layout.recyclerview_item_view_with_image;
                     break;
                 }
                 case VIEW_TYPE_NO_IMAGE: {
@@ -104,11 +100,9 @@ public class ConcertsRecyclerViewAdapter extends RecyclerView.Adapter<ConcertsRe
         Concert concert = mConcertList.get(position);
         switch (getItemViewType(position)) {
             case VIEW_TYPE_WITH_IMAGE: {
-                if (!((MainActivity) mContext).isTwoPane()) {
-                    Picasso.with(mContext)
-                            .load(concert.getArtistImage())
-                            .into(holder.mArtistImageView);
-                }
+                Picasso.with(mContext)
+                        .load(concert.getArtistImage())
+                        .into(holder.mArtistImageView);
             }
         }
         holder.mConcertTitleView.setText(concert.getTitle());
