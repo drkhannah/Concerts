@@ -35,11 +35,10 @@ public class MainActivity extends AppCompatActivity implements ConcertsRecyclerV
     @Override
     protected void onPause() {
         //remove the ConcertDetailFragment, and clear all ConcertDetailFragments from the Activity's BackStack
-        FragmentManager manager = getSupportFragmentManager();
         ConcertDetailFragment concertDetailFragment = (ConcertDetailFragment) getSupportFragmentManager().findFragmentByTag(DETAIL_FRAGMENT_TAG);
         if (concertDetailFragment != null) {
-            manager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-            manager.beginTransaction()
+            getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+            getSupportFragmentManager().beginTransaction()
                     .remove(concertDetailFragment)
                     .commit();
         }
