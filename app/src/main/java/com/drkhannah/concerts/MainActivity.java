@@ -5,9 +5,12 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.widget.Toast;
 
 import com.drkhannah.concerts.adapters.ConcertsRecyclerViewAdapter;
 import com.drkhannah.concerts.models.Concert;
+
+import static com.drkhannah.concerts.ConcertListFragment.SEARCH_ARTIST_REQUEST_CODE;
 
 public class MainActivity extends AppCompatActivity implements ConcertsRecyclerViewAdapter.ConcertsRecyclerViewAdapterItemClick {
 
@@ -61,6 +64,15 @@ public class MainActivity extends AppCompatActivity implements ConcertsRecyclerV
             Intent intent = new Intent(this, ConcertDetailActivity.class);
             intent.putExtra(getString(R.string.extra_concert), concert);
             startActivity(intent);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == SEARCH_ARTIST_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                Toast.makeText(this, data.getData().toString(), Toast.LENGTH_SHORT).show();
+            }
         }
     }
 

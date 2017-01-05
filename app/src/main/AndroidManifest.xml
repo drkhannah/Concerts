@@ -31,6 +31,12 @@
             android:parentActivityName=".MainActivity">
         </activity>
 
+        <activity
+            android:name=".ArtistSearchActivity"
+            android:label="@string/artist_search_activity_title"
+            android:parentActivityName=".MainActivity">
+        </activity>
+
     </application>
 
 </manifest>

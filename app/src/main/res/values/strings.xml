@@ -3,6 +3,7 @@
 
     <!--activity titles-->
     <string name="concert_details_activity_title">Details</string>
+    <string name="artist_search_activity_title">Artist Search</string>
 
     <!-- GetConcertTasks -->
     <string name="base_url" translatable="false">http://api.bandsintown.com/artists/</string>
@@ -58,11 +59,12 @@
 
     <!--Action Button Titles-->
     <string name="action_get_concerts">Get Concerts</string>
+    <string name="action_search_artist">Search Artist</string>
     <string name="action_show_map">Show Map</string>
     <string name="action_share_concert">Share</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <!-- Hint for Search Artist EditText-->
+    <string name="search_artist_by_name">Search Artist By Name</string>
 
 
 </resources>
