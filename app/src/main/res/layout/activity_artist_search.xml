@@ -16,7 +16,6 @@
         app:elevation="@dimen/appbar_elevation">
 
 
-
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
@@ -30,9 +29,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:hint="@string/search_artist_by_name"
-                android:maxLines="1"
+                android:imeOptions="actionSearch"
                 android:inputType="text"
-                android:imeOptions="actionSearch"/>
+                android:maxLines="1"/>
 
         </android.support.v7.widget.Toolbar>
 

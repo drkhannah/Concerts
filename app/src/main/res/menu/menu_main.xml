@@ -7,10 +7,4 @@
           android:title="@string/action_get_concerts"
           app:showAsAction="never"/>
 
-    <!-- Search Artist Action Buton -->
-    <item android:id="@+id/action_search_artist"
-          android:icon="@drawable/ic_search_white_24dp"
-          android:title="@string/action_search_artist"
-          app:showAsAction="ifRoom"/>
-
 </menu>

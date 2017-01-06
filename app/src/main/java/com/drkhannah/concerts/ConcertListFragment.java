@@ -1,7 +1,6 @@
 package com.drkhannah.concerts;
 
 import android.content.Context;
-import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -26,8 +25,6 @@ import java.util.List;
 public class ConcertListFragment extends Fragment implements GetConcertsTask.GetConcertsTaskResultCallback {
 
     private static final String LOG_TAG = ConcertListFragment.class.getSimpleName();
-
-    static final int SEARCH_ARTIST_REQUEST_CODE = 1;
 
     private RecyclerView mConcertsRecyclerView;
     private ConcertsRecyclerViewAdapter mConcertsRecyclerViewAdapter;
@@ -78,20 +75,11 @@ public class ConcertListFragment extends Fragment implements GetConcertsTask.Get
                 // User chose the "Get Concerts" item
                 getConcerts();
                 return true;
-            case R.id.action_search_artist:
-                // Start the ArtistSearchActivity to get a result
-                searchArtist();
-                return true;
             default:
                 // If we got here, the user's action was not recognized.
                 // Invoke the superclass to handle it.
                 return super.onOptionsItemSelected(item);
         }
-    }
-
-    private void searchArtist() {
-        Intent intent = new Intent(getActivity(), ArtistSearchActivity.class);
-        startActivityForResult(intent, SEARCH_ARTIST_REQUEST_CODE);
     }
 
     private void getConcerts() {

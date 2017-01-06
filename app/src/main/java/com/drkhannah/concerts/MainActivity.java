@@ -2,20 +2,22 @@ package com.drkhannah.concerts;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.widget.Toast;
 
 import com.drkhannah.concerts.adapters.ConcertsRecyclerViewAdapter;
 import com.drkhannah.concerts.models.Concert;
 
-import static com.drkhannah.concerts.ConcertListFragment.SEARCH_ARTIST_REQUEST_CODE;
-
 public class MainActivity extends AppCompatActivity implements ConcertsRecyclerViewAdapter.ConcertsRecyclerViewAdapterItemClick {
 
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
     private static final String DETAIL_FRAGMENT_TAG = "detail_fragment";
+
+    private static final int SEARCH_ARTIST_REQUEST_CODE = 1;
 
     private boolean mTwoPane;
 
@@ -32,6 +34,27 @@ public class MainActivity extends AppCompatActivity implements ConcertsRecyclerV
             mTwoPane = true;
         } else {
             mTwoPane = false;
+        }
+
+        //Floating Action Button
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //start ArtistSearchActivity to get a result
+                Intent intent = new Intent(MainActivity.this, ArtistSearchActivity.class);
+                startActivityForResult(intent, SEARCH_ARTIST_REQUEST_CODE);
+            }
+        });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == SEARCH_ARTIST_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                String artistToSearch = data.getStringExtra(getString(R.string.artist_to_search));
+                Toast.makeText(this, artistToSearch, Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
@@ -64,15 +87,6 @@ public class MainActivity extends AppCompatActivity implements ConcertsRecyclerV
             Intent intent = new Intent(this, ConcertDetailActivity.class);
             intent.putExtra(getString(R.string.extra_concert), concert);
             startActivity(intent);
-        }
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == SEARCH_ARTIST_REQUEST_CODE) {
-            if (resultCode == RESULT_OK) {
-                Toast.makeText(this, data.getData().toString(), Toast.LENGTH_SHORT).show();
-            }
         }
     }
 
