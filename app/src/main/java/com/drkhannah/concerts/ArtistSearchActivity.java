@@ -19,7 +19,6 @@ import android.widget.TextView;
 public class ArtistSearchActivity extends AppCompatActivity {
 
     EditText mSearchArtistEditText;
-    String mArtistToSearch;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -37,7 +36,7 @@ public class ArtistSearchActivity extends AppCompatActivity {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    sendResult();
+                    returnResult();
                     return true;
                 }
                 return false;
@@ -46,11 +45,11 @@ public class ArtistSearchActivity extends AppCompatActivity {
 
     }
 
-    private void sendResult() {
-        mArtistToSearch = mSearchArtistEditText.getText().toString();
-        if (!TextUtils.isEmpty(mArtistToSearch)) {
+    private void returnResult() {
+        String artistToSearch = mSearchArtistEditText.getText().toString();
+        if (!TextUtils.isEmpty(artistToSearch)) {
             Intent returnIntent = new Intent(this, MainActivity.class);
-            returnIntent.putExtra(getString(R.string.artist_to_search), mArtistToSearch);
+            returnIntent.putExtra(getString(R.string.artist_to_search), artistToSearch);
             setResult(Activity.RESULT_OK, returnIntent);
             finish();
         } else {
