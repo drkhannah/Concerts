@@ -50,11 +50,10 @@ public class MainActivity extends AppCompatActivity implements ConcertsRecyclerV
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == SEARCH_ARTIST_REQUEST_CODE) {
-            if (resultCode == RESULT_OK) {
-                String artistToSearch = data.getStringExtra(getString(R.string.artist_to_search));
-                Toast.makeText(this, artistToSearch, Toast.LENGTH_SHORT).show();
-            }
+        if (requestCode == SEARCH_ARTIST_REQUEST_CODE &&
+                resultCode == RESULT_OK) {
+            String artistToSearch = data.getStringExtra(getString(R.string.artist_to_search));
+            Toast.makeText(this, artistToSearch, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -90,7 +89,7 @@ public class MainActivity extends AppCompatActivity implements ConcertsRecyclerV
         }
     }
 
-    public boolean isTwoPane(){
+    public boolean isTwoPane() {
         return mTwoPane;
     }
 }

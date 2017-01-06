@@ -31,7 +31,6 @@ public class ArtistSearchActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         mSearchArtistEditText = (EditText) findViewById(R.id.search_artist_edittext);
-
         mSearchArtistEditText.setOnEditorActionListener(new EditText.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
