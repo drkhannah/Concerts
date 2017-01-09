@@ -1,6 +1,7 @@
 package com.drkhannah.concerts;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -61,6 +62,12 @@ public class ConcertListFragment extends Fragment implements GetConcertsTask.Get
         return rootView;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        getConcerts();
+    }
+
     //inflate options menu in MainActivity's Toolbar
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -71,10 +78,6 @@ public class ConcertListFragment extends Fragment implements GetConcertsTask.Get
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_get_concerts:
-                // User chose the "Get Concerts" item
-                getConcerts();
-                return true;
             default:
                 // If we got here, the user's action was not recognized.
                 // Invoke the superclass to handle it.
@@ -87,8 +90,10 @@ public class ConcertListFragment extends Fragment implements GetConcertsTask.Get
         ConnectivityManager connMgr = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
         if (networkInfo != null && networkInfo.isConnected()) {
+            SharedPreferences sharedPrefs = getActivity().getSharedPreferences(getString(R.string.preference_file_key), getActivity().MODE_PRIVATE);
+            String artistNameFromSharedPrefs = sharedPrefs.getString(getString(R.string.shared_prefs_artist_name), getString(R.string.default_artsit_name));
             GetConcertsTask getConcertsTask = new GetConcertsTask(getActivity());
-            getConcertsTask.execute("Billy Joel");
+            getConcertsTask.execute(artistNameFromSharedPrefs);
         } else {
             Log.e(LOG_TAG, "Not connected to network");
         }

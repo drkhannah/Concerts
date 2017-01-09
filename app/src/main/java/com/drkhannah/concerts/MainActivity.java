@@ -1,13 +1,13 @@
 package com.drkhannah.concerts;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.Toast;
 
 import com.drkhannah.concerts.adapters.ConcertsRecyclerViewAdapter;
 import com.drkhannah.concerts.models.Concert;
@@ -52,8 +52,11 @@ public class MainActivity extends AppCompatActivity implements ConcertsRecyclerV
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == SEARCH_ARTIST_REQUEST_CODE &&
                 resultCode == RESULT_OK) {
-            String artistToSearch = data.getStringExtra(getString(R.string.artist_to_search));
-            Toast.makeText(this, artistToSearch, Toast.LENGTH_SHORT).show();
+            String artistToSearch = data.getStringExtra(getString(R.string.artist_to_search)).toLowerCase();
+            SharedPreferences sharedPrefs = getSharedPreferences(getString(R.string.preference_file_key), MODE_PRIVATE);
+            SharedPreferences.Editor sharedPrefsEditor = sharedPrefs.edit();
+            sharedPrefsEditor.putString(getString(R.string.shared_prefs_artist_name), artistToSearch);
+            sharedPrefsEditor.commit();
         }
     }
 

@@ -15,7 +15,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.drkhannah.concerts.models.Concert;
 import com.squareup.picasso.Picasso;
@@ -131,7 +130,6 @@ public class ConcertDetailFragment extends Fragment {
                 showVenueLocationInMap();
                 return true;
             case android.R.id.home:
-                Toast.makeText(getActivity(), "Up Button Clicked", Toast.LENGTH_LONG).show();
                 return super.onOptionsItemSelected(item);
             default:
                 // If we got here, the user's action was not recognized.
