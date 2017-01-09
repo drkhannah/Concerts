@@ -52,6 +52,8 @@ public class MainActivity extends AppCompatActivity implements ConcertsRecyclerV
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == SEARCH_ARTIST_REQUEST_CODE &&
                 resultCode == RESULT_OK) {
+            //Use SharedPreferences.Editor to save artist name to the
+            //com.drkhannah.concerts.CONCERTS_SHARED_PREFERENCE_FILE Shared Preferences file
             String artistToSearch = data.getStringExtra(getString(R.string.artist_to_search)).toLowerCase();
             SharedPreferences sharedPrefs = getSharedPreferences(getString(R.string.preference_file_key), MODE_PRIVATE);
             SharedPreferences.Editor sharedPrefsEditor = sharedPrefs.edit();

@@ -90,6 +90,7 @@ public class ConcertListFragment extends Fragment implements GetConcertsTask.Get
         ConnectivityManager connMgr = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
         if (networkInfo != null && networkInfo.isConnected()) {
+            //get the artist name saved in the com.drkhannah.concerts.CONCERTS_SHARED_PREFERENCE_FILE Shared Preferences file
             SharedPreferences sharedPrefs = getActivity().getSharedPreferences(getString(R.string.preference_file_key), getActivity().MODE_PRIVATE);
             String artistNameFromSharedPrefs = sharedPrefs.getString(getString(R.string.shared_prefs_artist_name), getString(R.string.default_artsit_name));
             GetConcertsTask getConcertsTask = new GetConcertsTask(getActivity());
@@ -103,6 +104,7 @@ public class ConcertListFragment extends Fragment implements GetConcertsTask.Get
     @Override
     public void getConcertsTaskResult(List<Concert> result) {
         if (result != null) {
+            //update the RecyclerViewAdapter data
             mConcertsRecyclerViewAdapter.updateData(result);
             mConcertsRecyclerView.setVisibility(View.VISIBLE);
             mEmptyView.setVisibility(View.GONE);
