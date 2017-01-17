@@ -2,6 +2,7 @@ package com.drkhannah.concerts;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -9,6 +10,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.Toast;
 
 import com.drkhannah.concerts.adapters.ConcertsRecyclerViewAdapter;
 import com.drkhannah.concerts.models.Concert;
@@ -59,6 +61,16 @@ public class MainActivity extends AppCompatActivity implements ConcertsRecyclerV
         sqLiteDatabase.execSQL("INSERT INTO contacts VALUES('derek',1234567,'dhannah@thesoftwareguild.com')");
         sqLiteDatabase.execSQL("INSERT INTO contacts VALUES('mike',7654321,'mike@thesoftwareguild.com')");
         sqLiteDatabase.execSQL("INSERT INTO contacts VALUES('jim',0987654,'jim@thesoftwareguild.com')");
+        Cursor cursor = sqLiteDatabase.rawQuery("SELECT * FROM contacts", null);
+        if (cursor.moveToFirst()) {
+            do {
+                //loop through the contacts table records with the cursor
+                String name = cursor.getString(0);
+                int phone = cursor.getInt(1);
+                String email = cursor.getString(2);
+                Toast.makeText(this, "Name is: " + name + " Phone is: " + phone + " Email is: " + email, Toast.LENGTH_LONG).show();
+            } while (cursor.moveToNext());
+        }
     }
 
     @Override
