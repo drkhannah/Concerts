@@ -2,6 +2,7 @@ package com.drkhannah.concerts;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
@@ -46,6 +47,18 @@ public class MainActivity extends AppCompatActivity implements ConcertsRecyclerV
                 startActivityForResult(intent, SEARCH_ARTIST_REQUEST_CODE);
             }
         });
+
+        //create a example database to view with adb and android monitor
+        SQLiteDatabase sqLiteDatabase = openOrCreateDatabase("sqlite3-test.db", MODE_PRIVATE, null);
+        /*
+            uncomment DROP TABLE statement below only if you are running this code more than once
+            to avoid error that the contacts table already exists when trying to create it a second time
+        */
+        //sqLiteDatabase.execSQL("DROP TABLE contacts");
+        sqLiteDatabase.execSQL("CREATE TABLE contacts(name TEXT, phone INTEGER, email TEXT)");
+        sqLiteDatabase.execSQL("INSERT INTO contacts VALUES('derek',1234567,'dhannah@thesoftwareguild.com')");
+        sqLiteDatabase.execSQL("INSERT INTO contacts VALUES('mike',7654321,'mike@thesoftwareguild.com')");
+        sqLiteDatabase.execSQL("INSERT INTO contacts VALUES('jim',0987654,'jim@thesoftwareguild.com')");
     }
 
     @Override
