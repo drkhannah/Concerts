@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity implements ConcertsRecyclerV
         SQLiteDatabase sqLiteDatabase = openOrCreateDatabase("sqlite3-test.db", MODE_PRIVATE, null);
         /*
             uncomment DROP TABLE statement below only if you are running this code more than once
-            to avoid error that the contacts table already exists when trying to create it a second time
+            to avoid getting an error that the contacts table already exists
         */
         //sqLiteDatabase.execSQL("DROP TABLE contacts");
         sqLiteDatabase.execSQL("CREATE TABLE contacts(name TEXT, phone INTEGER, email TEXT)");
