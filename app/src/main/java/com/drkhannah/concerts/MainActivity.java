@@ -63,8 +63,8 @@ public class MainActivity extends AppCompatActivity implements ConcertsRecyclerV
         sqLiteDatabase.execSQL("INSERT INTO contacts VALUES('jim',0987654,'jim@thesoftwareguild.com')");
         Cursor cursor = sqLiteDatabase.rawQuery("SELECT * FROM contacts", null);
         if (cursor.moveToFirst()) {
+            //loop through the contacts table records with the cursor
             do {
-                //loop through the contacts table records with the cursor
                 String name = cursor.getString(0);
                 int phone = cursor.getInt(1);
                 String email = cursor.getString(2);
