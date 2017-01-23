@@ -42,43 +42,4 @@ public class ConcertsContract {
         public static final String COLUMN_NAME_VENUE_LATITUDE = "venue_latitude";
     }
 
-    //SQL Statement to CREATE artist_table
-    private static final String SQL_CREATE_ARTIST_TABLE =
-            "CREATE TABLE " + ArtistEntry.TABLE_NAME + " (" +
-                    ArtistEntry._ID + " INTEGER PRIMARY KEY," +
-                    ArtistEntry.COLUMN_NAME_ARTIST_NAME + " TEXT NOT NULL UNIQUE ON CONFLICT REPLACE," +
-                    ArtistEntry.COLUMN_NAME_ARTIST_IMAGE + " TEXT," +
-                    ArtistEntry.COLUMN_NAME_ARTIST_WEBSITE + " TEXT," +
-                    ArtistEntry.COLUMN_NAME_TIME_STAMP + " TEXT NOT NULL)";
-
-    //SQL Statement to DROP artist_table
-    private static final String SQL_DROP_ARTIST_TABLE =
-            "DROP TABLE IF EXISTS " + ArtistEntry.TABLE_NAME;
-
-    //SQL Statement to CREATE concert_table
-    private static final String SQL_CREATE_CONCERT_TABLE =
-            "CREATE TABLE " + ConcertEntry.TABLE_NAME + " (" +
-                    ConcertEntry._ID + " INTEGER PRIMARY KEY," +
-                    ConcertEntry.COLUMN_NAME_ARTIST_ID + " TEXT NOT NULL," +
-                    ConcertEntry.COLUMN_NAME_TTILE + " TEXT," +
-                    ConcertEntry.COLUMN_NAME_FORMATED_DATE_TIME + " TEXT," +
-                    ConcertEntry.COLUMN_NAME_FORMATED_LOCATION + " TEXT," +
-                    ConcertEntry.COLUMN_NAME_TICKET_URL + " TEXT," +
-                    ConcertEntry.COLUMN_NAME_TICKET_TYPE + " TEXT," +
-                    ConcertEntry.COLUMN_NAME_TICKET_STATUS + " TEXT," +
-                    ConcertEntry.COLUMN_NAME_DESCRIPTION + " TEXT," +
-                    ConcertEntry.COLUMN_NAME_VENUE_NAME + " TEXT," +
-                    ConcertEntry.COLUMN_NAME_VENUE_PLACE + " TEXT," +
-                    ConcertEntry.COLUMN_NAME_VENUE_CITY + " TEXT," +
-                    ConcertEntry.COLUMN_NAME_VENUE_COUNTRY + " TEXT," +
-                    ConcertEntry.COLUMN_NAME_VENUE_LONGITUDE + " TEXT," +
-                    ConcertEntry.COLUMN_NAME_VENUE_LATITUDE + " TEXT)" +
-
-                    // Set up the concerts_table COLUMN_NAME_ARTIST_ID column as a foreign key to artist_table.
-                    "FOREIGN KEY (" + ConcertEntry.COLUMN_NAME_ARTIST_ID + ") REFERENCES " +
-                    ArtistEntry.TABLE_NAME + " (" + ArtistEntry._ID + "));";
-
-    //SQL Statement to DROP concert_table
-    private static final String SQL_DROP_CONCERT_TABLE =
-            "DROP TABLE IF EXISTS " + ConcertEntry.TABLE_NAME;
 }
