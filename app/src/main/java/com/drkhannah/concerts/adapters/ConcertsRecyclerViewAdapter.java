@@ -102,6 +102,8 @@ public class ConcertsRecyclerViewAdapter extends RecyclerView.Adapter<ConcertsRe
             case VIEW_TYPE_WITH_IMAGE: {
                 Picasso.with(mContext)
                         .load(concert.getArtistImage())
+                        .placeholder(R.drawable.artist_placeholder_img)
+                        .error(R.drawable.artist_placeholder_img)
                         .into(holder.mArtistImageView);
             }
         }
