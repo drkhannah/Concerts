@@ -72,8 +72,8 @@ public class TestUtils {
         ContentValues concertValues = new ContentValues();
         concertValues.put(ConcertsContract.ConcertEntry.COLUMN_ARTIST_KEY, artistRowId);
         concertValues.put(ConcertsContract.ConcertEntry.COLUMN_TTILE, TEST_TITLE);
-        concertValues.put(ConcertsContract.ConcertEntry.COLUMN_FORMATED_DATE_TIME, TEST_DATE);
-        concertValues.put(ConcertsContract.ConcertEntry.COLUMN_FORMATED_LOCATION, TEST_LOCATION);
+        concertValues.put(ConcertsContract.ConcertEntry.COLUMN_FORMATTED_DATE_TIME, TEST_DATE);
+        concertValues.put(ConcertsContract.ConcertEntry.COLUMN_FORMATTED_LOCATION, TEST_LOCATION);
         concertValues.put(ConcertsContract.ConcertEntry.COLUMN_TICKET_URL, TEST_TICKET_URL);
         concertValues.put(ConcertsContract.ConcertEntry.COLUMN_TICKET_TYPE, TEST_TICKET_TYPE);
         concertValues.put(ConcertsContract.ConcertEntry.COLUMN_TICKET_STATUS, TEST_TICKET_STATUS);
