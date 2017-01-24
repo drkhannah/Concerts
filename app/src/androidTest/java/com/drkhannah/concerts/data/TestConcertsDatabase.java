@@ -115,6 +115,7 @@ public class TestConcertsDatabase {
         concertTableColumnHashSet.add(ConcertsContract.ConcertEntry.COLUMN_VENUE_NAME);
         concertTableColumnHashSet.add(ConcertsContract.ConcertEntry.COLUMN_VENUE_PLACE);
         concertTableColumnHashSet.add(ConcertsContract.ConcertEntry.COLUMN_VENUE_CITY);
+        concertTableColumnHashSet.add(ConcertsContract.ConcertEntry.COLUMN_VENUE_REGION);
         concertTableColumnHashSet.add(ConcertsContract.ConcertEntry.COLUMN_VENUE_COUNTRY);
         concertTableColumnHashSet.add(ConcertsContract.ConcertEntry.COLUMN_VENUE_LONGITUDE);
         concertTableColumnHashSet.add(ConcertsContract.ConcertEntry.COLUMN_VENUE_LATITUDE);
@@ -154,7 +155,35 @@ public class TestConcertsDatabase {
         SQLiteDatabase db = new ConcertsDbHelper(mContext).getWritableDatabase();
 
         // Create concert values
-        ContentValues weatherValues = TestUtils.createWeatherValues(artistRowId);
+        ContentValues concertValues = TestUtils.createConcertValues(artistRowId);
+
+        // Insert concert ContentValues into database and get a row ID back
+        long concertRowId = db.insert(ConcertsContract.ConcertEntry.TABLE_NAME, null, concertValues);
+        assertTrue(concertRowId != -1);
+
+        // Query the database for the concert we just inserted
+        Cursor concertCursor = db.query(
+                ConcertsContract.ConcertEntry.TABLE_NAME,  // Table to Query
+                null, // leaving "columns" null just returns all the columns.
+                null, // cols for "where" clause
+                null, // values for "where" clause
+                null, // columns to group by
+                null, // columns to filter by row groups
+                null  // sort order
+        );
+
+        // Move the cursor to the first valid database row and check to see if we have any rows
+        assertTrue( "Error: No Records returned from concert query", concertCursor.moveToFirst());
+
+        // Validate the concert Query
+        TestUtils.validateCurrentRecord("testInsertReadDb ConcertEntry failed to validate", concertCursor, concertValues);
+
+        // Move the cursor to prove that there is only one record in the concert table
+        assertFalse( "Error: More than one record returned from concert query", concertCursor.moveToNext());
+
+        //Close cursor and database
+        concertCursor.close();
+        db.close();
     }
 
     public long insertArtist() {

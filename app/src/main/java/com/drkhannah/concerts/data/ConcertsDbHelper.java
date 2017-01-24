@@ -48,6 +48,7 @@ public class ConcertsDbHelper extends SQLiteOpenHelper {
                         ConcertsContract.ConcertEntry.COLUMN_VENUE_NAME + " TEXT," +
                         ConcertsContract.ConcertEntry.COLUMN_VENUE_PLACE + " TEXT," +
                         ConcertsContract.ConcertEntry.COLUMN_VENUE_CITY + " TEXT," +
+                        ConcertsContract.ConcertEntry.COLUMN_VENUE_REGION + " TEXT," +
                         ConcertsContract.ConcertEntry.COLUMN_VENUE_COUNTRY + " TEXT," +
                         ConcertsContract.ConcertEntry.COLUMN_VENUE_LONGITUDE + " TEXT," +
                         ConcertsContract.ConcertEntry.COLUMN_VENUE_LATITUDE + " TEXT," +

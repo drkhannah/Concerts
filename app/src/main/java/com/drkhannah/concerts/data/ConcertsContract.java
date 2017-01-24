@@ -37,6 +37,7 @@ public class ConcertsContract {
         public static final String COLUMN_VENUE_NAME = "venue_name";
         public static final String COLUMN_VENUE_PLACE = "venue_place";
         public static final String COLUMN_VENUE_CITY = "venue_city";
+        public static final String COLUMN_VENUE_REGION = "venue_region";
         public static final String COLUMN_VENUE_COUNTRY = "venue_country";
         public static final String COLUMN_VENUE_LONGITUDE = "venue_longitude";
         public static final String COLUMN_VENUE_LATITUDE = "venue_latitude";

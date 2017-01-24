@@ -21,6 +21,22 @@ public class TestUtils {
     static final String TEST_ARTIST_WEBSITE = "http://www.nofxofficialwebsite.com/";
     static final String TEST_TIME_STAMP = "2009-10-02 16:52:30";
 
+    static final String TEST_TITLE = "NOFX @ OC Fair & Event Center in Costa Mesa, CA";
+    static final String TEST_DATE = "Friday, March 17, 2017 at 12:00PM";
+    static final String TEST_LOCATION = "Costa Mesa, CA";
+    static final String TEST_TICKET_URL = "http://www.bandsintown.com/event/12857771/buy_tickets?app_id=YOUR_APP_ID&artist=NOFX&came_from=67";
+    static final String TEST_TICKET_TYPE = "Tickets";
+    static final String TEST_TICKET_STATUS = "available";
+    static final String TEST_DESCRIPTION = "Pot of Gold 2017 - VIP Experience Weekend Passes";
+    static final String TEST_VENUE_NAME = "Rawhide Event Center";
+    static final String TEST_VENUE_PLACE = "Rawhide Event Center";
+    static final String TEST_VENUE_CITY = "Chandler";
+    static final String TEST_VENUE_REGION = "AZ";
+    static final String TEST_VENUE_COUNTRY = "United States";
+    static final String TEST_VENUE_LONGITUDE = "33.2709964";
+    static final String TEST_VENUE_LATITUDE = "-111.986939";
+
+
     //compares values in a Cursor against expected values
     static void validateCursor(String error, Cursor valueCursor, ContentValues expectedValues) {
         assertTrue("Empty cursor returned. " + error, valueCursor.moveToFirst());
@@ -55,21 +71,20 @@ public class TestUtils {
     static ContentValues createConcertValues(long artistRowId) {
         ContentValues concertValues = new ContentValues();
         concertValues.put(ConcertsContract.ConcertEntry.COLUMN_ARTIST_KEY, artistRowId);
-        concertValues.put(ConcertsContract.ConcertEntry.COLUMN_TTILE, artistRowId);
-        concertValues.put(ConcertsContract.ConcertEntry.COLUMN_FORMATED_DATE_TIME, artistRowId);
-        concertValues.put(ConcertsContract.ConcertEntry.COLUMN_FORMATED_LOCATION, artistRowId);
-        concertValues.put(ConcertsContract.ConcertEntry.COLUMN_TICKET_URL, artistRowId);
-        concertValues.put(ConcertsContract.ConcertEntry.COLUMN_TICKET_TYPE, artistRowId);
-        concertValues.put(ConcertsContract.ConcertEntry.COLUMN_TICKET_STATUS, artistRowId);
-        concertValues.put(ConcertsContract.ConcertEntry.COLUMN_DESCRIPTION, artistRowId);
-        concertValues.put(ConcertsContract.ConcertEntry.COLUMN_VENUE_NAME, artistRowId);
-        concertValues.put(ConcertsContract.ConcertEntry.COLUMN_VENUE_PLACE, artistRowId);
-        concertValues.put(ConcertsContract.ConcertEntry.COLUMN_VENUE_CITY, artistRowId);
-        concertValues.put(ConcertsContract.ConcertEntry.COLUMN_VENUE_COUNTRY, artistRowId);
-        concertValues.put(ConcertsContract.ConcertEntry.COLUMN_VENUE_LONGITUDE, artistRowId);
-        concertValues.put(ConcertsContract.ConcertEntry.COLUMN_VENUE_LATITUDE, artistRowId);
-
-
+        concertValues.put(ConcertsContract.ConcertEntry.COLUMN_TTILE, TEST_TITLE);
+        concertValues.put(ConcertsContract.ConcertEntry.COLUMN_FORMATED_DATE_TIME, TEST_DATE);
+        concertValues.put(ConcertsContract.ConcertEntry.COLUMN_FORMATED_LOCATION, TEST_LOCATION);
+        concertValues.put(ConcertsContract.ConcertEntry.COLUMN_TICKET_URL, TEST_TICKET_URL);
+        concertValues.put(ConcertsContract.ConcertEntry.COLUMN_TICKET_TYPE, TEST_TICKET_TYPE);
+        concertValues.put(ConcertsContract.ConcertEntry.COLUMN_TICKET_STATUS, TEST_TICKET_STATUS);
+        concertValues.put(ConcertsContract.ConcertEntry.COLUMN_DESCRIPTION, TEST_DESCRIPTION);
+        concertValues.put(ConcertsContract.ConcertEntry.COLUMN_VENUE_NAME, TEST_VENUE_NAME);
+        concertValues.put(ConcertsContract.ConcertEntry.COLUMN_VENUE_PLACE, TEST_VENUE_PLACE);
+        concertValues.put(ConcertsContract.ConcertEntry.COLUMN_VENUE_CITY, TEST_VENUE_CITY);
+        concertValues.put(ConcertsContract.ConcertEntry.COLUMN_VENUE_REGION, TEST_VENUE_REGION);
+        concertValues.put(ConcertsContract.ConcertEntry.COLUMN_VENUE_COUNTRY, TEST_VENUE_COUNTRY);
+        concertValues.put(ConcertsContract.ConcertEntry.COLUMN_VENUE_LONGITUDE, TEST_VENUE_LONGITUDE);
+        concertValues.put(ConcertsContract.ConcertEntry.COLUMN_VENUE_LATITUDE, TEST_VENUE_LATITUDE);
         return concertValues;
     }
 }
