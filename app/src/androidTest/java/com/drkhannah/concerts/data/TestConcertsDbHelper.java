@@ -200,6 +200,12 @@ public class TestConcertsDbHelper {
         // Verify we got a row ID back.
         assertTrue(artistRowId != -1);
 
+        // Insert same artist record again to verify that it is replaced due to UNIQUE REPLACE ON CONFLICT
+        artistRowId = db.insert(ConcertsContract.ArtistEntry.TABLE_NAME, null, testValues);
+
+        // Verify we got a row ID back.
+        assertTrue(artistRowId != -1);
+
         // Data was inserted, now lets pull it out and look at it
         Cursor cursor = db.query(
                 ConcertsContract.ArtistEntry.TABLE_NAME,  // Table to Query
