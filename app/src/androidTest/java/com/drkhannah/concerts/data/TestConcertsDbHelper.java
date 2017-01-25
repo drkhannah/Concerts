@@ -176,7 +176,7 @@ public class TestConcertsDbHelper {
         assertTrue( "Error: No Records returned from concert query", concertCursor.moveToFirst());
 
         // Validate the concert Query
-        TestUtils.validateCurrentRecord("testInsertReadDb ConcertEntry failed to validate", concertCursor, concertValues);
+        TestUtils.validateCursor("testInsertReadDb ConcertEntry failed to validate", concertCursor, concertValues);
 
         // Move the cursor to prove that there is only one record in the concert table
         assertFalse( "Error: More than one record returned from concert query", concertCursor.moveToNext());
@@ -215,8 +215,8 @@ public class TestConcertsDbHelper {
         assertTrue( "Error: No Records returned from artist query", cursor.moveToFirst() );
 
         // compare data in Cursor with the original ContentValues
-        // validateCurrentRecord method is in TestUtils
-        TestUtils.validateCurrentRecord("Error: artist query validation failed", cursor, testValues);
+        // validateCursor method is in TestUtils
+        TestUtils.validateCursor("Error: artist query validation failed", cursor, testValues);
 
         // try to move Cursor to next record to prove that there is only one record in the database
         assertFalse( "Error: More than one record returned from artist query", cursor.moveToNext() );
