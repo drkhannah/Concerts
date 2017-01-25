@@ -1,6 +1,6 @@
 package com.drkhannah.concerts;
 
-import com.drkhannah.concerts.data.TestConcertsDatabase;
+import com.drkhannah.concerts.data.TestConcertsDbHelper;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
@@ -11,6 +11,6 @@ import org.junit.runners.Suite;
 
 // Runs all unit tests.
 @RunWith(Suite.class)
-@Suite.SuiteClasses({TestConcertsDatabase.class})
+@Suite.SuiteClasses({TestConcertsDbHelper.class})
 public class TestSuite {}
 
