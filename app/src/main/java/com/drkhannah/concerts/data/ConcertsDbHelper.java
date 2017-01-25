@@ -29,10 +29,6 @@ public class ConcertsDbHelper extends SQLiteOpenHelper {
                         ConcertsContract.ArtistEntry.COLUMN_ARTIST_WEBSITE + " TEXT," +
                         ConcertsContract.ArtistEntry.COLUMN_TIME_STAMP + " TEXT NOT NULL)";
 
-        //SQL Statement to DROP artist table
-        final String SQL_DROP_ARTIST_TABLE =
-                "DROP TABLE IF EXISTS " + ConcertsContract.ArtistEntry.TABLE_NAME;
-
         //SQL Statement to CREATE concert table
         final String SQL_CREATE_CONCERT_TABLE =
                 "CREATE TABLE " + ConcertsContract.ConcertEntry.TABLE_NAME + " (" +
@@ -57,10 +53,6 @@ public class ConcertsDbHelper extends SQLiteOpenHelper {
                         " FOREIGN KEY (" + ConcertsContract.ConcertEntry.COLUMN_ARTIST_KEY + ") REFERENCES " +
                         ConcertsContract.ArtistEntry.TABLE_NAME + " (" + ConcertsContract.ArtistEntry._ID + "));";
 
-        //SQL Statement to DROP concert table
-        final String SQL_DROP_CONCERT_TABLE =
-                "DROP TABLE IF EXISTS " + ConcertsContract.ConcertEntry.TABLE_NAME;
-
         //execute the above SQL statments
         db.execSQL(SQL_CREATE_ARTIST_TABLE);
         db.execSQL(SQL_CREATE_CONCERT_TABLE);
@@ -69,9 +61,14 @@ public class ConcertsDbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        //SQL Statement to DROP concert table
+        final String SQL_DROP_CONCERT_TABLE = "DROP TABLE IF EXISTS " + ConcertsContract.ConcertEntry.TABLE_NAME;
+        //SQL Statement to DROP artist table
+        final String SQL_DROP_ARTIST_TABLE = "DROP TABLE IF EXISTS " + ConcertsContract.ArtistEntry.TABLE_NAME;
+
         //drop both artist and concert tables and recreate the database
-        db.execSQL("DROP TABLE IF EXISTS " + ConcertsContract.ArtistEntry.TABLE_NAME);
-        db.execSQL("DROP TABLE IF EXISTS " + ConcertsContract.ConcertEntry.TABLE_NAME);
+        db.execSQL(SQL_DROP_CONCERT_TABLE);
+        db.execSQL(SQL_DROP_ARTIST_TABLE);
         onCreate(db);
     }
 }
