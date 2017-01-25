@@ -27,7 +27,7 @@ public class TestConcertsDbHelper {
 
     Context mContext = InstrumentationRegistry.getTargetContext();
 
-    //setUP() method gets called when this test class is run.
+    //@Before method gets called when this test class is run.
     //We delete the database to start fresh
     @Before
     public void deleteDatabase() {
