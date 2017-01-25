@@ -69,7 +69,7 @@ public class ConcertsDbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        //drop both tables and recreate the database
+        //drop both artist and concert tables and recreate the database
         db.execSQL("DROP TABLE IF EXISTS " + ConcertsContract.ArtistEntry.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + ConcertsContract.ConcertEntry.TABLE_NAME);
         onCreate(db);
