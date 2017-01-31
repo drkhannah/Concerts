@@ -124,7 +124,7 @@ public class ConcertsProvider extends ContentProvider {
 
         //match will be one of the codes we assigned to each URI in the UriMatcher
         switch (match) {
-            case  ARTIST:
+            case ARTIST:
                 //single row MIME type
                 return ConcertsContract.ArtistEntry.CONTENT_ITEM_TYPE;
             case CONCERT:
@@ -188,7 +188,7 @@ public class ConcertsProvider extends ContentProvider {
         //inserting concert records will be handled with the bulkInsert() method
         switch (match) {
             //"artist"
-            case  ARTIST:
+            case ARTIST:
                 long _id = db.insert(ConcertsContract.ArtistEntry.TABLE_NAME, null, values);
                 if (_id > 0) {
                     returnUri = ConcertsContract.ArtistEntry.buildArtistWithIdUri(_id);
