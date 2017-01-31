@@ -153,6 +153,18 @@ public class ConcertsProvider extends ContentProvider {
 
         //match will be one of the codes we assigned to each URI in the UriMatcher
         switch (match) {
+            // "artist"
+            case ARTIST: {
+                returnCursor = mDbHelper.getReadableDatabase().query(
+                        ConcertsContract.ArtistEntry.TABLE_NAME,
+                        projection,
+                        selection,
+                        selectionArgs,
+                        null,
+                        null,
+                        sortOrder);
+                break;
+            }
             //"concert/*"
             case CONCERT_LIST_FOR_ARTIST:
                 returnCursor = getConcertListForArtist(uri, projection, sortOrder);
