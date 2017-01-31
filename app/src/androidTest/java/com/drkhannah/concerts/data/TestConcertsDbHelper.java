@@ -196,7 +196,7 @@ public class TestConcertsDbHelper {
         long artistRowId = insertArtist();
 
         // Make sure we got back a row ID.
-        assertFalse("Error: Artist Not Inserted Correctly", artistRowId == -1L);
+        assertTrue(artistRowId != -1);
 
         // Get reference to writable database
         SQLiteDatabase db = new ConcertsDbHelper(mContext).getWritableDatabase();
@@ -206,6 +206,10 @@ public class TestConcertsDbHelper {
 
         // Insert concert ContentValues into database and get a row ID back
         long concertRowId = db.insert(ConcertsContract.ConcertEntry.TABLE_NAME, null, concertValues);
+        assertTrue(concertRowId != -1);
+
+        // Insert the same concert values again to make sure they get REPLACED ON CONFLICT
+        concertRowId = db.insert(ConcertsContract.ConcertEntry.TABLE_NAME, null, concertValues);
         assertTrue(concertRowId != -1);
 
         // Query the database for the concert we just inserted

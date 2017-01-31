@@ -49,9 +49,16 @@ public class ConcertsDbHelper extends SQLiteOpenHelper {
                         ConcertsContract.ConcertEntry.COLUMN_VENUE_LONGITUDE + " TEXT," +
                         ConcertsContract.ConcertEntry.COLUMN_VENUE_LATITUDE + " TEXT," +
 
+                        //ensures that duplicate concerts for an artist aren't added to the database
+                        " UNIQUE (" + ConcertsContract.ConcertEntry.COLUMN_ARTIST_KEY + ", " +
+                        ConcertsContract.ConcertEntry.COLUMN_TTILE + ", " +
+                        ConcertsContract.ConcertEntry.COLUMN_FORMATTED_DATE_TIME + ") ON CONFLICT REPLACE," +
+
                         // Set up the concerts_table COLUMN_ARTIST_KEY column as a foreign key to artist table.
                         " FOREIGN KEY (" + ConcertsContract.ConcertEntry.COLUMN_ARTIST_KEY + ") REFERENCES " +
                         ConcertsContract.ArtistEntry.TABLE_NAME + " (" + ConcertsContract.ArtistEntry._ID + "));";
+
+
 
         //execute the above SQL statments
         db.execSQL(SQL_CREATE_ARTIST_TABLE);
