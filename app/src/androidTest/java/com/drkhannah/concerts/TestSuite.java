@@ -2,6 +2,7 @@ package com.drkhannah.concerts;
 
 import com.drkhannah.concerts.data.TestConcertsContract;
 import com.drkhannah.concerts.data.TestConcertsDbHelper;
+import com.drkhannah.concerts.data.TestConcertsProvider;
 import com.drkhannah.concerts.data.TestUriMatcher;
 
 import org.junit.runner.RunWith;
@@ -16,7 +17,8 @@ import org.junit.runners.Suite;
 @Suite.SuiteClasses({
         TestConcertsDbHelper.class,
         TestUriMatcher.class,
-        TestConcertsContract.class})
+        TestConcertsContract.class,
+        TestConcertsProvider.class})
 
 public class TestSuite {}
 

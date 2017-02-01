@@ -126,16 +126,16 @@ public class ConcertsProvider extends ContentProvider {
         //"match" will be one of the codes we assigned to each URI in the UriMatcher
         switch (match) {
             case ARTIST:
-                //return single row MIME type
+                //return MULTIPLE row MIME type
                 return ConcertsContract.ArtistEntry.CONTENT_TYPE;
             case CONCERT:
-                //return Multiple row MIME type
+                //return MULTIPLE row MIME type
                 return ConcertsContract.ConcertEntry.CONTENT_TYPE;
             case CONCERT_LIST_FOR_ARTIST:
-                //return Multiple row MIME type
+                //return MULTIPLE row MIME type
                 return ConcertsContract.ConcertEntry.CONTENT_TYPE;
             case CONCERT_FOR_DATE:
-                //return single row MIME type
+                //return SINGLE row MIME type
                 return ConcertsContract.ConcertEntry.CONTENT_ITEM_TYPE;
             default:
                 throw new UnsupportedOperationException("Unhandled uri: " + uri);

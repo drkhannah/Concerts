@@ -74,4 +74,8 @@
     <string name="shared_prefs_artist_name" translatable="false">artist_name</string>
     <string name="default_artsit_name">steve aoki</string>
 
+    <!-- Content Authority -->
+    <string name="content_authority">com.drkhannah.concerts.provider</string>
+
+
 </resources>
