@@ -196,11 +196,11 @@ public class ConcertsProvider extends ContentProvider {
         Uri returnUri;
 
         //match will be one of the codes we assigned to each URI in the UriMatcher
-        //we are only handling inserting individual artist records
-        //inserting concert records will be handled with the bulkInsert() method
+        //this handles inserting SINGLE artist and concert records
+        //inserting MULTIPLE concert records will be handled with the bulkInsert() method
         switch (match) {
             //"artist"
-            case ARTIST:
+            case ARTIST: {
                 long _id = db.insert(ConcertsContract.ArtistEntry.TABLE_NAME, null, values);
                 if (_id > 0) {
                     returnUri = ConcertsContract.ArtistEntry.buildArtistWithIdUri(_id);
@@ -208,6 +208,17 @@ public class ConcertsProvider extends ContentProvider {
                     throw new android.database.SQLException("Failed to insert row into " + uri);
                 }
                 break;
+            }
+            //"artist"
+            case CONCERT: {
+                long _id = db.insert(ConcertsContract.ConcertEntry.TABLE_NAME, null, values);
+                if (_id > 0) {
+                    returnUri = ConcertsContract.ConcertEntry.buildConcertWithIdUri(_id);
+                } else {
+                    throw new android.database.SQLException("Failed to insert row into " + uri);
+                }
+                break;
+            }
             default:
                 throw new UnsupportedOperationException("Unhandled uri: " + uri);
         }
@@ -218,16 +229,59 @@ public class ConcertsProvider extends ContentProvider {
 
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
-        //since artist and concert records are REPLACED ON CONFLICT
-        //we are not implementing any code for deleting records
-        return 0;
+        //get a writable database
+        final SQLiteDatabase db = mDbHelper.getWritableDatabase();
+
+        //use the UriMatcher to so we can write a switch based on what URI was passed in
+        final int match = sUriMatcher.match(uri);
+
+        //rows deleted to return
+        int rowsDeleted;
+
+        // this makes delete all rows return the number of rows deleted
+        if ( null == selection ) selection = "1";
+        switch (match) {
+            case ARTIST:
+                rowsDeleted = db.delete(ConcertsContract.ArtistEntry.TABLE_NAME, selection, selectionArgs);
+                break;
+            case CONCERT:
+                rowsDeleted = db.delete(ConcertsContract.ConcertEntry.TABLE_NAME, selection, selectionArgs);
+                break;
+            default:
+                throw new UnsupportedOperationException("Unknown uri: " + uri);
+        }
+        // Because a null deletes all rows
+        if (rowsDeleted != 0) {
+            getContext().getContentResolver().notifyChange(uri, null);
+        }
+        return rowsDeleted;
     }
 
     @Override
     public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
-        //since artist and concert records are REPLACED ON CONFLICT
-        //we are not implementing any code for updating records
-        return 0;
+        //get a writable database
+        final SQLiteDatabase db = mDbHelper.getWritableDatabase();
+
+        //use the UriMatcher to so we can write a switch based on what URI was passed in
+        final int match = sUriMatcher.match(uri);
+
+        //rows updated to return
+        int rowsUpdated;
+
+        switch (match) {
+            case ARTIST:
+                rowsUpdated = db.update(ConcertsContract.ArtistEntry.TABLE_NAME, values, selection, selectionArgs);
+                break;
+            case CONCERT:
+                rowsUpdated = db.update(ConcertsContract.ConcertEntry.TABLE_NAME, values, selection, selectionArgs);
+                break;
+            default:
+                throw new UnsupportedOperationException("Unknown uri: " + uri);
+        }
+        if (rowsUpdated != 0) {
+            getContext().getContentResolver().notifyChange(uri, null);
+        }
+        return rowsUpdated;
     }
 
     @Override

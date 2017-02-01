@@ -92,6 +92,12 @@ public class ConcertsContract {
         //example vnd.android.cursor.item/com.drkhannah.concerts.provider/concert
         public static final String CONTENT_ITEM_TYPE = ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_CONCERT;
 
+        //builds a URI for the concert table and appends an _id
+        //example URI content://com.drkhannah.concerts.provider/concert/_ID_HERE
+        public static Uri buildConcertWithIdUri(long id) {
+            return ContentUris.withAppendedId(CONTENT_URI, id);
+        }
+
         //builds a URI to get a list of concerts for a given artist
         //example URI path content://com.drkhannah.concerts.provider/concert/ARTIST_NAME_HERE
         public static Uri buildConcertListForArtistUri(String artist) {
