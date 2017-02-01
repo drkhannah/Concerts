@@ -196,7 +196,7 @@ public class TestConcertsDbHelper {
         long artistRowId = insertArtist();
 
         // Make sure we got back a row ID.
-        assertTrue(artistRowId != -1);
+        assertTrue("Error: Artist Not Inserted Correctly", artistRowId != -1);
 
         // Get reference to writable database
         SQLiteDatabase db = new ConcertsDbHelper(mContext).getWritableDatabase();
@@ -204,12 +204,20 @@ public class TestConcertsDbHelper {
         // Create concert values
         ContentValues concertValues = TestUtils.createConcertValues(artistRowId);
 
+        // Create a different set of concert values
+        ContentValues diffConcertValues = TestUtils.createDiffConcertValues(artistRowId);
+
         // Insert concert ContentValues into database and get a row ID back
         long concertRowId = db.insert(ConcertsContract.ConcertEntry.TABLE_NAME, null, concertValues);
         assertTrue(concertRowId != -1);
 
-        // Insert the same concert values again to make sure they get REPLACED ON CONFLICT
+        // Insert duplicate concert into database to later test that it replaces the
+        // originally inserted record
         concertRowId = db.insert(ConcertsContract.ConcertEntry.TABLE_NAME, null, concertValues);
+        assertTrue(concertRowId != -1);
+
+        // Insert concert values with different date to test it doesn't replace a concert record
+        concertRowId = db.insert(ConcertsContract.ConcertEntry.TABLE_NAME, null, diffConcertValues);
         assertTrue(concertRowId != -1);
 
         // Query the database for the concert we just inserted
@@ -229,8 +237,10 @@ public class TestConcertsDbHelper {
         // Validate the concert Query
         TestUtils.validateCursor("testInsertReadDb ConcertEntry failed to validate", concertCursor, concertValues);
 
-        // Move the cursor to prove that there is only one record in the concert table
-        assertFalse( "Error: More than one record returned from concert query", concertCursor.moveToNext());
+        // Move the cursor to prove that there is only 2 records in the concert table
+        // even though we inserted a record three times
+        assertTrue( "Error: More than one record returned from concert query", concertCursor.moveToNext());
+        assertTrue( "Error: More than one record returned from concert query", concertCursor.isLast());
 
         //Close cursor and database
         concertCursor.close();

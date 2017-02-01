@@ -23,6 +23,7 @@ public class TestUtils {
 
     static final String TEST_TITLE = "NOFX @ OC Fair & Event Center in Costa Mesa, CA";
     static final String TEST_DATE = "Friday, March 17, 2017 at 12:00PM";
+    static final String TEST_SECOND_DATE = "Friday, March 18, 2017 at 12:00PM";
     static final String TEST_LOCATION = "Costa Mesa, CA";
     static final String TEST_TICKET_URL = "http://www.bandsintown.com/event/12857771/buy_tickets?app_id=YOUR_APP_ID&artist=NOFX&came_from=67";
     static final String TEST_TICKET_TYPE = "Tickets";
@@ -41,7 +42,6 @@ public class TestUtils {
     static void validateCursor(String error, Cursor valueCursor, ContentValues expectedValues) {
         assertTrue("Empty cursor returned. " + error, valueCursor.moveToFirst());
         validateCurrentRecord(error, valueCursor, expectedValues);
-        valueCursor.close();
     }
 
     //compares a specific record in a Cursor against expected values
@@ -73,6 +73,26 @@ public class TestUtils {
         concertValues.put(ConcertsContract.ConcertEntry.COLUMN_ARTIST_KEY, artistRowId);
         concertValues.put(ConcertsContract.ConcertEntry.COLUMN_TTILE, TEST_TITLE);
         concertValues.put(ConcertsContract.ConcertEntry.COLUMN_FORMATTED_DATE_TIME, TEST_DATE);
+        concertValues.put(ConcertsContract.ConcertEntry.COLUMN_FORMATTED_LOCATION, TEST_LOCATION);
+        concertValues.put(ConcertsContract.ConcertEntry.COLUMN_TICKET_URL, TEST_TICKET_URL);
+        concertValues.put(ConcertsContract.ConcertEntry.COLUMN_TICKET_TYPE, TEST_TICKET_TYPE);
+        concertValues.put(ConcertsContract.ConcertEntry.COLUMN_TICKET_STATUS, TEST_TICKET_STATUS);
+        concertValues.put(ConcertsContract.ConcertEntry.COLUMN_DESCRIPTION, TEST_DESCRIPTION);
+        concertValues.put(ConcertsContract.ConcertEntry.COLUMN_VENUE_NAME, TEST_VENUE_NAME);
+        concertValues.put(ConcertsContract.ConcertEntry.COLUMN_VENUE_PLACE, TEST_VENUE_PLACE);
+        concertValues.put(ConcertsContract.ConcertEntry.COLUMN_VENUE_CITY, TEST_VENUE_CITY);
+        concertValues.put(ConcertsContract.ConcertEntry.COLUMN_VENUE_REGION, TEST_VENUE_REGION);
+        concertValues.put(ConcertsContract.ConcertEntry.COLUMN_VENUE_COUNTRY, TEST_VENUE_COUNTRY);
+        concertValues.put(ConcertsContract.ConcertEntry.COLUMN_VENUE_LONGITUDE, TEST_VENUE_LONGITUDE);
+        concertValues.put(ConcertsContract.ConcertEntry.COLUMN_VENUE_LATITUDE, TEST_VENUE_LATITUDE);
+        return concertValues;
+    }
+
+    static ContentValues createDiffConcertValues(long artistRowId) {
+        ContentValues concertValues = new ContentValues();
+        concertValues.put(ConcertsContract.ConcertEntry.COLUMN_ARTIST_KEY, artistRowId);
+        concertValues.put(ConcertsContract.ConcertEntry.COLUMN_TTILE, TEST_TITLE);
+        concertValues.put(ConcertsContract.ConcertEntry.COLUMN_FORMATTED_DATE_TIME, TEST_SECOND_DATE);
         concertValues.put(ConcertsContract.ConcertEntry.COLUMN_FORMATTED_LOCATION, TEST_LOCATION);
         concertValues.put(ConcertsContract.ConcertEntry.COLUMN_TICKET_URL, TEST_TICKET_URL);
         concertValues.put(ConcertsContract.ConcertEntry.COLUMN_TICKET_TYPE, TEST_TICKET_TYPE);
