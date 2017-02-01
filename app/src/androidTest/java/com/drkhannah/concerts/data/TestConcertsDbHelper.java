@@ -204,9 +204,6 @@ public class TestConcertsDbHelper {
         // Create concert values
         ContentValues concertValues = TestUtils.createConcertValues(artistRowId);
 
-        // Create a different set of concert values
-        ContentValues diffConcertValues = TestUtils.createDiffConcertValues(artistRowId);
-
         // Insert concert ContentValues into database and get a row ID back
         long concertRowId = db.insert(ConcertsContract.ConcertEntry.TABLE_NAME, null, concertValues);
         assertTrue(concertRowId != -1);
@@ -214,10 +211,6 @@ public class TestConcertsDbHelper {
         // Insert duplicate concert into database to later test that it replaces the
         // originally inserted record
         concertRowId = db.insert(ConcertsContract.ConcertEntry.TABLE_NAME, null, concertValues);
-        assertTrue(concertRowId != -1);
-
-        // Insert concert values with different date to test it doesn't replace a concert record
-        concertRowId = db.insert(ConcertsContract.ConcertEntry.TABLE_NAME, null, diffConcertValues);
         assertTrue(concertRowId != -1);
 
         // Query the database for the concert we just inserted
@@ -237,10 +230,34 @@ public class TestConcertsDbHelper {
         // Validate the concert Query
         TestUtils.validateCursor("testInsertReadDb ConcertEntry failed to validate", concertCursor, concertValues);
 
-        // Move the cursor to prove that there is only 2 records in the concert table
-        // even though we inserted a record three times
-        assertTrue( "Error: More than one record returned from concert query", concertCursor.moveToNext());
-        assertTrue( "Error: More than one record returned from concert query", concertCursor.isLast());
+        // Move the cursor to prove that there is only 1 record in the concert table
+        // even though we inserted a duplicate record two times
+        assertFalse( "Error: More than one record returned from concert query", concertCursor.moveToNext());
+
+        // Create a different set of concert values
+        ContentValues diffConcertValues = TestUtils.createDiffConcertValues(artistRowId);
+
+        // Insert concert values with different date to test it doesn't replace
+        // the single record we have in the concert table already
+        concertRowId = db.insert(ConcertsContract.ConcertEntry.TABLE_NAME, null, diffConcertValues);
+        assertTrue(concertRowId != -1);
+
+        // Query the database for the concert we just inserted
+        concertCursor = db.query(
+                ConcertsContract.ConcertEntry.TABLE_NAME,  // Table to Query
+                null, // leaving "columns" null just returns all the columns.
+                null, // cols for "where" clause
+                null, // values for "where" clause
+                null, // columns to group by
+                null, // columns to filter by row groups
+                null  // sort order
+        );
+
+        // Move the cursor to prove that there are  2 records in the concert table
+        // even though we inserted three times
+        assertTrue( "Error: No Records returned from concert query", concertCursor.moveToFirst());
+        assertTrue( "Error: Couldn't move to next record returned from concert query", concertCursor.moveToNext());
+        assertTrue( "Error: Not at last record from concert query", concertCursor.isLast());
 
         //Close cursor and database
         concertCursor.close();

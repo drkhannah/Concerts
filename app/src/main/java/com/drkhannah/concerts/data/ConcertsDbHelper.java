@@ -58,8 +58,6 @@ public class ConcertsDbHelper extends SQLiteOpenHelper {
                         " FOREIGN KEY (" + ConcertsContract.ConcertEntry.COLUMN_ARTIST_KEY + ") REFERENCES " +
                         ConcertsContract.ArtistEntry.TABLE_NAME + " (" + ConcertsContract.ArtistEntry._ID + "));";
 
-
-
         //execute the above SQL statments
         db.execSQL(SQL_CREATE_ARTIST_TABLE);
         db.execSQL(SQL_CREATE_CONCERT_TABLE);
