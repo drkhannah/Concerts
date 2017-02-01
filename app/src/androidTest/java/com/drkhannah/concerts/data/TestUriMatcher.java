@@ -27,7 +27,7 @@ import static junit.framework.Assert.assertEquals;
 @RunWith(AndroidJUnit4.class)
 public class TestUriMatcher {
     private static final String TEST_ARTIST_QUERY = "nofx";
-    private static final String TEST_CONCERT_DATE = "Friday,%20March%2017,%202017%20at%2012:30PM";
+    private static final String TEST_CONCERT_DATE = "Friday, March 17, 2017 at 12:30PM";
 
 
     // content://com.drkhannah.concerts2/artist

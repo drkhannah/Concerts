@@ -106,7 +106,7 @@ public class ConcertsContract {
 
         //get the artist name from the the URI path created in the method above
         public static String getArtistNameFromUri(Uri uri) {
-            return uri.getLastPathSegment();
+            return uri.getPathSegments().get(1);
         }
 
         //builds a URI to get a single concert for an artist based on a given date
@@ -117,7 +117,7 @@ public class ConcertsContract {
 
         //get the concert date from URI path created in the method above
         public static String getConcertDateFromUri(Uri uri) {
-            return uri.getLastPathSegment();
+            return uri.getPathSegments().get(2);
         }
     }
 

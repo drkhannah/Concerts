@@ -18,7 +18,7 @@ public class ConcertsProvider extends ContentProvider {
 
     private ConcertsDbHelper mDbHelper;
 
-    //URI Matcher used to define the URI's this ContentProvider can handle
+    //UriMatcher used to define the URI's this ContentProvider can handle
     private static final UriMatcher sUriMatcher = buildUriMatcher();
     //codes for URIs in UriMatcher
     public static final int ARTIST = 1;
@@ -30,9 +30,8 @@ public class ConcertsProvider extends ContentProvider {
 
     static {
         sConcertsForArtistQueryBuilder = new SQLiteQueryBuilder();
-
         //This is an SQL INNER JOIN
-        //example: concerts INNER JOIN artist ON concerts.artist_id = artist._id
+        //example: concerts INNER JOIN artist ON concert.artist_id = artist._id
         sConcertsForArtistQueryBuilder.setTables(
                 ConcertsContract.ConcertEntry.TABLE_NAME + " INNER JOIN " +
                         ConcertsContract.ArtistEntry.TABLE_NAME +
@@ -51,7 +50,6 @@ public class ConcertsProvider extends ContentProvider {
     //returns a Cursor of concerts for a given artist
     private Cursor getConcertListForArtist(Uri uri, String[] projection, String sortOrder) {
         String artistName = ConcertsContract.ConcertEntry.getArtistNameFromUri(uri);
-
         String selection = sArtistSelection;
         String[] selectionArgs = new String[]{artistName};
 
@@ -71,10 +69,10 @@ public class ConcertsProvider extends ContentProvider {
                     "." + ConcertsContract.ArtistEntry.COLUMN_ARTIST_NAME + " = ? AND " +
                     ConcertsContract.ConcertEntry.COLUMN_FORMATTED_DATE_TIME + " = ? ";
 
+    //returns a Cursor of a single concert for an artist on a given date
     private Cursor getConcertForArtistWithDate(Uri uri, String[] projection, String sortOrder) {
         String artistName = ConcertsContract.ConcertEntry.getArtistNameFromUri(uri);
         String concertDate = ConcertsContract.ConcertEntry.getConcertDateFromUri(uri);
-
         String selection = sArtistAndDateSelection;
         String[] selectionArgs = new String[]{artistName, concertDate};
 
@@ -88,13 +86,16 @@ public class ConcertsProvider extends ContentProvider {
     }
 
     public static UriMatcher buildUriMatcher() {
-        //each path added to the UriMatcher has a code that is returned when a match is found
-        //The code for passed to the UriMatcher's constructor represents the code to return
+        //each path added to the UriMatcher has a code that is returned when that URI is requested
+        //The code passed to the UriMatcher's constructor represents the code to return
         //for the root URI. For the root URI we pass NO_MATCH.
         final UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
         final String authority = ConcertsContract.CONTENT_AUTHORITY;
 
-        //each URI you want to add to the UriMatcher
+        //below are each URI we want to add to the UriMatcher
+        //These will be the URI's that this Content Provider can handle
+        //in these paths *'s match TEXT and #'s match only NUMBERS
+
         //example content://com.drkhannah.concerts.provider/artist
         uriMatcher.addURI(authority, ConcertsContract.PATH_ARTIST, ARTIST);
         //example content://com.drkhannah.concerts.provider/concert
@@ -114,49 +115,62 @@ public class ConcertsProvider extends ContentProvider {
     }
 
     //handles requests for MIME types
-    //return the MIME type for each path in the UriMatcher
+    //returns the MIME type for each path in the UriMatcher
     @Nullable
     @Override
     public String getType(Uri uri) {
 
-        //use the UriMatcher to so we can write a switch based on what URI was passed in
+        //use the UriMatcher to so we can write a switch based on the URI that was passed in
         final int match = sUriMatcher.match(uri);
 
-        //match will be one of the codes we assigned to each URI in the UriMatcher
+        //"match" will be one of the codes we assigned to each URI in the UriMatcher
         switch (match) {
             case ARTIST:
-                //single row MIME type
-                return ConcertsContract.ArtistEntry.CONTENT_ITEM_TYPE;
+                //return single row MIME type
+                return ConcertsContract.ArtistEntry.CONTENT_TYPE;
             case CONCERT:
-                //Multiple row MIME type
+                //return Multiple row MIME type
                 return ConcertsContract.ConcertEntry.CONTENT_TYPE;
             case CONCERT_LIST_FOR_ARTIST:
-                //Multiple row MIME type
+                //return Multiple row MIME type
                 return ConcertsContract.ConcertEntry.CONTENT_TYPE;
             case CONCERT_FOR_DATE:
-                //single row MIME type
+                //return single row MIME type
                 return ConcertsContract.ConcertEntry.CONTENT_ITEM_TYPE;
             default:
                 throw new UnsupportedOperationException("Unhandled uri: " + uri);
         }
     }
 
-    //This Content Providers query() method
+    //Below are all the Content Providers CRUD methods
+    //query method for this Content Provider
     @Nullable
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         //Cursor to be returned from this method
         Cursor returnCursor;
 
-        //use the UriMatcher to so we can write a switch based on what URI was passed in
+        //use the UriMatcher to so we can write a switch based on the URI that was passed in
         final int match = sUriMatcher.match(uri);
 
-        //match will be one of the codes we assigned to each URI in the UriMatcher
+        //"match" will be one of the codes we assigned to each URI in the UriMatcher
         switch (match) {
             // "artist"
             case ARTIST: {
                 returnCursor = mDbHelper.getReadableDatabase().query(
                         ConcertsContract.ArtistEntry.TABLE_NAME,
+                        projection,
+                        selection,
+                        selectionArgs,
+                        null,
+                        null,
+                        sortOrder);
+                break;
+            }
+            // "concert"
+            case CONCERT: {
+                returnCursor = mDbHelper.getReadableDatabase().query(
+                        ConcertsContract.ConcertEntry.TABLE_NAME,
                         projection,
                         selection,
                         selectionArgs,
@@ -189,14 +203,14 @@ public class ConcertsProvider extends ContentProvider {
         //get a writable database
         final SQLiteDatabase db = mDbHelper.getWritableDatabase();
 
-        //use the UriMatcher to so we can write a switch based on what URI was passed in
+        //use the UriMatcher to so we can write a switch based on the URI that was passed in
         final int match = sUriMatcher.match(uri);
 
         //URI to return
         Uri returnUri;
 
-        //match will be one of the codes we assigned to each URI in the UriMatcher
-        //this handles inserting SINGLE artist and concert records
+        //"match" will be one of the codes we assigned to each URI in the UriMatcher
+        //this handles inserting SINGLE artist and record and SINGLE concert record
         //inserting MULTIPLE concert records will be handled with the bulkInsert() method
         switch (match) {
             //"artist"
@@ -209,7 +223,7 @@ public class ConcertsProvider extends ContentProvider {
                 }
                 break;
             }
-            //"artist"
+            //"concert"
             case CONCERT: {
                 long _id = db.insert(ConcertsContract.ConcertEntry.TABLE_NAME, null, values);
                 if (_id > 0) {
@@ -232,18 +246,20 @@ public class ConcertsProvider extends ContentProvider {
         //get a writable database
         final SQLiteDatabase db = mDbHelper.getWritableDatabase();
 
-        //use the UriMatcher to so we can write a switch based on what URI was passed in
+        //use the UriMatcher to so we can write a switch based on the URI that was passed in
         final int match = sUriMatcher.match(uri);
 
         //rows deleted to return
         int rowsDeleted;
 
         // this makes delete all rows return the number of rows deleted
-        if ( null == selection ) selection = "1";
+        if ( selection == null ) selection = "1";
         switch (match) {
+            //"artist"
             case ARTIST:
                 rowsDeleted = db.delete(ConcertsContract.ArtistEntry.TABLE_NAME, selection, selectionArgs);
                 break;
+            //"concert"
             case CONCERT:
                 rowsDeleted = db.delete(ConcertsContract.ConcertEntry.TABLE_NAME, selection, selectionArgs);
                 break;
@@ -262,16 +278,18 @@ public class ConcertsProvider extends ContentProvider {
         //get a writable database
         final SQLiteDatabase db = mDbHelper.getWritableDatabase();
 
-        //use the UriMatcher to so we can write a switch based on what URI was passed in
+        //use the UriMatcher to so we can write a switch based on the URI that was passed in
         final int match = sUriMatcher.match(uri);
 
         //rows updated to return
         int rowsUpdated;
 
         switch (match) {
+            //"artist"
             case ARTIST:
                 rowsUpdated = db.update(ConcertsContract.ArtistEntry.TABLE_NAME, values, selection, selectionArgs);
                 break;
+            //"concert"
             case CONCERT:
                 rowsUpdated = db.update(ConcertsContract.ConcertEntry.TABLE_NAME, values, selection, selectionArgs);
                 break;
@@ -284,20 +302,22 @@ public class ConcertsProvider extends ContentProvider {
         return rowsUpdated;
     }
 
+    //handles inserting MULTIPLE concerts at once
     @Override
     public int bulkInsert(Uri uri, ContentValues[] values) {
         //get a writable database
         final SQLiteDatabase db = mDbHelper.getWritableDatabase();
 
-        //use the UriMatcher to so we can write a switch based on what URI was passed in
+        //use the UriMatcher to so we can write a switch based on the URI that was passed in
         final int match = sUriMatcher.match(uri);
 
         switch (match) {
+            //"concert"
             case CONCERT:
                 db.beginTransaction();
                 int returnCount = 0;
                 try{
-                    //loop through the array of Content Values and insert each record
+                    //loop through the array of ContentValues and insert each record
                     for (ContentValues value : values) {
                         long _id = db.insert(ConcertsContract.ConcertEntry.TABLE_NAME, null, value);
                         if (_id != -1) {
@@ -308,7 +328,6 @@ public class ConcertsProvider extends ContentProvider {
                 } finally {
                     db.endTransaction();
                 }
-
                 getContext().getContentResolver().notifyChange(uri, null);
                 return returnCount;
             default:
@@ -316,8 +335,7 @@ public class ConcertsProvider extends ContentProvider {
         }
     }
 
-    // This is a method only here to help our unit tests
-    // read more about it here:
+    // This is a method only here to help our unit tests, read more about it here:
     // http://developer.android.com/reference/android/content/ContentProvider.html#shutdown()
     @Override
     @TargetApi(11)
