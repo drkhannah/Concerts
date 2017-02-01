@@ -50,8 +50,8 @@ public class ConcertsDbHelper extends SQLiteOpenHelper {
                         ConcertsContract.ConcertEntry.COLUMN_VENUE_LATITUDE + " TEXT," +
 
                         //ensures that duplicate concerts for an artist aren't added to the database
+                        //an artist can't play 2 concerts at the same time
                         " UNIQUE (" + ConcertsContract.ConcertEntry.COLUMN_ARTIST_KEY + ", " +
-                        ConcertsContract.ConcertEntry.COLUMN_TTILE + ", " +
                         ConcertsContract.ConcertEntry.COLUMN_FORMATTED_DATE_TIME + ") ON CONFLICT REPLACE," +
 
                         // Set up the concerts_table COLUMN_ARTIST_KEY column as a foreign key to artist table.
