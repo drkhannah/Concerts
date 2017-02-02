@@ -195,8 +195,8 @@ public class TestConcertsDbHelper {
 
         long artistRowId = insertArtist();
 
-        // Make sure we got back a row ID.
-        assertTrue("Error: Artist Not Inserted Correctly", artistRowId != -1);
+        // Make sure we have a valid row ID.
+        assertFalse("Error: Location Not Inserted Correctly", artistRowId == -1L);
 
         // Get reference to writable database
         SQLiteDatabase db = new ConcertsDbHelper(mContext).getWritableDatabase();

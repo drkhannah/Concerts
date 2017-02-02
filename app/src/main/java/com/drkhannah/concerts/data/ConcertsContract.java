@@ -104,7 +104,7 @@ public class ConcertsContract {
             return CONTENT_URI.buildUpon().appendPath(artist).build();
         }
 
-        //get the artist name from the the URI path created in the method above
+        //get the artist name from the the URI path created in the buildConcertListForArtistUri() method
         public static String getArtistNameFromUri(Uri uri) {
             return uri.getPathSegments().get(1);
         }
@@ -115,7 +115,7 @@ public class ConcertsContract {
             return CONTENT_URI.buildUpon().appendPath(artist).appendPath(date).build();
         }
 
-        //get the concert date from URI path created in the method above
+        //get the concert date from URI path created in the buildConcertForArtistWithDate() method
         public static String getConcertDateFromUri(Uri uri) {
             return uri.getPathSegments().get(2);
         }

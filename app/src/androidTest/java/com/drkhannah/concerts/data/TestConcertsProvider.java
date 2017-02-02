@@ -10,15 +10,19 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.pm.ProviderInfo;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
+import android.util.Log;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertTrue;
 
 /**
@@ -30,6 +34,7 @@ import static junit.framework.Assert.assertTrue;
 public class TestConcertsProvider {
 
     Context mContext = InstrumentationRegistry.getTargetContext();
+    long TEST_ARTIST_ID;
 
     @Before
     public void deleteAllRecords() {
@@ -89,7 +94,7 @@ public class TestConcertsProvider {
             assertEquals("Error: ConcertsProvider registered with authority: " +
                     providerInfo.authority +
                     " instead of authority: " +
-                    ConcertsContract.CONTENT_AUTHORITY, providerInfo.authority, ConcertsContract.CONTENT_AUTHORITY);
+                    ConcertsContract.CONTENT_AUTHORITY, ConcertsContract.CONTENT_AUTHORITY, providerInfo.authority);
 
         } catch (PackageManager.NameNotFoundException e) {
             // ConcertsProvider is not registered correctly.
@@ -127,9 +132,46 @@ public class TestConcertsProvider {
                 ConcertsContract.ConcertEntry.CONTENT_ITEM_TYPE, type);
     }
 
-    //test querying for all artists in the Artist Table
     @Test
-    public void testQueryArtist() {
+    public void testInsertArtist() {
+        //create artist record ContentValues
+        ContentValues artistValues = TestUtils.createArtistValues();
+
+        // Register a content observer for our insert().
+        TestUtils.TestContentObserver artistObserver = TestUtils.getTestContentObserver();
+        mContext.getContentResolver().registerContentObserver(ConcertsContract.ArtistEntry.CONTENT_URI, true, artistObserver);
+
+        //insert a artist record into the Artist Table
+        Uri artistUri = mContext.getContentResolver().insert(
+                ConcertsContract.ArtistEntry.CONTENT_URI,
+                artistValues);
+
+        // If this fails, getContext().getContentResolver().notifyChange(uri, null); is not being called in insert() of ConcertsProvider.
+        artistObserver.waitForNotificationOrFail();
+        mContext.getContentResolver().unregisterContentObserver(artistObserver);
+
+        //assert that the Uri returned from the insert is not null
+        //and it is what we expect it to be
+        assertNotNull("Error: Null Uri returned: ", artistUri);
+        assertEquals("Error: Uri doesn't match the expected result", "content://com.drkhannah.concerts.provider/artist/1", artistUri.toString());
+
+        //SELECT * FROM artist
+        Cursor cursor = mContext.getContentResolver().query(
+                ConcertsContract.ArtistEntry.CONTENT_URI,
+                null,
+                null,
+                null,
+                null
+        );
+
+        // Make sure we get the correct cursor from the Content Provider
+        TestUtils.validateCursor("testQueryListOfConcertsForArtist", cursor, artistValues);
+
+        cursor.close();
+    }
+
+    @Test
+    public void testBulkInsertConcerts() {
         // insert our artist record into the database
         SQLiteDatabase db = new ConcertsDbHelper(mContext).getWritableDatabase();
 
@@ -140,20 +182,42 @@ public class TestConcertsProvider {
         // Verify we got a row ID back.
         assertTrue(artistRowId != -1);
 
-        //close the database
-        db.close();
+        //create concert record
+        ContentValues firstConcert = TestUtils.createConcertValues(artistRowId);
+        //create second concert record
+        ContentValues secondConcert = TestUtils.createDiffConcertValues(artistRowId);
+        //create array of ContentValues that holds the first and second concert records
+        ContentValues[] bulkConcertValues = {firstConcert, secondConcert};
 
-        //query the ARTIST Uri of ConcertsProvider using a ContentResolver
+        // Register a content observer for our bulk insert.
+        TestUtils.TestContentObserver concertObserver = TestUtils.getTestContentObserver();
+        mContext.getContentResolver().registerContentObserver(ConcertsContract.ConcertEntry.CONTENT_URI, true, concertObserver);
+
+        //bulk insert the concerts
+        int concertsInserted = mContext.getContentResolver().bulkInsert(ConcertsContract.ConcertEntry.CONTENT_URI, bulkConcertValues);
+
+        // If this fails, getContext().getContentResolver().notifyChange(uri, null); is not being called in BulkInsert() of ConcertsProvider.
+        concertObserver.waitForNotificationOrFail();
+        mContext.getContentResolver().unregisterContentObserver(concertObserver);
+
+        //assert that we did insert two concerts records to the Concert Table
+        assertEquals(2, concertsInserted);
+
+        // SELECT * FROM concert
         Cursor cursor = mContext.getContentResolver().query(
-                ConcertsContract.ArtistEntry.CONTENT_URI,
+                ConcertsContract.ConcertEntry.CONTENT_URI,
                 null,
                 null,
                 null,
-                null);
+                null
+        );
 
-        // Make sure we get the correct cursor out of the database
-        TestUtils.validateCursor("testQueryArtist", cursor, artistValues);
+        Log.v("Cursor Object", DatabaseUtils.dumpCursorToString(cursor));
+        // we should have as many records in the database as we've inserted
+        assertEquals(2, cursor.getCount());
+        cursor.close();
     }
+
 
     //test querying for a list of concerts for a given artist
     @Test
@@ -195,8 +259,55 @@ public class TestConcertsProvider {
                 null,
                 null);
 
-        // Make sure we get the correct cursor out of the database
-        TestUtils.validateCursor("testQueryListOfConcertsForArtist", cursor, artistValues);
+        // we should have as many records in the database as we've inserted
+        assertEquals(2, cursor.getCount());
+
+        cursor.close();
+    }
+
+    @Test
+    public void testQueryConcertForDate() {
+        // insert our artist record into the database
+        SQLiteDatabase db = new ConcertsDbHelper(mContext).getWritableDatabase();
+
+        //get test values for an artist record
+        ContentValues artistValues = TestUtils.createArtistValues();
+        // Insert artistValues into database and get a row ID back
+        long artistRowId = db.insert(ConcertsContract.ArtistEntry.TABLE_NAME, null, artistValues);
+        // Verify we got a row ID back.
+        assertTrue(artistRowId != -1);
+
+        // Create concert values
+        ContentValues concertValues = TestUtils.createConcertValues(artistRowId);
+
+        // Insert concert ContentValues into database and get a row ID back
+        long concertRowId = db.insert(ConcertsContract.ConcertEntry.TABLE_NAME, null, concertValues);
+        assertTrue(concertRowId != -1);
+
+        // Create a different set of concert values
+        ContentValues diffConcertValues = TestUtils.createDiffConcertValues(artistRowId);
+
+        // Insert concert values with different date to test it doesn't replace
+        // the single record we have in the concert table already
+        concertRowId = db.insert(ConcertsContract.ConcertEntry.TABLE_NAME, null, diffConcertValues);
+        assertTrue(concertRowId != -1);
+
+        //close the database
+        db.close();
+
+        //query the CONCERT_FOR_DATE Uri of ConcertsProvider using a ContentResolver
+        String artistName = artistValues.getAsString(ConcertsContract.ArtistEntry.COLUMN_ARTIST_NAME);
+        String concertDate = concertValues.getAsString(ConcertsContract.ConcertEntry.COLUMN_FORMATTED_DATE_TIME);
+        Cursor cursor = mContext.getContentResolver().query(
+                ConcertsContract.ConcertEntry.buildConcertForArtistWithDate(artistName, concertDate),
+                null,
+                null,
+                null,
+                null);
+
+        // Make sure we got back the first concertValues we inserted
         TestUtils.validateCursor("testQueryListOfConcertsForArtist", cursor, concertValues);
+
+        cursor.close();
     }
 }

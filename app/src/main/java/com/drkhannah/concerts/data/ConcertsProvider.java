@@ -223,16 +223,6 @@ public class ConcertsProvider extends ContentProvider {
                 }
                 break;
             }
-            //"concert"
-            case CONCERT: {
-                long _id = db.insert(ConcertsContract.ConcertEntry.TABLE_NAME, null, values);
-                if (_id > 0) {
-                    returnUri = ConcertsContract.ConcertEntry.buildConcertWithIdUri(_id);
-                } else {
-                    throw new android.database.SQLException("Failed to insert row into " + uri);
-                }
-                break;
-            }
             default:
                 throw new UnsupportedOperationException("Unhandled uri: " + uri);
         }
@@ -335,8 +325,8 @@ public class ConcertsProvider extends ContentProvider {
         }
     }
 
-    // This is a method only here to help our unit tests, read more about it here:
-    // http://developer.android.com/reference/android/content/ContentProvider.html#shutdown()
+    // This is a method only here to help our unit tests, you don't need to call it in your tests,
+    // read more about it here: http://developer.android.com/reference/android/content/ContentProvider.html#shutdown()
     @Override
     @TargetApi(11)
     public void shutdown() {
