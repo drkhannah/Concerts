@@ -120,5 +120,4 @@ public class ConcertsContract {
             return uri.getPathSegments().get(2);
         }
     }
-
 }

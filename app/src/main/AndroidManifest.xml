@@ -2,6 +2,14 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.drkhannah.concerts">
 
+    <!-- READ and WRITE permissions for ConcertsProvider-->
+    <permission android:name="com.drkhannah.concerts.provider.READ"/>
+    <permission android:name="com.drkhannah.concerts.provider.WRITE"/>
+
+    <!-- Allows READING and WRITING to the ConcertsProvider-->
+    <uses-permission android:name="com.drkhannah.concerts.provider.READ"/>
+    <uses-permission android:name="com.drkhannah.concerts.provider.WRITE"/>
+
     <!-- Allows applications to open network sockets.-->
     <uses-permission android:name="android.permission.INTERNET"/>
 
@@ -41,7 +49,9 @@
         <provider
             android:authorities="@string/content_authority"
             android:name=".data.ConcertsProvider"
-            android:exported="false"/>
+            android:exported="true"
+            android:readPermission="com.drkhannah.concerts.provider.READ"
+            android:writePermission="com.drkhannah.concerts.provider.WRITE"/>
 
     </application>
 
