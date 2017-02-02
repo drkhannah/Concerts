@@ -325,7 +325,8 @@ public class ConcertsProvider extends ContentProvider {
         }
     }
 
-    // This is a method only here to help our unit tests, you don't need to call it in your tests,
+    // This is a method only here to help our unit tests
+    // It shuts down the Content Provider so that test methods aren't creating multiple instances of it
     // read more about it here: http://developer.android.com/reference/android/content/ContentProvider.html#shutdown()
     @Override
     @TargetApi(11)

@@ -73,6 +73,16 @@ public class TestConcertsProvider {
         );
         assertEquals("Error: Records not deleted from Concert table during delete", 0, cursor.getCount());
         cursor.close();
+
+        mContext.getContentResolver()
+                .acquireContentProviderClient(ConcertsContract.ArtistEntry.CONTENT_URI)
+                .getLocalContentProvider()
+                .shutdown();
+
+        mContext.getContentResolver()
+                .acquireContentProviderClient(ConcertsContract.ConcertEntry.CONTENT_URI)
+                .getLocalContentProvider()
+                .shutdown();
     }
 
     //test to see if provider is registered correctly
@@ -168,6 +178,11 @@ public class TestConcertsProvider {
         TestUtils.validateCursor("testQueryListOfConcertsForArtist", cursor, artistValues);
 
         cursor.close();
+
+        mContext.getContentResolver()
+                .acquireContentProviderClient(ConcertsContract.ArtistEntry.CONTENT_URI)
+                .getLocalContentProvider()
+                .shutdown();
     }
 
     @Test
@@ -216,6 +231,11 @@ public class TestConcertsProvider {
         // we should have as many records in the database as we've inserted
         assertEquals(2, cursor.getCount());
         cursor.close();
+
+        mContext.getContentResolver()
+                .acquireContentProviderClient(ConcertsContract.ConcertEntry.CONTENT_URI)
+                .getLocalContentProvider()
+                .shutdown();
     }
 
 
@@ -263,6 +283,11 @@ public class TestConcertsProvider {
         assertEquals(2, cursor.getCount());
 
         cursor.close();
+
+        mContext.getContentResolver()
+                .acquireContentProviderClient(ConcertsContract.ConcertEntry.buildConcertListForArtistUri(artistName))
+                .getLocalContentProvider()
+                .shutdown();
     }
 
     @Test
@@ -309,5 +334,10 @@ public class TestConcertsProvider {
         TestUtils.validateCursor("testQueryListOfConcertsForArtist", cursor, concertValues);
 
         cursor.close();
+
+        mContext.getContentResolver()
+                .acquireContentProviderClient(ConcertsContract.ConcertEntry.buildConcertForArtistWithDate(artistName, concertDate))
+                .getLocalContentProvider()
+                .shutdown();
     }
 }
