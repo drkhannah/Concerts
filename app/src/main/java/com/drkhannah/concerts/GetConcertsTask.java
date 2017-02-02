@@ -1,11 +1,15 @@
 package com.drkhannah.concerts;
 
+import android.content.ContentUris;
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
+import com.drkhannah.concerts.data.ConcertsContract;
 import com.drkhannah.concerts.models.Concert;
 
 import org.json.JSONArray;
@@ -18,6 +22,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -213,6 +218,50 @@ public class GetConcertsTask extends AsyncTask<String, Void, List<Concert>> {
         }
         //return the List of Concerts, or null
         return (mConcertList.size() > 0) ? mConcertList : null;
+    }
+
+    public long addArtist(String artistName, String img_url, String website_url) {
+        long artistId;
+
+        // First, check if the artist with this name exists in the db
+        Cursor artistCursor = mContext.getContentResolver().query(
+                ConcertsContract.ArtistEntry.CONTENT_URI,
+                new String[]{ConcertsContract.ArtistEntry._ID},
+                ConcertsContract.ArtistEntry.COLUMN_ARTIST_NAME + " = ?",
+                new String[]{artistName},
+                null);
+
+        //get the artist record ID
+        if (artistCursor.moveToFirst()) {
+            int artistIdIndex = artistCursor.getColumnIndex(ConcertsContract.ArtistEntry._ID);
+            artistId = artistCursor.getLong(artistIdIndex);
+        } else {
+            //get a current Timestamp
+            String timestamp = new Timestamp(System.currentTimeMillis()).toString();
+
+            // Now that the content provider is set up, inserting rows of data is pretty simple.
+            // First create a ContentValues object to hold the data you want to insert.
+            ContentValues artistValues = new ContentValues();
+
+            // Then add the data, along with the corresponding name of the data type,
+            // so the content provider knows what kind of value is being inserted.
+            artistValues.put(ConcertsContract.ArtistEntry.COLUMN_ARTIST_NAME, artistName);
+            artistValues.put(ConcertsContract.ArtistEntry.COLUMN_ARTIST_IMAGE, website_url);
+            artistValues.put(ConcertsContract.ArtistEntry.COLUMN_ARTIST_WEBSITE, img_url);
+            artistValues.put(ConcertsContract.ArtistEntry.COLUMN_TIME_STAMP, timestamp);
+
+            // Finally, insert artist record.
+            Uri insertedUri = mContext.getContentResolver().insert(
+                    ConcertsContract.ArtistEntry.CONTENT_URI,
+                    artistValues
+            );
+
+            // The resulting URI contains the ID for the row.  Extract the artist ID from the Uri.
+            artistId = ContentUris.parseId(insertedUri);
+        }
+
+        artistCursor.close();
+        return artistId;
     }
 
     //interface to listen for result of AsyncTask
