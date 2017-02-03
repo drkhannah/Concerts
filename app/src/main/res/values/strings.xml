@@ -27,6 +27,7 @@
     <string name="no_venue_name_available">No Venue Name Available</string>
     <string name="no_venue_place_available">No Venue Place Available</string>
     <string name="no_venue_city_available">No Venue City Available</string>
+    <string name="no_venue_region_available">No Venue Region Available</string>
     <string name="no_venue_country_available">No Venue Country Available</string>
     <string name="no_longitude_available" translatable="false">0.00</string>
     <string name="no_latitude_available" translatable="false">0.00</string>
@@ -49,6 +50,7 @@
     <string name="response_object_key_venue_name" translatable="false">name</string>
     <string name="response_object_key_place" translatable="false">place</string>
     <string name="response_object_key_city" translatable="false">city</string>
+    <string name="response_object_key_region" translatable="false">region</string>
     <string name="response_object_key_country" translatable="false">country</string>
     <string name="response_object_key_longitude" translatable="false">longitude</string>
     <string name="response_object_key_latitude" translatable="false">latitude</string>
