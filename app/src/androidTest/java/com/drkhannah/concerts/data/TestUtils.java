@@ -72,7 +72,7 @@ public class TestUtils {
         return testValues;
     }
 
-    static ContentValues createConcertValues(long artistRowId) {
+    public static ContentValues createConcertValues(long artistRowId) {
         ContentValues concertValues = new ContentValues();
         concertValues.put(ConcertsContract.ConcertEntry.COLUMN_ARTIST_KEY, artistRowId);
         concertValues.put(ConcertsContract.ConcertEntry.COLUMN_TTILE, TEST_TITLE);
@@ -92,7 +92,7 @@ public class TestUtils {
         return concertValues;
     }
 
-    static ContentValues createDiffConcertValues(long artistRowId) {
+    public static ContentValues createDiffConcertValues(long artistRowId) {
         ContentValues concertValues = new ContentValues();
         concertValues.put(ConcertsContract.ConcertEntry.COLUMN_ARTIST_KEY, artistRowId);
         concertValues.put(ConcertsContract.ConcertEntry.COLUMN_TTILE, TEST_TITLE);

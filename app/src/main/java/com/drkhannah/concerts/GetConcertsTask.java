@@ -227,12 +227,12 @@ public class GetConcertsTask extends AsyncTask<String, Void, Void> {
         }
     }
 
-    private void purgeOldConcerts(long oldArtistId) {
+    public int purgeOldConcerts(long oldArtistId) {
         String oldId = String.valueOf(oldArtistId);
 
         //delete all concerts records with an artist_id
         //that matches the old artist _id
-        mContext.getContentResolver().delete(
+        return mContext.getContentResolver().delete(
                 ConcertsContract.ConcertEntry.CONTENT_URI,
                 ConcertsContract.ConcertEntry.COLUMN_ARTIST_KEY + " = ?", //selection
                 new String[]{oldId} //selectionArgs

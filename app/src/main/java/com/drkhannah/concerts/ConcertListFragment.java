@@ -18,12 +18,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.drkhannah.concerts.adapters.ConcertsRecyclerViewAdapter;
-import com.drkhannah.concerts.models.Concert;
-
-import java.util.List;
 
 
-public class ConcertListFragment extends Fragment implements GetConcertsTask.GetConcertsTaskResultCallback {
+public class ConcertListFragment extends Fragment {
 
     private static final String LOG_TAG = ConcertListFragment.class.getSimpleName();
 
@@ -100,18 +97,18 @@ public class ConcertListFragment extends Fragment implements GetConcertsTask.Get
         }
     }
 
-    //implementation of GetConcertsTaskResultCallback.getConcertsTaskResult()
-    @Override
-    public void getConcertsTaskResult(List<Concert> result) {
-        if (result != null) {
-            //update the RecyclerViewAdapter data
-            mConcertsRecyclerViewAdapter.updateData(result);
-            mConcertsRecyclerView.setVisibility(View.VISIBLE);
-            mEmptyView.setVisibility(View.GONE);
-        } else {
-            mConcertsRecyclerViewAdapter.updateData(result);
-            mConcertsRecyclerView.setVisibility(View.GONE);
-            mEmptyView.setVisibility(View.VISIBLE);
-        }
-    }
+//    //implementation of GetConcertsTaskResultCallback.getConcertsTaskResult()
+//    @Override
+//    public void getConcertsTaskResult(List<Concert> result) {
+//        if (result != null) {
+//            //update the RecyclerViewAdapter data
+//            mConcertsRecyclerViewAdapter.updateData(result);
+//            mConcertsRecyclerView.setVisibility(View.VISIBLE);
+//            mEmptyView.setVisibility(View.GONE);
+//        } else {
+//            mConcertsRecyclerViewAdapter.updateData(result);
+//            mConcertsRecyclerView.setVisibility(View.GONE);
+//            mEmptyView.setVisibility(View.VISIBLE);
+//        }
+//    }
 }
