@@ -18,7 +18,8 @@ import org.junit.runners.Suite;
         TestConcertsDbHelper.class,
         TestUriMatcher.class,
         TestConcertsContract.class,
-        TestConcertsProvider.class})
+        TestConcertsProvider.class,
+        TestGetConcertsTask.class})
 
 public class TestSuite {}
 

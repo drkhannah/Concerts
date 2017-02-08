@@ -21,7 +21,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
@@ -149,8 +148,11 @@ public class GetConcertsTask extends AsyncTask<String, Void, Void> {
         //concertsJsonStr starts with a jsonArray
         final JSONArray concertsJsonArray = new JSONArray(concertsJsonStr);
 
-        // Vector of concert info we will build to insert into the database
+        // Vector of ContentValues for concerts we will build and insert into the database
         Vector<ContentValues> contentValuesVector = new Vector<ContentValues>(concertsJsonArray.length());
+
+        //we will use the old artist _id to purge the artists old concert records
+        long oldArtistId = 0;
 
         if (concertsJsonArray.length() > 0) {
             //loop through concertsJsonArray
@@ -179,16 +181,18 @@ public class GetConcertsTask extends AsyncTask<String, Void, Void> {
                 String venueName = venue.optString(mContext.getString(R.string.response_object_key_venue_name), mContext.getString(R.string.no_venue_name_available));
                 String venuePlace = venue.optString(mContext.getString(R.string.response_object_key_place), mContext.getString(R.string.no_venue_place_available));
                 String venueCity = venue.optString(mContext.getString(R.string.response_object_key_city), mContext.getString(R.string.no_venue_city_available));
-                String venueRegion = venue.optString(mContext.getString(R.string.response_object_key_region), mContext.getString(R.string.no_venue_city_available));
+                String venueRegion = venue.optString(mContext.getString(R.string.response_object_key_region), mContext.getString(R.string.no_venue_region_available));
                 String venueCountry = venue.optString(mContext.getString(R.string.response_object_key_country), mContext.getString(R.string.no_venue_country_available));
                 String venueLongitude = venue.optString(mContext.getString(R.string.response_object_key_longitude), mContext.getString(R.string.no_longitude_available));
                 String venueLatitude = venue.optString(mContext.getString(R.string.response_object_key_latitude), mContext.getString(R.string.no_latitude_available));
 
-                long artistId = addArtist(artistName, artistImage, artistWebsite);
+                oldArtistId = checkForArtist(artistName);
+
+                long newArtistId = insertArtist(artistName, artistImage, artistWebsite);
 
                 ContentValues concertValues = new ContentValues();
 
-                concertValues.put(ConcertsContract.ConcertEntry.COLUMN_ARTIST_KEY, artistId);
+                concertValues.put(ConcertsContract.ConcertEntry.COLUMN_ARTIST_KEY, newArtistId);
                 concertValues.put(ConcertsContract.ConcertEntry.COLUMN_TTILE, title);
                 concertValues.put(ConcertsContract.ConcertEntry.COLUMN_FORMATTED_DATE_TIME, formattedDateTime);
                 concertValues.put(ConcertsContract.ConcertEntry.COLUMN_FORMATTED_LOCATION, formattedLocation);
@@ -204,59 +208,84 @@ public class GetConcertsTask extends AsyncTask<String, Void, Void> {
                 concertValues.put(ConcertsContract.ConcertEntry.COLUMN_VENUE_LONGITUDE, venueLongitude);
                 concertValues.put(ConcertsContract.ConcertEntry.COLUMN_VENUE_LATITUDE, venueLatitude);
 
+                //add this concert's values to the Vector<ContentValues>
                 contentValuesVector.add(concertValues);
             }
 
-            // add to database
             if (contentValuesVector.size() > 0) {
-                ContentValues[] cvArray = new ContentValues[contentValuesVector.size()];
-                contentValuesVector.toArray(cvArray);
-                mContext.getContentResolver().bulkInsert(ConcertsContract.ConcertEntry.CONTENT_URI, cvArray);
+                //convert Vector<ContentValues> into an Array
+                ContentValues[] concertsArray = new ContentValues[contentValuesVector.size()];
+                contentValuesVector.toArray(concertsArray);
+
+                // bulkInsert concerts into database
+                mContext.getContentResolver().bulkInsert(ConcertsContract.ConcertEntry.CONTENT_URI, concertsArray);
+            }
+
+            if (oldArtistId > 0) {
+                purgeOldConcerts(oldArtistId);
             }
         }
     }
 
-    public long addArtist(String artistName, String img_url, String website_url) {
-        long artistId;
+    private void purgeOldConcerts(long oldArtistId) {
+        String oldId = String.valueOf(oldArtistId);
 
-        // First, check if the artist with this name exists in the db
+        //delete all concerts records with an artist_id
+        //that matches the old artist _id
+        mContext.getContentResolver().delete(
+                ConcertsContract.ConcertEntry.CONTENT_URI,
+                ConcertsContract.ConcertEntry.COLUMN_ARTIST_KEY + " = ?", //selection
+                new String[]{oldId} //selectionArgs
+        );
+    }
+
+    public long checkForArtist(String artistName) {
+        long artistId = 0;
+
+        // check if the artist with this name exists in the db
         Cursor artistCursor = mContext.getContentResolver().query(
-                ConcertsContract.ArtistEntry.CONTENT_URI,
-                new String[]{ConcertsContract.ArtistEntry._ID},
-                ConcertsContract.ArtistEntry.COLUMN_ARTIST_NAME + " = ?",
-                new String[]{artistName},
-                null);
+                ConcertsContract.ArtistEntry.CONTENT_URI, //URI
+                new String[]{ConcertsContract.ArtistEntry._ID}, //projection
+                ConcertsContract.ArtistEntry.COLUMN_ARTIST_NAME + " = ?", //selection
+                new String[]{artistName}, //selectionArgs
+                null //sortOrder
+        );
 
-        //get the artist record ID
         if (artistCursor.moveToFirst()) {
+            //find the column index number for the artist _id column
             int artistIdIndex = artistCursor.getColumnIndex(ConcertsContract.ArtistEntry._ID);
+            //get the artist _id
             artistId = artistCursor.getLong(artistIdIndex);
-        } else {
-            //get a current Timestamp
-            String timestamp = new Timestamp(System.currentTimeMillis()).toString();
-
-            // Now that the content provider is set up, inserting rows of data is pretty simple.
-            // First create a ContentValues object to hold the data you want to insert.
-            ContentValues artistValues = new ContentValues();
-
-            // Then add the data, along with the corresponding name of the data type,
-            // so the content provider knows what kind of value is being inserted.
-            artistValues.put(ConcertsContract.ArtistEntry.COLUMN_ARTIST_NAME, artistName);
-            artistValues.put(ConcertsContract.ArtistEntry.COLUMN_ARTIST_IMAGE, website_url);
-            artistValues.put(ConcertsContract.ArtistEntry.COLUMN_ARTIST_WEBSITE, img_url);
-            artistValues.put(ConcertsContract.ArtistEntry.COLUMN_TIME_STAMP, timestamp);
-
-            // Finally, insert artist record.
-            Uri insertedUri = mContext.getContentResolver().insert(
-                    ConcertsContract.ArtistEntry.CONTENT_URI,
-                    artistValues
-            );
-
-            // The resulting URI contains the ID for the row.  Extract the artist ID from the Uri.
-            artistId = ContentUris.parseId(insertedUri);
         }
 
         artistCursor.close();
+        return artistId;
+    }
+
+    public long insertArtist(String artistName, String img_url, String website_url) {
+        long artistId;
+
+        //get a current time
+        long timestamp = System.currentTimeMillis();
+
+        // create a ContentValues object to hold the data you want to insert for the artist record.
+        ContentValues artistValues = new ContentValues();
+
+        // add the artist values
+        artistValues.put(ConcertsContract.ArtistEntry.COLUMN_ARTIST_NAME, artistName);
+        artistValues.put(ConcertsContract.ArtistEntry.COLUMN_ARTIST_IMAGE, website_url);
+        artistValues.put(ConcertsContract.ArtistEntry.COLUMN_ARTIST_WEBSITE, img_url);
+        artistValues.put(ConcertsContract.ArtistEntry.COLUMN_TIME_STAMP, timestamp);
+
+        // Finally, insert artist record.
+        Uri insertedUri = mContext.getContentResolver().insert(
+                ConcertsContract.ArtistEntry.CONTENT_URI,
+                artistValues
+        );
+
+        // The resulting URI contains the _id for the row.  Extract the artist _id from the Uri.
+        artistId = ContentUris.parseId(insertedUri);
+
         return artistId;
     }
 }

@@ -36,14 +36,6 @@ public class TestConcertsContract {
     }
 
     @Test
-    public void testBuildConcertWithIdUri() {
-        Uri uri = ConcertsContract.ConcertEntry.buildConcertWithIdUri(1);
-        assertNotNull("Error: Null Uri returned: ", uri);
-        assertEquals("Error: Concert _ID not properly appended to the end of the Uri", TEST_ID, uri.getLastPathSegment());
-        assertEquals("Error: Uri doesn't match the expected result", uri.toString(), "content://com.drkhannah.concerts.provider/concert/1");
-    }
-
-    @Test
     public void testBuildConcertListForArtistUri() {
         Uri uri = ConcertsContract.ConcertEntry.buildConcertListForArtistUri(TEST_ARTIST);
         assertNotNull("Error: Null Uri returned: ", uri);
