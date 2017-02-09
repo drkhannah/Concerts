@@ -3,10 +3,8 @@ package com.drkhannah.concerts;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.DatabaseUtils;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
-import android.util.Log;
 
 import com.drkhannah.concerts.data.ConcertsContract;
 import com.drkhannah.concerts.data.TestUtils;
@@ -14,6 +12,8 @@ import com.drkhannah.concerts.data.TestUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import java.util.Vector;
 
 import static android.support.test.InstrumentationRegistry.getContext;
 import static junit.framework.Assert.assertEquals;
@@ -112,11 +112,17 @@ public class TestGetConcertsTask {
         ContentValues firstConcert = TestUtils.createConcertValues(artistId);
         //create second concert record
         ContentValues secondConcert = TestUtils.createDiffConcertValues(artistId);
-        //create array of ContentValues that holds the first and second concert records
-        ContentValues[] bulkConcertValues = {firstConcert, secondConcert};
+        // Vector of ContentValues for concerts we will build and insert into the database
+        Vector<ContentValues> contentValuesVector = new Vector<ContentValues>(2);
+        contentValuesVector.add(firstConcert);
+        contentValuesVector.add(secondConcert);
 
-        //bulk insert the concerts
-        int concertsInserted = mContext.getContentResolver().bulkInsert(ConcertsContract.ConcertEntry.CONTENT_URI, bulkConcertValues);
+        //convert Vector<ContentValues> into an Array
+        ContentValues[] concertsArray = new ContentValues[contentValuesVector.size()];
+        contentValuesVector.toArray(concertsArray);
+
+        //bulk insert the concerts arrray
+        int concertsInserted = mContext.getContentResolver().bulkInsert(ConcertsContract.ConcertEntry.CONTENT_URI, concertsArray);
 
         //assert that we did insert two concerts records to the Concert Table
         assertEquals(2, concertsInserted);
@@ -134,29 +140,27 @@ public class TestGetConcertsTask {
 
         //create concert record with the new artist _id
         ContentValues firstConcertWithNewArtistId = TestUtils.createConcertValues(newArtistId);
-        //bulkInsert just this one record so that the secondConcert for this artist
-        //will still have the old artist _id and will later be purged
-        ContentValues[] newbulkConcertValues = {firstConcertWithNewArtistId};
+
+        // Vector of ContentValues for new concert with new artist _id we will build and insert into the database
+        Vector<ContentValues> newContentValuesVector = new Vector<ContentValues>(1);
+        newContentValuesVector.add(firstConcertWithNewArtistId);
+
+        //convert Vector<ContentValues> into an Array
+        ContentValues[] newConcertsArray = new ContentValues[newContentValuesVector.size()];
+        newContentValuesVector.toArray(newConcertsArray);
 
         //bulk insert the concerts
-        int concertInserted = mContext.getContentResolver().bulkInsert(ConcertsContract.ConcertEntry.CONTENT_URI, newbulkConcertValues);
+        int concertInserted = mContext.getContentResolver().bulkInsert(ConcertsContract.ConcertEntry.CONTENT_URI, newConcertsArray);
 
-        //assert that we did insert two concerts records to the Concert Table
+        //assert that we did insert 1 concert records to the Concert Table
         assertEquals(1, concertInserted);
 
-        Cursor cursor = mContext.getContentResolver().query(
-                ConcertsContract.ConcertEntry.CONTENT_URI,
-                null,
-                null,
-                null,
-                null
-        );
-
-        Log.v("Cursor Object", DatabaseUtils.dumpCursorToString(cursor));
-        //purge the now old secondConcert
+        //purge the old concerts
+        //at this point there are three concerts in the database
+        //but two of them are based on the old artist _id so they need to be purged
         int concertsDeleted = getConcertsTask.purgeOldConcerts(oldArtistId);
 
-        //only one concert should have been deleted
-        assertEquals(1, concertsDeleted);
+        //the two old concerts should have been deleted
+        assertEquals(2, concertsDeleted);
     }
 }
