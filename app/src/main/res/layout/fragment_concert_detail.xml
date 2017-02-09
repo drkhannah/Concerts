@@ -183,6 +183,18 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
+            <TextView
+                android:id="@+id/label_concert_detail_venue_region"
+                style="@style/DetailLabels"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Venue City:"/>
+
+            <TextView
+                android:id="@+id/concert_detail_venue_region"
+                style="@style/Details"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
 
             <TextView
                 android:id="@+id/label_concert_detail_venue_country"

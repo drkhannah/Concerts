@@ -1,10 +1,12 @@
 package com.drkhannah.concerts;
 
-import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+
+import com.drkhannah.concerts.data.ConcertsContract;
 
 /**
  * Created by dhannah on 11/21/16.
@@ -12,15 +14,16 @@ import android.support.v7.widget.Toolbar;
 
 public class ConcertDetailActivity extends AppCompatActivity {
 
+    private static final String ARG_CONCERT_URI = "concert_uri";
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_concert_detail);
 
-        //get the Intent and its Extras that started this Activity
-        Intent receivedIntent = getIntent();
-        String artistName = receivedIntent.getStringExtra(getString(R.string.extra_artist_name));
-        String concertDate = receivedIntent.getStringExtra(getString(R.string.extra_concert_date));
+        //get the Intent data that contains the concert Uri
+        Uri concertUri = getIntent().getData();
+        String artistName = ConcertsContract.ConcertEntry.getArtistNameFromUri(concertUri);
 
         setUpAppBar(artistName);
 
@@ -31,7 +34,7 @@ public class ConcertDetailActivity extends AppCompatActivity {
 
             // Create the ConcertDetailFragment
             // pass Concert object to  ConcertDetailFragment.newInstance() to be set as a fragment argument
-            ConcertDetailFragment fragment = ConcertDetailFragment.newInstance(artistName, concertDate);
+            ConcertDetailFragment fragment = ConcertDetailFragment.newInstance(concertUri);
 
             //add it to the activity using FragmentManager
             getSupportFragmentManager().beginTransaction()

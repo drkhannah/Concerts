@@ -37,7 +37,7 @@ public class ConcertListFragment extends Fragment implements LoaderManager.Loade
     private TextView mEmptyView;
 
     // projection for our concert list loader
-    static final String[] CONCERTS_LIST_PROJECTION = new String[] {
+    final String[] CONCERTS_LIST_PROJECTION = new String[] {
             ConcertsContract.ArtistEntry.COLUMN_ARTIST_NAME,
             ConcertsContract.ArtistEntry.COLUMN_ARTIST_IMAGE,
             ConcertsContract.ConcertEntry.COLUMN_TTILE,
@@ -115,7 +115,7 @@ public class ConcertListFragment extends Fragment implements LoaderManager.Loade
         //called when a new Loader needs to be created.
         String artistName = Utils.getSharedPrefsArtistName(getActivity());
         Uri concertListForArtistUri = ConcertsContract.ConcertEntry.buildConcertListForArtistUri(artistName);
-        return new CursorLoader(getActivity(), concertListForArtistUri, null, null, null, null);
+        return new CursorLoader(getActivity(), concertListForArtistUri, CONCERTS_LIST_PROJECTION, null, null, null);
     }
 
     @Override

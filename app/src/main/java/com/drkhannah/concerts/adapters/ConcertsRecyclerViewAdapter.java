@@ -2,6 +2,7 @@ package com.drkhannah.concerts.adapters;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -60,7 +61,7 @@ public class ConcertsRecyclerViewAdapter extends RecyclerView.Adapter<ConcertsRe
             final String artistName = mCursor.getString(mCursor.getColumnIndexOrThrow(ConcertsContract.ArtistEntry.COLUMN_ARTIST_NAME));
             final String concertDate = mCursor.getString(mCursor.getColumnIndexOrThrow(ConcertsContract.ConcertEntry.COLUMN_FORMATTED_DATE_TIME));
             //handle item selection back in MainActivity
-            ((ConcertsRecyclerViewAdapterItemClick) mContext).onConcertsRecyclerViewItemClick(artistName, concertDate);
+            ((ConcertsRecyclerViewAdapterItemClick) mContext).onConcertsRecyclerViewItemClick(ConcertsContract.ConcertEntry.buildConcertForArtistWithDate(artistName, concertDate));
         }
     }
 
@@ -134,6 +135,6 @@ public class ConcertsRecyclerViewAdapter extends RecyclerView.Adapter<ConcertsRe
 
     //interface to communicate the selected concert back to MainActivity
     public interface ConcertsRecyclerViewAdapterItemClick {
-        void onConcertsRecyclerViewItemClick(String artistName, String concertDate);
+        void onConcertsRecyclerViewItemClick(Uri concertUri);
     }
 }

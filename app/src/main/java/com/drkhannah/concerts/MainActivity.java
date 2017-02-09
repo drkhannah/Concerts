@@ -1,6 +1,7 @@
 package com.drkhannah.concerts;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
@@ -80,10 +81,10 @@ public class MainActivity extends AppCompatActivity implements ConcertsRecyclerV
 
     //fired when user clicks an item in the ConcertsRecyclerViewAdapter
     @Override
-    public void onConcertsRecyclerViewItemClick(String artistName, String concertDate) {
+    public void onConcertsRecyclerViewItemClick(Uri concertUri) {
         if (mTwoPane) {
             //replace the ConcertDetailFragment with a new one
-            ConcertDetailFragment concertDetailFragment = ConcertDetailFragment.newInstance(artistName, concertDate);
+            ConcertDetailFragment concertDetailFragment = ConcertDetailFragment.newInstance(concertUri);
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.concert_detail_container, concertDetailFragment, DETAIL_FRAGMENT_TAG)
                     .addToBackStack(null)
@@ -92,8 +93,7 @@ public class MainActivity extends AppCompatActivity implements ConcertsRecyclerV
             //create an explicit Intent to start ConcertDetailActivity
             //include the Concert object in the Intent
             Intent intent = new Intent(this, ConcertDetailActivity.class);
-            intent.putExtra(getString(R.string.extra_artist_name), artistName);
-            intent.putExtra(getString(R.string.extra_concert_date), concertDate);
+            intent.setData(concertUri);
             startActivity(intent);
         }
     }
