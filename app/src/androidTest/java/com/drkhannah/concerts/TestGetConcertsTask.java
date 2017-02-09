@@ -97,6 +97,11 @@ public class TestGetConcertsTask {
 
         //do artistId and checkedArtistId match
         assertEquals("artist _id doesn't match the _id that checkForArtist() returnd", artistId, checkedArtistId);
+
+        mContext.getContentResolver()
+                .acquireContentProviderClient(ConcertsContract.ArtistEntry.CONTENT_URI)
+                .getLocalContentProvider()
+                .shutdown();
     }
 
     @Test
@@ -162,5 +167,15 @@ public class TestGetConcertsTask {
 
         //the two old concerts should have been deleted
         assertEquals(2, concertsDeleted);
+
+        mContext.getContentResolver()
+                .acquireContentProviderClient(ConcertsContract.ArtistEntry.CONTENT_URI)
+                .getLocalContentProvider()
+                .shutdown();
+
+        mContext.getContentResolver()
+                .acquireContentProviderClient(ConcertsContract.ConcertEntry.CONTENT_URI)
+                .getLocalContentProvider()
+                .shutdown();
     }
 }

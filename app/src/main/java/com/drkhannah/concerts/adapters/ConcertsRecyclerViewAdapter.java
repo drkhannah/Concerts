@@ -1,6 +1,7 @@
 package com.drkhannah.concerts.adapters;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,11 +11,8 @@ import android.widget.TextView;
 
 import com.drkhannah.concerts.MainActivity;
 import com.drkhannah.concerts.R;
-import com.drkhannah.concerts.models.Concert;
+import com.drkhannah.concerts.data.ConcertsContract;
 import com.squareup.picasso.Picasso;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by dhannah on 11/14/16.
@@ -24,16 +22,17 @@ public class ConcertsRecyclerViewAdapter extends RecyclerView.Adapter<ConcertsRe
 
     private static final String LOG_TAG = ConcertsRecyclerViewAdapter.class.getSimpleName();
 
+    private Context mContext;
+    private Cursor mCursor;
+
     //constants for which layout to use for Recycler view list items
     private static final int VIEW_TYPE_WITH_IMAGE = 0;
     private static final int VIEW_TYPE_NO_IMAGE = 1;
 
-    private List<Concert> mConcertList = new ArrayList<>();
-    private Context mContext;
-
     //constructor
-    public ConcertsRecyclerViewAdapter(Context context) {
+    public ConcertsRecyclerViewAdapter(Context context, Cursor cursor) {
         mContext = context;
+        mCursor = cursor;
     }
 
     //This ViewHolder object will be used in onBindViewHolder
@@ -57,9 +56,11 @@ public class ConcertsRecyclerViewAdapter extends RecyclerView.Adapter<ConcertsRe
         @Override
         public void onClick(View v) {
             //get a Concert object from mConcertList using the adapter position
-            Concert concert = mConcertList.get(getAdapterPosition());
+            mCursor.moveToPosition(getAdapterPosition());
+            final String artistName = mCursor.getString(mCursor.getColumnIndexOrThrow(ConcertsContract.ArtistEntry.COLUMN_ARTIST_NAME));
+            final String concertDate = mCursor.getString(mCursor.getColumnIndexOrThrow(ConcertsContract.ConcertEntry.COLUMN_FORMATTED_DATE_TIME));
             //handle item selection back in MainActivity
-            ((ConcertsRecyclerViewAdapterItemClick) mContext).onConcertsRecyclerViewItemClick(concert);
+            ((ConcertsRecyclerViewAdapterItemClick) mContext).onConcertsRecyclerViewItemClick(artistName, concertDate);
         }
     }
 
@@ -97,36 +98,42 @@ public class ConcertsRecyclerViewAdapter extends RecyclerView.Adapter<ConcertsRe
     //bind data to a ViewHolder object
     @Override
     public void onBindViewHolder(ConcertsRecyclerViewAdapter.ViewHolder holder, int position) {
-        Concert concert = mConcertList.get(position);
+        mCursor.moveToPosition(position);
+        final String imageUrl = mCursor.getString(mCursor.getColumnIndexOrThrow(ConcertsContract.ArtistEntry.COLUMN_ARTIST_IMAGE));
+        final String title = mCursor.getString(mCursor.getColumnIndexOrThrow(ConcertsContract.ConcertEntry.COLUMN_TTILE));
+        final String date = mCursor.getString(mCursor.getColumnIndexOrThrow(ConcertsContract.ConcertEntry.COLUMN_FORMATTED_DATE_TIME));
+        final String ticketStatus = mCursor.getString(mCursor.getColumnIndexOrThrow(ConcertsContract.ConcertEntry.COLUMN_TICKET_STATUS));
         switch (getItemViewType(position)) {
             case VIEW_TYPE_WITH_IMAGE: {
                 Picasso.with(mContext)
-                        .load(concert.getArtistImage())
+                        .load(imageUrl)
                         .placeholder(R.drawable.artist_placeholder_img)
                         .error(R.drawable.artist_placeholder_img)
                         .into(holder.mArtistImageView);
             }
         }
-        holder.mConcertTitleView.setText(concert.getTitle());
-        holder.mConcertFormattedDateView.setText(concert.getFormattedDateTime());
-        holder.mConcertTicketStatusView.setText(concert.getTicketStatus());
+        holder.mConcertTitleView.setText(title);
+        holder.mConcertFormattedDateView.setText(date);
+        holder.mConcertTicketStatusView.setText(ticketStatus);
     }
 
+    public void swapCursor(Cursor newCursor){
+        mCursor = newCursor;
+        notifyDataSetChanged();
+    }
+
+    public Cursor getCursor() {
+        return mCursor;
+    }
 
     //returns a count of items in the adapter
     @Override
     public int getItemCount() {
-        return (mConcertList.size() > 0) ? mConcertList.size() : 0;
-    }
-
-    //update the adapters data
-    public void updateData(List<Concert> updatedConcerts) {
-        mConcertList = updatedConcerts;
-        notifyDataSetChanged();
+        return (null != mCursor ? mCursor.getCount() : 0);
     }
 
     //interface to communicate the selected concert back to MainActivity
     public interface ConcertsRecyclerViewAdapterItemClick {
-        void onConcertsRecyclerViewItemClick(Concert concert);
+        void onConcertsRecyclerViewItemClick(String artistName, String concertDate);
     }
 }

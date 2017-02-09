@@ -16,14 +16,13 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.drkhannah.concerts.models.Concert;
-import com.squareup.picasso.Picasso;
-
 public class ConcertDetailFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_CONCERT = "concert";
+    private static final String ARG_ARTIST_NAME = "artist_name";
+    private static final String ARG_CONCERT_DATE = "concert_date";
 
-    private Concert mConcert;
+    private String mArtistName;
+    private String mConcertDate;
 
     private TextView mTitleTextView;
     private TextView mTicketUrlTextView;
@@ -36,10 +35,11 @@ public class ConcertDetailFragment extends Fragment {
     }
 
     //use this to create a new instance of this fragment and pass it initialization arguments
-    public static ConcertDetailFragment newInstance(Concert concert) {
+    public static ConcertDetailFragment newInstance(String artistName, String date) {
         ConcertDetailFragment fragment = new ConcertDetailFragment();
         Bundle args = new Bundle();
-        args.putParcelable(ARG_CONCERT, concert);
+        args.putString(ARG_ARTIST_NAME, artistName);
+        args.putString(ARG_CONCERT_DATE, date);
         fragment.setArguments(args);
         return fragment;
     }
@@ -52,7 +52,8 @@ public class ConcertDetailFragment extends Fragment {
 
         //get the fragment arguments
         if (getArguments() != null) {
-            mConcert = getArguments().getParcelable(ARG_CONCERT);
+            mArtistName = getArguments().getParcelable(ARG_ARTIST_NAME);
+            mConcertDate = getArguments().getParcelable(ARG_CONCERT_DATE);
         }
     }
 
@@ -68,49 +69,49 @@ public class ConcertDetailFragment extends Fragment {
             mArtistImageView = (ImageView) rootView.findViewById(R.id.concert_detail_artist_image);
         }
 
-        Picasso.with(getActivity())
-                .load(mConcert.getArtistImage())
-                .into(mArtistImageView);
-
-        //get references to View's in activity_concert_detail
-        mTitleTextView = (TextView) rootView.findViewById(R.id.concert_detail_title);
-        TextView formattedDateTextView = (TextView) rootView.findViewById(R.id.concert_detail_formatted_date);
-        TextView formattedLocationTextView = (TextView) rootView.findViewById(R.id.concert_detail_formatted_location);
-        mTicketUrlTextView = (TextView) rootView.findViewById(R.id.concert_detail_ticket_url);
-        TextView ticketTypeTextView = (TextView) rootView.findViewById(R.id.concert_detail_ticket_type);
-        TextView ticketStatusTextView = (TextView) rootView.findViewById(R.id.concert_detail_ticket_status);
-        TextView descriptionTextView = (TextView) rootView.findViewById(R.id.concert_detail_description);
-        TextView artistNameTextView = (TextView) rootView.findViewById(R.id.concert_detail_artist_name);
-        TextView artistWebsiteTextView = (TextView) rootView.findViewById(R.id.concert_detail_artist_website);
-        mVenueNameTextView = (TextView) rootView.findViewById(R.id.concert_detail_venue_name);
-        TextView venuePlaceTextView = (TextView) rootView.findViewById(R.id.concert_detail_venue_place);
-        TextView venueCityTextView = (TextView) rootView.findViewById(R.id.concert_detail_venue_city);
-        TextView venueCountryTextView = (TextView) rootView.findViewById(R.id.concert_detail_venue_country);
-
-        //Populate Views with Concert object data
-        mTitleTextView.setText(mConcert.getTitle());
-        formattedDateTextView.setText(mConcert.getFormattedDateTime());
-        formattedLocationTextView.setText(mConcert.getFormattedLocation());
-        mTicketUrlTextView.setText(mConcert.getTicketURL());
-        ticketTypeTextView.setText(mConcert.getTicketType());
-        ticketStatusTextView.setText(mConcert.getTicketStatus());
-        descriptionTextView.setText(mConcert.getDescription());
-        artistNameTextView.setText(mConcert.getArtistName());
-
-        artistWebsiteTextView.setText(mConcert.getArtistWebsite());
-        mVenueNameTextView.setText(mConcert.getVenueName());
-        venuePlaceTextView.setText(mConcert.getVenuePlace());
-        venueCityTextView.setText(mConcert.getVenueCity());
-        venueCountryTextView.setText(mConcert.getVenueCountry());
-
-        //create a Geo code
-        mGeo = new StringBuilder()
-                .append("geo:")
-                .append(mConcert.getVenueLatitude())
-                .append(",")
-                .append(mConcert.getVenueLongitude())
-                .append("?")
-                .toString();
+//        Picasso.with(getActivity())
+//                .load(mConcert.getArtistImage())
+//                .into(mArtistImageView);
+//
+//        //get references to View's in activity_concert_detail
+//        mTitleTextView = (TextView) rootView.findViewById(R.id.concert_detail_title);
+//        TextView formattedDateTextView = (TextView) rootView.findViewById(R.id.concert_detail_formatted_date);
+//        TextView formattedLocationTextView = (TextView) rootView.findViewById(R.id.concert_detail_formatted_location);
+//        mTicketUrlTextView = (TextView) rootView.findViewById(R.id.concert_detail_ticket_url);
+//        TextView ticketTypeTextView = (TextView) rootView.findViewById(R.id.concert_detail_ticket_type);
+//        TextView ticketStatusTextView = (TextView) rootView.findViewById(R.id.concert_detail_ticket_status);
+//        TextView descriptionTextView = (TextView) rootView.findViewById(R.id.concert_detail_description);
+//        TextView artistNameTextView = (TextView) rootView.findViewById(R.id.concert_detail_artist_name);
+//        TextView artistWebsiteTextView = (TextView) rootView.findViewById(R.id.concert_detail_artist_website);
+//        mVenueNameTextView = (TextView) rootView.findViewById(R.id.concert_detail_venue_name);
+//        TextView venuePlaceTextView = (TextView) rootView.findViewById(R.id.concert_detail_venue_place);
+//        TextView venueCityTextView = (TextView) rootView.findViewById(R.id.concert_detail_venue_city);
+//        TextView venueCountryTextView = (TextView) rootView.findViewById(R.id.concert_detail_venue_country);
+//
+//        //Populate Views with Concert object data
+//        mTitleTextView.setText(mConcert.getTitle());
+//        formattedDateTextView.setText(mConcert.getFormattedDateTime());
+//        formattedLocationTextView.setText(mConcert.getFormattedLocation());
+//        mTicketUrlTextView.setText(mConcert.getTicketURL());
+//        ticketTypeTextView.setText(mConcert.getTicketType());
+//        ticketStatusTextView.setText(mConcert.getTicketStatus());
+//        descriptionTextView.setText(mConcert.getDescription());
+//        artistNameTextView.setText(mConcert.getArtistName());
+//
+//        artistWebsiteTextView.setText(mConcert.getArtistWebsite());
+//        mVenueNameTextView.setText(mConcert.getVenueName());
+//        venuePlaceTextView.setText(mConcert.getVenuePlace());
+//        venueCityTextView.setText(mConcert.getVenueCity());
+//        venueCountryTextView.setText(mConcert.getVenueCountry());
+//
+//        //create a Geo code
+//        mGeo = new StringBuilder()
+//                .append("geo:")
+//                .append(mConcert.getVenueLatitude())
+//                .append(",")
+//                .append(mConcert.getVenueLongitude())
+//                .append("?")
+//                .toString();
 
         return rootView;
     }

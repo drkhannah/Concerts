@@ -45,10 +45,10 @@ public class ArtistSearchActivity extends AppCompatActivity {
     }
 
     private void returnResult() {
-        String artistToSearch = mSearchArtistEditText.getText().toString();
-        if (!TextUtils.isEmpty(artistToSearch)) {
+        String artistName = mSearchArtistEditText.getText().toString();
+        if (!TextUtils.isEmpty(artistName)) {
             Intent returnIntent = new Intent(this, MainActivity.class);
-            returnIntent.putExtra(getString(R.string.artist_to_search), artistToSearch);
+            returnIntent.putExtra(getString(R.string.artist_to_search), artistName);
             setResult(Activity.RESULT_OK, returnIntent);
             finish();
         } else {

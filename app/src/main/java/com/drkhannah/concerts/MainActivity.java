@@ -1,7 +1,6 @@
 package com.drkhannah.concerts;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
@@ -10,7 +9,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.drkhannah.concerts.adapters.ConcertsRecyclerViewAdapter;
-import com.drkhannah.concerts.models.Concert;
 
 public class MainActivity extends AppCompatActivity implements ConcertsRecyclerViewAdapter.ConcertsRecyclerViewAdapterItemClick {
 
@@ -20,6 +18,7 @@ public class MainActivity extends AppCompatActivity implements ConcertsRecyclerV
     private static final int SEARCH_ARTIST_REQUEST_CODE = 1;
 
     private boolean mTwoPane;
+    private String mArtist;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,13 +51,17 @@ public class MainActivity extends AppCompatActivity implements ConcertsRecyclerV
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == SEARCH_ARTIST_REQUEST_CODE &&
                 resultCode == RESULT_OK) {
-            //Use SharedPreferences.Editor to save artist name to the
-            //com.drkhannah.concerts.CONCERTS_SHARED_PREFERENCE_FILE Shared Preferences file
-            String artistToSearch = data.getStringExtra(getString(R.string.artist_to_search)).toLowerCase();
-            SharedPreferences sharedPrefs = getSharedPreferences(getString(R.string.preference_file_key), MODE_PRIVATE);
-            SharedPreferences.Editor sharedPrefsEditor = sharedPrefs.edit();
-            sharedPrefsEditor.putString(getString(R.string.shared_prefs_artist_name), artistToSearch);
-            sharedPrefsEditor.commit();
+            String artistName = data.getStringExtra(getString(R.string.artist_to_search)).toLowerCase();
+            Utils.saveSharedPrefsArtistName(this, artistName);
+            // update the artist in our second pane using the fragment manager
+            if (!artistName.equals(mArtist)) {
+                ConcertListFragment concertListFragment = (ConcertListFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_concert_list);
+                //will not be null if we are in TwoPane mode
+                if (concertListFragment != null) {
+                    concertListFragment.onArtistNameChanged();
+                }
+                mArtist = artistName;
+            }
         }
     }
 
@@ -77,10 +80,10 @@ public class MainActivity extends AppCompatActivity implements ConcertsRecyclerV
 
     //fired when user clicks an item in the ConcertsRecyclerViewAdapter
     @Override
-    public void onConcertsRecyclerViewItemClick(Concert concert) {
+    public void onConcertsRecyclerViewItemClick(String artistName, String concertDate) {
         if (mTwoPane) {
             //replace the ConcertDetailFragment with a new one
-            ConcertDetailFragment concertDetailFragment = ConcertDetailFragment.newInstance(concert);
+            ConcertDetailFragment concertDetailFragment = ConcertDetailFragment.newInstance(artistName, concertDate);
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.concert_detail_container, concertDetailFragment, DETAIL_FRAGMENT_TAG)
                     .addToBackStack(null)
@@ -89,7 +92,8 @@ public class MainActivity extends AppCompatActivity implements ConcertsRecyclerV
             //create an explicit Intent to start ConcertDetailActivity
             //include the Concert object in the Intent
             Intent intent = new Intent(this, ConcertDetailActivity.class);
-            intent.putExtra(getString(R.string.extra_concert), concert);
+            intent.putExtra(getString(R.string.extra_artist_name), artistName);
+            intent.putExtra(getString(R.string.extra_concert_date), concertDate);
             startActivity(intent);
         }
     }

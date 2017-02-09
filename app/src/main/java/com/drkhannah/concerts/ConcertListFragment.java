@@ -1,11 +1,16 @@
 package com.drkhannah.concerts;
 
 import android.content.Context;
-import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -18,25 +23,37 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.drkhannah.concerts.adapters.ConcertsRecyclerViewAdapter;
+import com.drkhannah.concerts.data.ConcertsContract;
 
 
-public class ConcertListFragment extends Fragment {
+public class ConcertListFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final String LOG_TAG = ConcertListFragment.class.getSimpleName();
+    private static final int CONCERTS_LOADER_ID = 1;
 
     private RecyclerView mConcertsRecyclerView;
     private ConcertsRecyclerViewAdapter mConcertsRecyclerViewAdapter;
     private RecyclerView.LayoutManager mLinearLayoutManager;
     private TextView mEmptyView;
 
+    // projection for our concert list loader
+    static final String[] CONCERTS_LIST_PROJECTION = new String[] {
+            ConcertsContract.ArtistEntry.COLUMN_ARTIST_NAME,
+            ConcertsContract.ArtistEntry.COLUMN_ARTIST_IMAGE,
+            ConcertsContract.ConcertEntry.COLUMN_TTILE,
+            ConcertsContract.ConcertEntry.COLUMN_FORMATTED_DATE_TIME,
+            ConcertsContract.ConcertEntry.COLUMN_TICKET_STATUS
+    };
+
     public ConcertListFragment() {
         // Required empty public constructor
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
         setHasOptionsMenu(true);
+        getLoaderManager().initLoader(CONCERTS_LOADER_ID, null, this);
     }
 
     @Override
@@ -53,16 +70,14 @@ public class ConcertListFragment extends Fragment {
         mConcertsRecyclerView.setLayoutManager(mLinearLayoutManager);
 
         // specify an adapter for the RecyclerView
-        mConcertsRecyclerViewAdapter = new ConcertsRecyclerViewAdapter(getActivity());
+        mConcertsRecyclerViewAdapter = new ConcertsRecyclerViewAdapter(getActivity(), null);
         mConcertsRecyclerView.setAdapter(mConcertsRecyclerViewAdapter);
 
         return rootView;
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        getConcerts();
+    public void onArtistNameChanged() {
+        getLoaderManager().restartLoader(CONCERTS_LOADER_ID, null, this);
     }
 
     //inflate options menu in MainActivity's Toolbar
@@ -87,9 +102,7 @@ public class ConcertListFragment extends Fragment {
         ConnectivityManager connMgr = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
         if (networkInfo != null && networkInfo.isConnected()) {
-            //get the artist name saved in the com.drkhannah.concerts.CONCERTS_SHARED_PREFERENCE_FILE Shared Preferences file
-            SharedPreferences sharedPrefs = getActivity().getSharedPreferences(getString(R.string.preference_file_key), getActivity().MODE_PRIVATE);
-            String artistNameFromSharedPrefs = sharedPrefs.getString(getString(R.string.shared_prefs_artist_name), getString(R.string.default_artsit_name));
+            String artistNameFromSharedPrefs = Utils.getSharedPrefsArtistName(getActivity());
             GetConcertsTask getConcertsTask = new GetConcertsTask(getActivity());
             getConcertsTask.execute(artistNameFromSharedPrefs);
         } else {
@@ -97,18 +110,32 @@ public class ConcertListFragment extends Fragment {
         }
     }
 
-//    //implementation of GetConcertsTaskResultCallback.getConcertsTaskResult()
-//    @Override
-//    public void getConcertsTaskResult(List<Concert> result) {
-//        if (result != null) {
-//            //update the RecyclerViewAdapter data
-//            mConcertsRecyclerViewAdapter.updateData(result);
-//            mConcertsRecyclerView.setVisibility(View.VISIBLE);
-//            mEmptyView.setVisibility(View.GONE);
-//        } else {
-//            mConcertsRecyclerViewAdapter.updateData(result);
-//            mConcertsRecyclerView.setVisibility(View.GONE);
-//            mEmptyView.setVisibility(View.VISIBLE);
-//        }
-//    }
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        //called when a new Loader needs to be created.
+        String artistName = Utils.getSharedPrefsArtistName(getActivity());
+        Uri concertListForArtistUri = ConcertsContract.ConcertEntry.buildConcertListForArtistUri(artistName);
+        return new CursorLoader(getActivity(), concertListForArtistUri, null, null, null, null);
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+        if (cursor.getCount() > 0) {
+            mConcertsRecyclerViewAdapter.swapCursor(cursor);
+            mConcertsRecyclerView.setVisibility(View.VISIBLE);
+            mEmptyView.setVisibility(View.GONE);
+        } else {
+            mConcertsRecyclerViewAdapter.swapCursor(null);
+            mConcertsRecyclerView.setVisibility(View.GONE);
+            mEmptyView.setText(R.string.making_network_call);
+            getConcerts();
+        }
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        mConcertsRecyclerViewAdapter.swapCursor(null);
+        mConcertsRecyclerView.setVisibility(View.GONE);
+        mEmptyView.setText(R.string.reloading_data_from_database);
+    }
 }

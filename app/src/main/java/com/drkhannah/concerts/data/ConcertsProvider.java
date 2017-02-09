@@ -31,7 +31,7 @@ public class ConcertsProvider extends ContentProvider {
     static {
         sConcertsForArtistQueryBuilder = new SQLiteQueryBuilder();
         //This is an SQL INNER JOIN
-        //example: concerts INNER JOIN artist ON concert.artist_id = artist._id
+        //example: concert INNER JOIN artist ON concert.artist_id = artist._id
         sConcertsForArtistQueryBuilder.setTables(
                 ConcertsContract.ConcertEntry.TABLE_NAME + " INNER JOIN " +
                         ConcertsContract.ArtistEntry.TABLE_NAME +
@@ -42,7 +42,7 @@ public class ConcertsProvider extends ContentProvider {
     }
 
     //selection for artist name
-    //example: artist.name = ?
+    //example: artist.artist_name = ?
     public static final String sArtistSelection =
             ConcertsContract.ArtistEntry.TABLE_NAME +
                     "." + ConcertsContract.ArtistEntry.COLUMN_ARTIST_NAME + " = ? ";
@@ -63,7 +63,7 @@ public class ConcertsProvider extends ContentProvider {
     }
 
     //selection for artist name and concert date
-    //example: artist.name = ? AND date = ?
+    //example: artist.artist_name = ? AND formated_date_time = ?
     public static final String sArtistAndDateSelection =
             ConcertsContract.ArtistEntry.TABLE_NAME +
                     "." + ConcertsContract.ArtistEntry.COLUMN_ARTIST_NAME + " = ? AND " +

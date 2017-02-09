@@ -6,8 +6,6 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
-import com.drkhannah.concerts.models.Concert;
-
 /**
  * Created by dhannah on 11/21/16.
  */
@@ -21,9 +19,10 @@ public class ConcertDetailActivity extends AppCompatActivity {
 
         //get the Intent and its Extras that started this Activity
         Intent receivedIntent = getIntent();
-        Concert concert = (Concert) receivedIntent.getParcelableExtra(getString(R.string.extra_concert));
+        String artistName = receivedIntent.getStringExtra(getString(R.string.extra_artist_name));
+        String concertDate = receivedIntent.getStringExtra(getString(R.string.extra_concert_date));
 
-        setUpAppBar(concert);
+        setUpAppBar(artistName);
 
         if (savedInstanceState == null) {
             //if savedInstanceState is null,
@@ -32,7 +31,7 @@ public class ConcertDetailActivity extends AppCompatActivity {
 
             // Create the ConcertDetailFragment
             // pass Concert object to  ConcertDetailFragment.newInstance() to be set as a fragment argument
-            ConcertDetailFragment fragment = ConcertDetailFragment.newInstance(concert);
+            ConcertDetailFragment fragment = ConcertDetailFragment.newInstance(artistName, concertDate);
 
             //add it to the activity using FragmentManager
             getSupportFragmentManager().beginTransaction()
@@ -41,10 +40,10 @@ public class ConcertDetailActivity extends AppCompatActivity {
         }
     }
 
-    private void setUpAppBar(Concert concert) {
+    private void setUpAppBar(String artistName) {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle(concert.getArtistName());
+        getSupportActionBar().setTitle(artistName);
     }
 }

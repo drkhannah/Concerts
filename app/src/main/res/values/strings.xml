@@ -54,10 +54,15 @@
     <string name="response_object_key_country" translatable="false">country</string>
     <string name="response_object_key_longitude" translatable="false">longitude</string>
     <string name="response_object_key_latitude" translatable="false">latitude</string>
+
+    <!-- Shown when No items in Concert List-->
     <string name="no_data_available">no data available</string>
+    <string name="reloading_data_from_database">Reloading Data From Database</string>
+    <string name="making_network_call">Making network call</string>
 
     <!--custom Intent Extras-->
-    <string name="extra_concert" translatable="false">concert</string>
+    <string name="extra_artist_name" translatable="false">artist_name</string>
+    <string name="extra_concert_date" translatable="false">concert_date</string>
 
     <!--Action Button Titles-->
     <string name="action_get_concerts">Get Concerts</string>
@@ -74,10 +79,9 @@
     <!-- Shared Preferences Constants-->
     <string name="preference_file_key" translatable="false">com.drkhannah.concerts.CONCERTS_SHARED_PREFERENCE_FILE</string>
     <string name="shared_prefs_artist_name" translatable="false">artist_name</string>
-    <string name="default_artsit_name">steve aoki</string>
+    <string name="default_artsit_name" translatable="false">steve aoki</string>
 
     <!-- Content Authority -->
     <string name="content_authority">com.drkhannah.concerts.provider</string>
-
 
 </resources>

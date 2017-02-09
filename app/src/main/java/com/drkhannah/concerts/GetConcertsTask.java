@@ -9,7 +9,6 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.drkhannah.concerts.data.ConcertsContract;
-import com.drkhannah.concerts.models.Concert;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -21,8 +20,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Vector;
 
 /**
@@ -33,7 +30,6 @@ public class GetConcertsTask extends AsyncTask<String, Void, Void> {
 
     private static final String LOG_TAG = GetConcertsTask.class.getSimpleName();
 
-    private List<Concert> mConcertList = new ArrayList<>();
     private Context mContext;
 
     /**
@@ -53,7 +49,7 @@ public class GetConcertsTask extends AsyncTask<String, Void, Void> {
     }
 
     // Build a URL to request concerts for an artist
-    private void downloadConcerts(String artistToSearch) {
+    private void downloadConcerts(String artistName) {
         // Will contain the raw JSON response as a string.
         String concertsJsonStr = null;
 
@@ -64,7 +60,7 @@ public class GetConcertsTask extends AsyncTask<String, Void, Void> {
 
             //Build a uri to construct a valid url
             final String BASE_URL = mContext.getString(R.string.base_url);
-            final String ARTIST = artistToSearch;
+            final String ARTIST = artistName;
             final String RESPONSE_FORMAT = mContext.getString(R.string.response_format_param);
             final String API_VERSION = mContext.getString(R.string.api_version_param);
             final String APP_ID = mContext.getString(R.string.app_id_param);
@@ -155,10 +151,24 @@ public class GetConcertsTask extends AsyncTask<String, Void, Void> {
         long oldArtistId = 0;
 
         if (concertsJsonArray.length() > 0) {
-            //loop through concertsJsonArray
+            //get a concert object from the response
+            JSONObject concertJsonObject = concertsJsonArray.getJSONObject(0);
+
+            //artist array in response
+            JSONArray artistsJsonArray = concertJsonObject.getJSONArray(mContext.getString(R.string.response_object_key_artists));
+            JSONObject firstArtistJsonObject = artistsJsonArray.getJSONObject(0);
+            String artistName = firstArtistJsonObject.optString(mContext.getString(R.string.response_object_key_name), mContext.getString(R.string.no_artist_name_available));
+            String artistImage = firstArtistJsonObject.optString(mContext.getString(R.string.response_object_key_thumb_url), mContext.getString(R.string.no_artist_image_available));
+            String artistWebsite = firstArtistJsonObject.optString(mContext.getString(R.string.response_object_key_website), mContext.getString(R.string.no_artist_website_available));
+
+            oldArtistId = checkForArtist(artistName);
+
+            long newArtistId = insertArtist(artistName, artistImage, artistWebsite);
+
+            //loop through concertsJsonArray to get all concerts for the artist
             for (int i = 0; i < concertsJsonArray.length(); i++) {
                 //get a concert object from the response
-                JSONObject concertJsonObject = concertsJsonArray.getJSONObject(i);
+                concertJsonObject = concertsJsonArray.getJSONObject(i);
 
                 //concert object in response
                 String title = concertJsonObject.optString(mContext.getString(R.string.response_object_key_title), mContext.getString(R.string.no_title_available));
@@ -169,13 +179,6 @@ public class GetConcertsTask extends AsyncTask<String, Void, Void> {
                 String ticketStatus = concertJsonObject.optString(mContext.getString(R.string.response_object_key_ticket_status), mContext.getString(R.string.no_ticket_status_available));
                 String description = concertJsonObject.optString(mContext.getString(R.string.response_object_key_description), mContext.getString(R.string.no_description_available));
 
-                //artist array in response
-                JSONArray artistsJsonArray = concertJsonObject.getJSONArray(mContext.getString(R.string.response_object_key_artists));
-                JSONObject firstArtistJsonObject = artistsJsonArray.getJSONObject(0);
-                String artistName = firstArtistJsonObject.optString(mContext.getString(R.string.response_object_key_name), mContext.getString(R.string.no_artist_name_available));
-                String artistImage = firstArtistJsonObject.optString(mContext.getString(R.string.response_object_key_thumb_url), mContext.getString(R.string.no_artist_image_available));
-                String artistWebsite = firstArtistJsonObject.optString(mContext.getString(R.string.response_object_key_website), mContext.getString(R.string.no_artist_website_available));
-
                 //venue object in response
                 JSONObject venue = concertJsonObject.getJSONObject(mContext.getString(R.string.response_object_key_venue));
                 String venueName = venue.optString(mContext.getString(R.string.response_object_key_venue_name), mContext.getString(R.string.no_venue_name_available));
@@ -185,10 +188,6 @@ public class GetConcertsTask extends AsyncTask<String, Void, Void> {
                 String venueCountry = venue.optString(mContext.getString(R.string.response_object_key_country), mContext.getString(R.string.no_venue_country_available));
                 String venueLongitude = venue.optString(mContext.getString(R.string.response_object_key_longitude), mContext.getString(R.string.no_longitude_available));
                 String venueLatitude = venue.optString(mContext.getString(R.string.response_object_key_latitude), mContext.getString(R.string.no_latitude_available));
-
-                oldArtistId = checkForArtist(artistName);
-
-                long newArtistId = insertArtist(artistName, artistImage, artistWebsite);
 
                 ContentValues concertValues = new ContentValues();
 
@@ -224,6 +223,7 @@ public class GetConcertsTask extends AsyncTask<String, Void, Void> {
             if (oldArtistId > 0) {
                 purgeOldConcerts(oldArtistId);
             }
+
         }
     }
 
@@ -272,9 +272,9 @@ public class GetConcertsTask extends AsyncTask<String, Void, Void> {
         ContentValues artistValues = new ContentValues();
 
         // add the artist values
-        artistValues.put(ConcertsContract.ArtistEntry.COLUMN_ARTIST_NAME, artistName);
-        artistValues.put(ConcertsContract.ArtistEntry.COLUMN_ARTIST_IMAGE, website_url);
-        artistValues.put(ConcertsContract.ArtistEntry.COLUMN_ARTIST_WEBSITE, img_url);
+        artistValues.put(ConcertsContract.ArtistEntry.COLUMN_ARTIST_NAME, artistName.toLowerCase());
+        artistValues.put(ConcertsContract.ArtistEntry.COLUMN_ARTIST_IMAGE, img_url);
+        artistValues.put(ConcertsContract.ArtistEntry.COLUMN_ARTIST_WEBSITE, website_url);
         artistValues.put(ConcertsContract.ArtistEntry.COLUMN_TIME_STAMP, timestamp);
 
         // Finally, insert artist record.
