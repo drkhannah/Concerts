@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.TextView;
 
 import com.drkhannah.concerts.data.ConcertsContract;
 
@@ -26,30 +27,39 @@ import java.util.Vector;
  * Created by dhannah on 11/7/16.
  */
 
-public class GetConcertsTask extends AsyncTask<String, Void, Void> {
+public class GetConcertsTask extends AsyncTask<String, Void, String> {
 
     private static final String LOG_TAG = GetConcertsTask.class.getSimpleName();
 
     private Context mContext;
+    private final TextView mEmptyTextView;
 
     /**
      * Creates a new asynchronous task. This constructor must be invoked on the UI thread.
      */
-    public GetConcertsTask(Context context) {
+    public GetConcertsTask(Context context, TextView emptyTextView) {
         super();
         mContext = context;
+        mEmptyTextView = emptyTextView;
     }
 
     //creates a new thread
     @Override
-    protected Void doInBackground(String... params) {
+    protected String doInBackground(String... params) {
         // params comes from the execute() call: params[0] is the artist.
-        downloadConcerts(params[0]);
-        return null;
+        return downloadConcerts(params[0]);
+    }
+
+    @Override
+    protected void onPostExecute(String responseString) {
+        super.onPostExecute(responseString);
+        if (responseString != null) {
+            mEmptyTextView.setText(responseString);
+        }
     }
 
     // Build a URL to request concerts for an artist
-    private void downloadConcerts(String artistName) {
+    private String downloadConcerts(String artistName) {
         // Will contain the raw JSON response as a string.
         String concertsJsonStr = null;
 
@@ -84,7 +94,7 @@ public class GetConcertsTask extends AsyncTask<String, Void, Void> {
 
             if (urlConnection.getResponseCode() != HttpURLConnection.HTTP_OK) {
                 Log.d(LOG_TAG, "Request Response Code: " + urlConnection.getResponseCode());
-                return;
+                return mContext.getString(R.string.no_such_artist, Utils.getSharedPrefsArtistName(mContext));
             }
 
             // Read the input stream into a String
@@ -93,7 +103,7 @@ public class GetConcertsTask extends AsyncTask<String, Void, Void> {
 
             if (inputStream == null) {
                 // there is nothing in the inputStream so return null
-                return;
+                return null;
             }
 
             //read the input stream
@@ -107,17 +117,22 @@ public class GetConcertsTask extends AsyncTask<String, Void, Void> {
 
             if (buffer.length() == 0) {
                 // nothing in the StringBuffer so return null
-                return;
+                return mContext.getString(R.string.no_concerts_for, Utils.getSharedPrefsArtistName(mContext));
             }
             //convert the buffer to a string
             concertsJsonStr = buffer.toString();
+
+            if (concertsJsonStr.equalsIgnoreCase("[]\n")) {
+                // nothing in the concertsJsonStr so return null
+                return mContext.getString(R.string.no_concerts_for, Utils.getSharedPrefsArtistName(mContext));
+            }
 
             //return a parsed response List<Concert>
             Log.d(LOG_TAG, "RESPONSE FROM BANDSINTOWN: " + concertsJsonStr);
 
         } catch (IOException e) {
             Log.e(LOG_TAG, "Error ", e);
-            return;
+            return null;
         } finally {
             //no matter success or error of try/catch
             //close the urlConnection and the reader
@@ -138,6 +153,7 @@ public class GetConcertsTask extends AsyncTask<String, Void, Void> {
             Log.e(LOG_TAG, e.getMessage());
             e.printStackTrace();
         }
+        return null;
     }
 
     private void parseJson(String concertsJsonStr) throws JSONException {

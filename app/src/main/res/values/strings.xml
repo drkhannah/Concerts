@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:xliff="http://schemas.android.com/apk/res-auto">
     <string name="app_name">Concerts</string>
 
     <!--activity titles-->
@@ -59,6 +59,9 @@
     <string name="no_data_available">no data available</string>
     <string name="reloading_data_from_database">Reloading Data From Database</string>
     <string name="making_network_call">Making network call</string>
+    <string name="searching_for_artist">"Searching for artist: <xliff:g name="name">%s</xliff:g>"</string>
+    <string name="no_concerts_for">"no concerts for: <xliff:g name="name">%s</xliff:g>"</string>
+    <string name="no_such_artist">"no such artist: <xliff:g name="name">%s</xliff:g>"</string>
 
     <!--custom Intent Extras-->
     <string name="extra_artist_name" translatable="false">artist_name</string>
@@ -83,5 +86,22 @@
 
     <!-- Content Authority -->
     <string name="content_authority">com.drkhannah.concerts.provider</string>
+
+    <!--Concert Detail Labels-->
+    <string name="title_label">Title:</string>
+    <string name="date_label">Date:</string>
+    <string name="location_label">Location:</string>
+    <string name="ticket_url_label">Ticket URL:</string>
+    <string name="ticket_type_label">Ticket Type:</string>
+    <string name="ticket_status_label">Ticket Status:</string>
+    <string name="description_label">Description:</string>
+    <string name="artist_name_label">Artist Name:</string>
+    <string name="artist_website_label">Artist Website:</string>
+    <string name="venue_name_label">Venue Name:</string>
+    <string name="venue_place_label">Venue Place:</string>
+    <string name="venue_city_label">Venue City:</string>
+    <string name="venue_region_label">Venue Region:</string>
+    <string name="venue_country_label">Venue Country:</string>
+
 
 </resources>

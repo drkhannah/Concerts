@@ -92,6 +92,28 @@ public class TestGetConcertsTask {
         //was the artist inserted correctly?
         assertTrue("Error: insertArtist returned an invalid _id on insert", artistId != -1);
 
+        // Data was inserted, now lets pull it out and look at it
+        //SELECT * FROM artist
+        Cursor cursor = mContext.getContentResolver().query(
+                ConcertsContract.ArtistEntry.CONTENT_URI,
+                null,
+                null,
+                null,
+                null
+        );
+
+        // check to see if we got any records back from the query
+        assertTrue( "Error: No Records returned from artist query", cursor.moveToFirst() );
+
+        //check artist name in cursor
+        assertEquals("insertArtist() didn't insert the correct artist name", TEST_ARTIST, cursor.getString(cursor.getColumnIndexOrThrow(ConcertsContract.ArtistEntry.COLUMN_ARTIST_NAME)));
+
+        //check artist image in cursor
+        assertEquals("insertArtist() didn't insert the correct image", TEST_ARTIST_IMAGE, cursor.getString(cursor.getColumnIndexOrThrow(ConcertsContract.ArtistEntry.COLUMN_ARTIST_IMAGE)));
+
+        //check artist website in cursor
+        assertEquals("insertArtist() didn't  insert the correct website", TEST_ARTIST_WEBSITE, cursor.getString(cursor.getColumnIndexOrThrow(ConcertsContract.ArtistEntry.COLUMN_ARTIST_WEBSITE)));
+
         //check for artist
         long checkedArtistId = getConcertsTask.checkForArtist(TEST_ARTIST);
 
@@ -136,7 +158,7 @@ public class TestGetConcertsTask {
         long oldArtistId = getConcertsTask.checkForArtist(TEST_ARTIST);
 
         //do artistId and checkedArtistId match
-        assertEquals("artist _id doesn't match the _id that checkForArtist() returnd", artistId, oldArtistId);
+        assertEquals("artist _id doesn't match the _id that checkForArtist() returned", artistId, oldArtistId);
 
         //insert the same artist in order to get a new artist _id
         long newArtistId = getConcertsTask.insertArtist(TEST_ARTIST, TEST_ARTIST_IMAGE, TEST_ARTIST_WEBSITE);
@@ -161,8 +183,8 @@ public class TestGetConcertsTask {
         assertEquals(1, concertInserted);
 
         //purge the old concerts
-        //at this point there are three concerts in the database
-        //but two of them are based on the old artist _id so they need to be purged
+        //at this point there are THREE concerts in the database for the artist
+        //but TWO of them are based on the old artist _id so they need to be purged
         int concertsDeleted = getConcertsTask.purgeOldConcerts(oldArtistId);
 
         //the two old concerts should have been deleted

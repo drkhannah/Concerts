@@ -2,7 +2,6 @@ package com.drkhannah.concerts;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -14,7 +13,7 @@ public class Utils {
 
     public static String getSharedPrefsArtistName(Context context) {
         //get the artist name saved in the com.drkhannah.concerts.CONCERTS_SHARED_PREFERENCE_FILE Shared Preferences file
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
+        SharedPreferences sharedPref = context.getSharedPreferences(context.getString(R.string.preference_file_key), MODE_PRIVATE);
         return sharedPref.getString(context.getString(R.string.shared_prefs_artist_name), context.getString(R.string.default_artsit_name));
     }
 

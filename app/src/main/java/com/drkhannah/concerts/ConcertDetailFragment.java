@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.drkhannah.concerts.data.ConcertsContract;
 import com.squareup.picasso.Picasso;
@@ -37,24 +38,17 @@ public class ConcertDetailFragment extends Fragment implements LoaderManager.Loa
     private TextView mVenueNameTextView;
     private ImageView mArtistImageView;
     private String mGeo;
-
-    private String mArtistName;
-    private String mArtistImageURL;
-    private String mTitle;
-    private String mDate;
-    private String mLocation;
-    private String mTicketUrl;
-    private String mTicketType;
-    private String mTicketStatus;
-    private String mDescription;
-    private String mArtistWebsiteURL;
-    private String mVenueName;
-    private String mVenuePlace;
-    private String mVenueCity;
-    private String mVenueRegion;
-    private String mVenueCountry;
-    private String mVenueLatitude;
-    private String mVenueLongitude;
+    private TextView mArtistNameTextView;
+    private TextView mArtistWebsiteTextView;
+    private TextView mFormattedDateTextView;
+    private TextView mFormattedLocationTextView;
+    private TextView mTicketTypeTextView;
+    private TextView mTicketStatusTextView;
+    private TextView mDescriptionTextView;
+    private TextView mVenuePlaceTextView;
+    private TextView mVenueCityTextView;
+    private TextView mVenueRegionTextView;
+    private TextView mVenueCountryTextView;
 
     // projection for our concert list loader
     final String[] CONCERTS_DETAIL_PROJECTION = new String[]{
@@ -122,50 +116,21 @@ public class ConcertDetailFragment extends Fragment implements LoaderManager.Loa
             mArtistImageView = (ImageView) rootView.findViewById(R.id.concert_detail_artist_image);
         }
 
-        Picasso.with(getActivity())
-                .load(mArtistImageURL)
-                .into(mArtistImageView);
-
         //get references to View's in activity_concert_detail
+        mArtistNameTextView = (TextView) rootView.findViewById(R.id.concert_detail_artist_name);
+        mArtistWebsiteTextView = (TextView) rootView.findViewById(R.id.concert_detail_artist_website);
         mTitleTextView = (TextView) rootView.findViewById(R.id.concert_detail_title);
-        TextView formattedDateTextView = (TextView) rootView.findViewById(R.id.concert_detail_formatted_date);
-        TextView formattedLocationTextView = (TextView) rootView.findViewById(R.id.concert_detail_formatted_location);
+        mFormattedDateTextView = (TextView) rootView.findViewById(R.id.concert_detail_formatted_date);
+        mFormattedLocationTextView = (TextView) rootView.findViewById(R.id.concert_detail_formatted_location);
         mTicketUrlTextView = (TextView) rootView.findViewById(R.id.concert_detail_ticket_url);
-        TextView ticketTypeTextView = (TextView) rootView.findViewById(R.id.concert_detail_ticket_type);
-        TextView ticketStatusTextView = (TextView) rootView.findViewById(R.id.concert_detail_ticket_status);
-        TextView descriptionTextView = (TextView) rootView.findViewById(R.id.concert_detail_description);
-        TextView artistNameTextView = (TextView) rootView.findViewById(R.id.concert_detail_artist_name);
-        TextView artistWebsiteTextView = (TextView) rootView.findViewById(R.id.concert_detail_artist_website);
+        mTicketTypeTextView = (TextView) rootView.findViewById(R.id.concert_detail_ticket_type);
+        mTicketStatusTextView = (TextView) rootView.findViewById(R.id.concert_detail_ticket_status);
+        mDescriptionTextView = (TextView) rootView.findViewById(R.id.concert_detail_description);
         mVenueNameTextView = (TextView) rootView.findViewById(R.id.concert_detail_venue_name);
-        TextView venuePlaceTextView = (TextView) rootView.findViewById(R.id.concert_detail_venue_place);
-        TextView venueCityTextView = (TextView) rootView.findViewById(R.id.concert_detail_venue_city);
-        TextView venueRegionTextView = (TextView) rootView.findViewById(R.id.concert_detail_venue_region);
-        TextView venueCountryTextView = (TextView) rootView.findViewById(R.id.concert_detail_venue_country);
-
-        //Populate Views with Concert object data
-        mTitleTextView.setText(mTitle);
-        formattedDateTextView.setText(mDate);
-        formattedLocationTextView.setText(mLocation);
-        mTicketUrlTextView.setText(mTicketUrl);
-        ticketTypeTextView.setText(mTicketType);
-        ticketStatusTextView.setText(mTicketStatus);
-        descriptionTextView.setText(mDescription);
-        artistNameTextView.setText(mArtistName);
-
-        artistWebsiteTextView.setText(mArtistWebsiteURL);
-        mVenueNameTextView.setText(mVenueName);
-        venuePlaceTextView.setText(mVenuePlace);
-        venueCityTextView.setText(mVenueCity);
-        venueRegionTextView.setText(mVenueRegion);
-        venueCountryTextView.setText(mVenueCountry);
-        //create a Geo code
-        mGeo = new StringBuilder()
-                .append("geo:")
-                .append(mVenueLatitude)
-                .append(",")
-                .append(mVenueLongitude)
-                .append("?")
-                .toString();
+        mVenuePlaceTextView = (TextView) rootView.findViewById(R.id.concert_detail_venue_place);
+        mVenueCityTextView = (TextView) rootView.findViewById(R.id.concert_detail_venue_city);
+        mVenueRegionTextView = (TextView) rootView.findViewById(R.id.concert_detail_venue_region);
+        mVenueCountryTextView = (TextView) rootView.findViewById(R.id.concert_detail_venue_country);
 
         return rootView;
     }
@@ -220,6 +185,8 @@ public class ConcertDetailFragment extends Fragment implements LoaderManager.Loa
             //see if there is an app on the device with an Activity that can handle this Intent
             if (mapIntent.resolveActivity(getActivity().getPackageManager()) != null) {
                 startActivity(mapIntent);
+            } else {
+                Toast.makeText(getActivity(), "There is no Map applicaiton on this device", Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -236,28 +203,57 @@ public class ConcertDetailFragment extends Fragment implements LoaderManager.Loa
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
         if (cursor.getCount() > 0 && cursor.moveToFirst()) {
-            mArtistName = cursor.getString(cursor.getColumnIndexOrThrow(ConcertsContract.ArtistEntry.COLUMN_ARTIST_NAME));
-            mArtistImageURL = cursor.getString(cursor.getColumnIndexOrThrow(ConcertsContract.ArtistEntry.COLUMN_ARTIST_IMAGE));
-            mArtistWebsiteURL = cursor.getString(cursor.getColumnIndexOrThrow(ConcertsContract.ArtistEntry.COLUMN_ARTIST_WEBSITE));
-            mTitle = cursor.getString(cursor.getColumnIndexOrThrow(ConcertsContract.ConcertEntry.COLUMN_ARTIST_IMAGE));
-            mDate = cursor.getString(cursor.getColumnIndexOrThrow(ConcertsContract.ConcertEntry.COLUMN_ARTIST_IMAGE));
-            mLocation = cursor.getString(cursor.getColumnIndexOrThrow(ConcertsContract.ConcertEntry.COLUMN_ARTIST_IMAGE));
-            mTicketUrl = cursor.getString(cursor.getColumnIndexOrThrow(ConcertsContract.ConcertEntry.COLUMN_ARTIST_IMAGE));
-            mTicketType = cursor.getString(cursor.getColumnIndexOrThrow(ConcertsContract.ConcertEntry.COLUMN_ARTIST_IMAGE));
-            mTicketStatus = cursor.getString(cursor.getColumnIndexOrThrow(ConcertsContract.ConcertEntry.COLUMN_ARTIST_IMAGE));
-            mDescription = cursor.getString(cursor.getColumnIndexOrThrow(ConcertsContract.ConcertEntry.COLUMN_ARTIST_IMAGE));
-            mVenueName = cursor.getString(cursor.getColumnIndexOrThrow(ConcertsContract.ConcertEntry.COLUMN_ARTIST_IMAGE));
-            mVenuePlace = cursor.getString(cursor.getColumnIndexOrThrow(ConcertsContract.ConcertEntry.COLUMN_ARTIST_IMAGE));
-            mVenueCity = cursor.getString(cursor.getColumnIndexOrThrow(ConcertsContract.ConcertEntry.COLUMN_ARTIST_IMAGE));
-            mVenueRegion = cursor.getString(cursor.getColumnIndexOrThrow(ConcertsContract.ConcertEntry.COLUMN_ARTIST_IMAGE));
-            mVenueCountry = cursor.getString(cursor.getColumnIndexOrThrow(ConcertsContract.ConcertEntry.COLUMN_ARTIST_IMAGE));
-            mVenueLatitude = cursor.getString(cursor.getColumnIndexOrThrow(ConcertsContract.ConcertEntry.COLUMN_ARTIST_IMAGE));
-            mVenueLongitude = cursor.getString(cursor.getColumnIndexOrThrow(ConcertsContract.ConcertEntry.COLUMN_ARTIST_IMAGE));
+
+            Picasso.with(getActivity())
+                    .load(cursor.getString(cursor.getColumnIndexOrThrow(ConcertsContract.ArtistEntry.COLUMN_ARTIST_IMAGE)))
+                    .into(mArtistImageView);
+
+            mArtistNameTextView.setText(cursor.getString(cursor.getColumnIndexOrThrow(ConcertsContract.ArtistEntry.COLUMN_ARTIST_NAME)));
+            mArtistWebsiteTextView.setText(cursor.getString(cursor.getColumnIndexOrThrow(ConcertsContract.ArtistEntry.COLUMN_ARTIST_WEBSITE)));
+            mTitleTextView.setText(cursor.getString(cursor.getColumnIndexOrThrow(ConcertsContract.ConcertEntry.COLUMN_TTILE)));
+            mFormattedDateTextView.setText(cursor.getString(cursor.getColumnIndexOrThrow(ConcertsContract.ConcertEntry.COLUMN_FORMATTED_DATE_TIME)));
+            mFormattedLocationTextView.setText(cursor.getString(cursor.getColumnIndexOrThrow(ConcertsContract.ConcertEntry.COLUMN_FORMATTED_LOCATION)));
+            mTicketUrlTextView.setText(cursor.getString(cursor.getColumnIndexOrThrow(ConcertsContract.ConcertEntry.COLUMN_TICKET_URL)));
+            mTicketTypeTextView.setText(cursor.getString(cursor.getColumnIndexOrThrow(ConcertsContract.ConcertEntry.COLUMN_TICKET_TYPE)));
+            mTicketStatusTextView.setText(cursor.getString(cursor.getColumnIndexOrThrow(ConcertsContract.ConcertEntry.COLUMN_TICKET_STATUS)));
+            mDescriptionTextView.setText(cursor.getString(cursor.getColumnIndexOrThrow(ConcertsContract.ConcertEntry.COLUMN_DESCRIPTION)));
+            mVenueNameTextView.setText(cursor.getString(cursor.getColumnIndexOrThrow(ConcertsContract.ConcertEntry.COLUMN_VENUE_NAME)));
+            mVenuePlaceTextView.setText(cursor.getString(cursor.getColumnIndexOrThrow(ConcertsContract.ConcertEntry.COLUMN_VENUE_PLACE)));
+            mVenueCityTextView.setText(cursor.getString(cursor.getColumnIndexOrThrow(ConcertsContract.ConcertEntry.COLUMN_VENUE_CITY)));
+            mVenueRegionTextView.setText(cursor.getString(cursor.getColumnIndexOrThrow(ConcertsContract.ConcertEntry.COLUMN_VENUE_REGION)));
+            mVenueCountryTextView.setText(cursor.getString(cursor.getColumnIndexOrThrow(ConcertsContract.ConcertEntry.COLUMN_VENUE_COUNTRY)));
+
+            //create a Geo code
+            mGeo = new StringBuilder()
+                    .append("geo:")
+                    .append(cursor.getString(cursor.getColumnIndexOrThrow(ConcertsContract.ConcertEntry.COLUMN_VENUE_LATITUDE)))
+                    .append(",")
+                    .append(cursor.getString(cursor.getColumnIndexOrThrow(ConcertsContract.ConcertEntry.COLUMN_VENUE_LONGITUDE)))
+                    .append("?")
+                    .toString();
         }
     }
 
     @Override
     public void onLoaderReset(Loader loader) {
+        Picasso.with(getActivity())
+                .load(R.drawable.artist_placeholder_img)
+                .into(mArtistImageView);
 
+        mArtistNameTextView.setText(R.string.no_artist_name_available);
+        mArtistWebsiteTextView.setText(R.string.no_artist_website_available);
+        mTitleTextView.setText(R.string.no_title_available);
+        mFormattedDateTextView.setText(R.string.no_date_available);
+        mFormattedLocationTextView.setText(R.string.no_location_available);
+        mTicketUrlTextView.setText(R.string.no_ticket_url_available);
+        mTicketTypeTextView.setText(R.string.no_ticket_type_available);
+        mTicketStatusTextView.setText(R.string.no_ticket_status_available);
+        mDescriptionTextView.setText(R.string.no_description_available);
+        mVenueNameTextView.setText(R.string.no_venue_name_available);
+        mVenuePlaceTextView.setText(R.string.no_venue_place_available);
+        mVenueCityTextView.setText(R.string.no_venue_city_available);
+        mVenueRegionTextView.setText(R.string.no_venue_region_available);
+        mVenueCountryTextView.setText(R.string.no_venue_country_available);
+        mGeo = null;
     }
 }

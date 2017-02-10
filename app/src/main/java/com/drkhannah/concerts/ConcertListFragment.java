@@ -25,6 +25,8 @@ import android.widget.TextView;
 import com.drkhannah.concerts.adapters.ConcertsRecyclerViewAdapter;
 import com.drkhannah.concerts.data.ConcertsContract;
 
+import java.util.concurrent.TimeUnit;
+
 
 public class ConcertListFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
@@ -40,6 +42,7 @@ public class ConcertListFragment extends Fragment implements LoaderManager.Loade
     final String[] CONCERTS_LIST_PROJECTION = new String[] {
             ConcertsContract.ArtistEntry.COLUMN_ARTIST_NAME,
             ConcertsContract.ArtistEntry.COLUMN_ARTIST_IMAGE,
+            ConcertsContract.ArtistEntry.COLUMN_TIME_STAMP,
             ConcertsContract.ConcertEntry.COLUMN_TTILE,
             ConcertsContract.ConcertEntry.COLUMN_FORMATTED_DATE_TIME,
             ConcertsContract.ConcertEntry.COLUMN_TICKET_STATUS
@@ -103,7 +106,7 @@ public class ConcertListFragment extends Fragment implements LoaderManager.Loade
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
         if (networkInfo != null && networkInfo.isConnected()) {
             String artistNameFromSharedPrefs = Utils.getSharedPrefsArtistName(getActivity());
-            GetConcertsTask getConcertsTask = new GetConcertsTask(getActivity());
+            GetConcertsTask getConcertsTask = new GetConcertsTask(getActivity(), mEmptyView);
             getConcertsTask.execute(artistNameFromSharedPrefs);
         } else {
             Log.e(LOG_TAG, "Not connected to network");
@@ -120,14 +123,27 @@ public class ConcertListFragment extends Fragment implements LoaderManager.Loade
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-        if (cursor.getCount() > 0) {
-            mConcertsRecyclerViewAdapter.swapCursor(cursor);
-            mConcertsRecyclerView.setVisibility(View.VISIBLE);
-            mEmptyView.setVisibility(View.GONE);
+        if (cursor.getCount() > 0 && cursor.moveToFirst()) {
+            long currentTime = System.currentTimeMillis();
+            long timeStamp = cursor.getLong(cursor.getColumnIndexOrThrow(ConcertsContract.ArtistEntry.COLUMN_TIME_STAMP));
+            long timeDifference = currentTime - timeStamp;
+            long oneDay = TimeUnit.DAYS.toMillis(1);
+            if (timeDifference < oneDay) {
+                mConcertsRecyclerViewAdapter.swapCursor(cursor);
+                mConcertsRecyclerView.setVisibility(View.VISIBLE);
+                mEmptyView.setVisibility(View.GONE);
+            } else {
+                mConcertsRecyclerViewAdapter.swapCursor(null);
+                mConcertsRecyclerView.setVisibility(View.GONE);
+                mEmptyView.setVisibility(View.VISIBLE);
+                mEmptyView.setText(getString(R.string.searching_for_artist,Utils.getSharedPrefsArtistName(getActivity())));
+                getConcerts();
+            }
         } else {
             mConcertsRecyclerViewAdapter.swapCursor(null);
             mConcertsRecyclerView.setVisibility(View.GONE);
-            mEmptyView.setText(R.string.making_network_call);
+            mEmptyView.setVisibility(View.VISIBLE);
+            mEmptyView.setText(getString(R.string.searching_for_artist,Utils.getSharedPrefsArtistName(getActivity())));
             getConcerts();
         }
     }
@@ -136,6 +152,7 @@ public class ConcertListFragment extends Fragment implements LoaderManager.Loade
     public void onLoaderReset(Loader<Cursor> loader) {
         mConcertsRecyclerViewAdapter.swapCursor(null);
         mConcertsRecyclerView.setVisibility(View.GONE);
-        mEmptyView.setText(R.string.reloading_data_from_database);
+        mEmptyView.setVisibility(View.VISIBLE);
+        mEmptyView.setText(getString(R.string.searching_for_artist,Utils.getSharedPrefsArtistName(getActivity())));
     }
 }

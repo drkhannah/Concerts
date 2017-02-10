@@ -46,6 +46,8 @@ public class MainActivity extends AppCompatActivity implements ConcertsRecyclerV
                 startActivityForResult(intent, SEARCH_ARTIST_REQUEST_CODE);
             }
         });
+
+        mArtist = Utils.getSharedPrefsArtistName(this);
     }
 
     @Override
@@ -53,7 +55,8 @@ public class MainActivity extends AppCompatActivity implements ConcertsRecyclerV
         if (requestCode == SEARCH_ARTIST_REQUEST_CODE &&
                 resultCode == RESULT_OK) {
             String artistName = data.getStringExtra(getString(R.string.artist_to_search)).toLowerCase();
-            Utils.saveSharedPrefsArtistName(this, artistName);
+            Utils.saveSharedPrefsArtistName(getApplicationContext(), artistName);
+            String name = Utils.getSharedPrefsArtistName(getApplicationContext());
             // update the artist in our second pane using the fragment manager
             if (!artistName.equals(mArtist)) {
                 ConcertListFragment concertListFragment = (ConcertListFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_concert_list);
