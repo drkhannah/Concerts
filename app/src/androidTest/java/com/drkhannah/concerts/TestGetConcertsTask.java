@@ -85,7 +85,7 @@ public class TestGetConcertsTask {
 
     @Test
     public void testInsertArtistAndCheckForArtist() {
-        GetConcertsTask getConcertsTask = new GetConcertsTask(getContext());
+        GetConcertsTask getConcertsTask = new GetConcertsTask(getContext(), null);
 
         //insert an artist
         long artistId = getConcertsTask.insertArtist(TEST_ARTIST, TEST_ARTIST_IMAGE, TEST_ARTIST_WEBSITE);
@@ -128,7 +128,7 @@ public class TestGetConcertsTask {
 
     @Test
     public void testPurgeConcerts() {
-        GetConcertsTask getConcertsTask = new GetConcertsTask(getContext());
+        GetConcertsTask getConcertsTask = new GetConcertsTask(getContext(), null);
 
         //insert an artist
         long artistId = getConcertsTask.insertArtist(TEST_ARTIST, TEST_ARTIST_IMAGE, TEST_ARTIST_WEBSITE);
