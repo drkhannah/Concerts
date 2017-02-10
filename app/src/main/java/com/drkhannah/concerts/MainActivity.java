@@ -56,14 +56,10 @@ public class MainActivity extends AppCompatActivity implements ConcertsRecyclerV
                 resultCode == RESULT_OK) {
             String artistName = data.getStringExtra(getString(R.string.artist_to_search)).toLowerCase();
             Utils.saveSharedPrefsArtistName(getApplicationContext(), artistName);
-            String name = Utils.getSharedPrefsArtistName(getApplicationContext());
-            // update the artist in our second pane using the fragment manager
             if (!artistName.equals(mArtist)) {
+                //Restart CursorLoader in ConcertListFragment
                 ConcertListFragment concertListFragment = (ConcertListFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_concert_list);
-                //will not be null if we are in TwoPane mode
-                if (concertListFragment != null) {
-                    concertListFragment.onArtistNameChanged();
-                }
+                concertListFragment.onArtistNameChanged();
                 mArtist = artistName;
             }
         }

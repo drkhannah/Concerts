@@ -206,6 +206,8 @@ public class ConcertDetailFragment extends Fragment implements LoaderManager.Loa
 
             Picasso.with(getActivity())
                     .load(cursor.getString(cursor.getColumnIndexOrThrow(ConcertsContract.ArtistEntry.COLUMN_ARTIST_IMAGE)))
+                    .placeholder(R.drawable.artist_placeholder_img)
+                    .error(R.drawable.artist_placeholder_img)
                     .into(mArtistImageView);
 
             mArtistNameTextView.setText(cursor.getString(cursor.getColumnIndexOrThrow(ConcertsContract.ArtistEntry.COLUMN_ARTIST_NAME)));
