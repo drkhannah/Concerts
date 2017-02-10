@@ -27,7 +27,7 @@ import com.squareup.picasso.Picasso;
 
 public class ConcertDetailFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
-    private static final int CONCERT_DETAIL_LOADER_ID = 2;
+    private static final int CONCERT_DETAIL_LOADER_ID = 1;
     private static final String ARG_CONCERT_URI = "concert_uri";
 
     private Uri mConcertUri;
