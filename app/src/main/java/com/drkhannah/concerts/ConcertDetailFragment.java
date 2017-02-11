@@ -233,6 +233,26 @@ public class ConcertDetailFragment extends Fragment implements LoaderManager.Loa
                     .append(cursor.getString(cursor.getColumnIndexOrThrow(ConcertsContract.ConcertEntry.COLUMN_VENUE_LONGITUDE)))
                     .append("?")
                     .toString();
+        } else {
+            Picasso.with(getActivity())
+                    .load(R.drawable.artist_placeholder_img)
+                    .into(mArtistImageView);
+
+            mArtistNameTextView.setText(R.string.no_artist_name_available);
+            mArtistWebsiteTextView.setText(R.string.no_artist_website_available);
+            mTitleTextView.setText(R.string.no_title_available);
+            mFormattedDateTextView.setText(R.string.no_date_available);
+            mFormattedLocationTextView.setText(R.string.no_location_available);
+            mTicketUrlTextView.setText(R.string.no_ticket_url_available);
+            mTicketTypeTextView.setText(R.string.no_ticket_type_available);
+            mTicketStatusTextView.setText(R.string.no_ticket_status_available);
+            mDescriptionTextView.setText(R.string.no_description_available);
+            mVenueNameTextView.setText(R.string.no_venue_name_available);
+            mVenuePlaceTextView.setText(R.string.no_venue_place_available);
+            mVenueCityTextView.setText(R.string.no_venue_city_available);
+            mVenueRegionTextView.setText(R.string.no_venue_region_available);
+            mVenueCountryTextView.setText(R.string.no_venue_country_available);
+            mGeo = null;
         }
     }
 

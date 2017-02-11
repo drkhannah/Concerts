@@ -122,7 +122,7 @@ public class ConcertListFragment extends Fragment implements LoaderManager.Loade
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-        if (cursor.getCount() > 0 && cursor.moveToFirst()) {
+        if (cursor.moveToFirst()) {
             long currentTime = System.currentTimeMillis();
             long timeStamp = cursor.getLong(cursor.getColumnIndexOrThrow(ConcertsContract.ArtistEntry.COLUMN_TIME_STAMP));
             long timeDifference = currentTime - timeStamp;
@@ -132,7 +132,7 @@ public class ConcertListFragment extends Fragment implements LoaderManager.Loade
                 mConcertsRecyclerView.setVisibility(View.VISIBLE);
                 mEmptyView.setVisibility(View.GONE);
             } else {
-                mConcertsRecyclerViewAdapter.swapCursor(null);
+                mConcertsRecyclerViewAdapter.swapCursor(cursor);
                 mConcertsRecyclerView.setVisibility(View.GONE);
                 mEmptyView.setVisibility(View.VISIBLE);
                 mEmptyView.setText(getString(R.string.searching_for_artist,Utils.getSharedPrefsArtistName(getActivity())));
