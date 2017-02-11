@@ -35,7 +35,6 @@ public class ConcertListFragment extends Fragment implements LoaderManager.Loade
 
     private RecyclerView mConcertsRecyclerView;
     private ConcertsRecyclerViewAdapter mConcertsRecyclerViewAdapter;
-    private RecyclerView.LayoutManager mLinearLayoutManager;
     private TextView mEmptyView;
 
     // projection for our concert list loader
@@ -69,8 +68,8 @@ public class ConcertListFragment extends Fragment implements LoaderManager.Loade
         mEmptyView = (TextView) rootView.findViewById(R.id.empty_view);
 
         // use a linear layout manager for the RecyclerView
-        mLinearLayoutManager = new LinearLayoutManager(getActivity());
-        mConcertsRecyclerView.setLayoutManager(mLinearLayoutManager);
+        RecyclerView.LayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+        mConcertsRecyclerView.setLayoutManager(linearLayoutManager);
 
         // specify an adapter for the RecyclerView
         mConcertsRecyclerViewAdapter = new ConcertsRecyclerViewAdapter(getActivity(), null);
