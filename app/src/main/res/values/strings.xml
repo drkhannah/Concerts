@@ -82,7 +82,7 @@
     <!-- Shared Preferences Constants-->
     <string name="preference_file_key" translatable="false">com.drkhannah.concerts.CONCERTS_SHARED_PREFERENCE_FILE</string>
     <string name="shared_prefs_artist_name" translatable="false">artist_name</string>
-    <string name="default_artsit_name" translatable="false">steve aoki</string>
+    <string name="default_artist_name" translatable="false">steve aoki</string>
 
     <!-- Content Authority -->
     <string name="content_authority">com.drkhannah.concerts.provider</string>
