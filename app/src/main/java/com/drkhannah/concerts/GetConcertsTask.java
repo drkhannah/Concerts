@@ -273,7 +273,6 @@ public class GetConcertsTask extends AsyncTask<String, Void, String> {
             //get the artist _id
             artistId = artistCursor.getLong(artistIdIndex);
         }
-
         artistCursor.close();
         return artistId;
     }
