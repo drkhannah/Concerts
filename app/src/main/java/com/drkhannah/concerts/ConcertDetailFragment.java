@@ -67,7 +67,6 @@ public class ConcertDetailFragment extends Fragment implements LoaderManager.Loa
             ConcertsContract.ConcertEntry.COLUMN_VENUE_CITY,
             ConcertsContract.ConcertEntry.COLUMN_VENUE_REGION,
             ConcertsContract.ConcertEntry.COLUMN_VENUE_COUNTRY,
-            ConcertsContract.ConcertEntry.COLUMN_VENUE_COUNTRY,
             ConcertsContract.ConcertEntry.COLUMN_VENUE_LATITUDE,
             ConcertsContract.ConcertEntry.COLUMN_VENUE_LONGITUDE,
 
@@ -202,7 +201,7 @@ public class ConcertDetailFragment extends Fragment implements LoaderManager.Loa
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-        if (cursor.getCount() > 0 && cursor.moveToFirst()) {
+        if (cursor.moveToFirst()) {
 
             Picasso.with(getActivity())
                     .load(cursor.getString(cursor.getColumnIndexOrThrow(ConcertsContract.ArtistEntry.COLUMN_ARTIST_IMAGE)))
