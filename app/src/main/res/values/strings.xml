@@ -74,7 +74,7 @@
     <string name="action_share_concert">Share</string>
 
     <!-- Hint for Search Artist EditText-->
-    <string name="search_artist_by_name">Search Artist By Name</string>
+    <string name="search_artist_by_name">Search Artist</string>
 
     <!-- The artist you would like to search-->
     <string name="artist_to_search">artist</string>
