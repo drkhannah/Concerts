@@ -1,5 +1,6 @@
 package com.drkhannah.concerts;
 
+import android.app.SearchManager;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -25,6 +26,7 @@ public class MainActivity extends AppCompatActivity implements ConcertsRecyclerV
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        handleIntent(getIntent());
 
         //setup App Bar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -41,13 +43,31 @@ public class MainActivity extends AppCompatActivity implements ConcertsRecyclerV
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //start ArtistSearchActivity to get a result
-                Intent intent = new Intent(MainActivity.this, ArtistSearchActivity.class);
-                startActivityForResult(intent, SEARCH_ARTIST_REQUEST_CODE);
+                //invoke Search Dialog
+                onSearchRequested();
             }
         });
 
         mArtist = Utils.getSharedPrefsArtistName(this);
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        setIntent(intent);
+        handleIntent(intent);
+    }
+
+    private void handleIntent(Intent intent) {
+        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+            String artistName = intent.getStringExtra(SearchManager.QUERY);
+            Utils.saveSharedPrefsArtistName(getApplicationContext(), artistName);
+            if (!artistName.equalsIgnoreCase(mArtist)) {
+                //Restart CursorLoader in ConcertListFragment
+                ConcertListFragment concertListFragment = (ConcertListFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_concert_list);
+                concertListFragment.onArtistNameChanged();
+                mArtist = artistName;
+            }
+        }
     }
 
     @Override
