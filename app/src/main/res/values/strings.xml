@@ -87,6 +87,9 @@
     <!-- Content Authority -->
     <string name="content_authority">com.drkhannah.concerts.provider</string>
 
+    <!-- Content Authority for ArtistSuggestionsProvider-->
+    <string name="suggestions_authority">com.drkhannah.concerts.ArtistSuggestionsProvider</string>
+
     <!--Concert Detail Labels-->
     <string name="title_label">Title:</string>
     <string name="date_label">Date:</string>

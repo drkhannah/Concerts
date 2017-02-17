@@ -59,6 +59,10 @@
             android:readPermission="com.drkhannah.concerts.provider.READ"
             android:writePermission="com.drkhannah.concerts.provider.WRITE"/>
 
+        <provider
+            android:authorities="@string/suggestions_authority"
+            android:name=".ArtistSuggestionsProvider"/>
+
     </application>
 
 </manifest>

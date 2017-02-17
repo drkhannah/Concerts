@@ -4,6 +4,7 @@ import android.app.SearchManager;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.SearchRecentSuggestions;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
@@ -59,23 +60,17 @@ public class MainActivity extends AppCompatActivity implements ConcertsRecyclerV
 
     private void handleIntent(Intent intent) {
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+            //get the query delivered from the Search Dialog
             String artistName = intent.getStringExtra(SearchManager.QUERY);
-            Utils.saveSharedPrefsArtistName(getApplicationContext(), artistName);
-            if (!artistName.equalsIgnoreCase(mArtist)) {
-                //Restart CursorLoader in ConcertListFragment
-                ConcertListFragment concertListFragment = (ConcertListFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_concert_list);
-                concertListFragment.onArtistNameChanged();
-                mArtist = artistName;
-            }
-        }
-    }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == SEARCH_ARTIST_REQUEST_CODE &&
-                resultCode == RESULT_OK) {
-            String artistName = data.getStringExtra(getString(R.string.artist_to_search));
+            //save query to ArtistSuggestionsProvider
+            SearchRecentSuggestions suggestions = new SearchRecentSuggestions(this,
+                    ArtistSuggestionsProvider.AUTHORITY, ArtistSuggestionsProvider.MODE);
+            suggestions.saveRecentQuery(artistName, null);
+
+            //save artist name from Search Dialog to SharedPreferences
             Utils.saveSharedPrefsArtistName(getApplicationContext(), artistName);
+
             if (!artistName.equalsIgnoreCase(mArtist)) {
                 //Restart CursorLoader in ConcertListFragment
                 ConcertListFragment concertListFragment = (ConcertListFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_concert_list);
