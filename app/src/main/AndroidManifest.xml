@@ -45,13 +45,6 @@
             android:parentActivityName=".MainActivity">
         </activity>
 
-        <activity
-            android:name=".ArtistSearchActivity"
-            android:label="@string/artist_search_activity_title"
-            android:parentActivityName=".MainActivity"
-            android:windowSoftInputMode="stateVisible">
-        </activity>
-
         <provider
             android:authorities="@string/content_authority"
             android:name=".data.ConcertsProvider"
