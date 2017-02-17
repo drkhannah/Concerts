@@ -18,8 +18,6 @@ public class MainActivity extends AppCompatActivity implements ConcertsRecyclerV
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
     private static final String DETAIL_FRAGMENT_TAG = "detail_fragment";
 
-    private static final int SEARCH_ARTIST_REQUEST_CODE = 1;
-
     private boolean mTwoPane;
     private String mArtist;
 
