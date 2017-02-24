@@ -19,7 +19,7 @@ import org.junit.runners.Suite;
         TestUriMatcher.class,
         TestConcertsContract.class,
         TestConcertsProvider.class,
-        TestGetConcertsTask.class})
+        })
 
 public class TestSuite {}
 
