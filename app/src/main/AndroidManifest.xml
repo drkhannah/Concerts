@@ -56,6 +56,10 @@
             android:authorities="@string/suggestions_authority"
             android:name=".ArtistSuggestionsProvider"/>
 
+        <service android:name=".ConcertsService"
+            android:exported="false"
+            android:description="@string/concerts_service_description"/>
+
     </application>
 
 </manifest>

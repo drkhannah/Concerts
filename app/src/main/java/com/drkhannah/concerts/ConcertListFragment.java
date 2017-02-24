@@ -1,9 +1,10 @@
 package com.drkhannah.concerts;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.Cursor;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -11,9 +12,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -27,6 +28,8 @@ import com.drkhannah.concerts.data.ConcertsContract;
 
 import java.util.concurrent.TimeUnit;
 
+import static com.drkhannah.concerts.R.string.extra_artist_name;
+
 
 public class ConcertListFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
@@ -36,6 +39,8 @@ public class ConcertListFragment extends Fragment implements LoaderManager.Loade
     private RecyclerView mConcertsRecyclerView;
     private ConcertsRecyclerViewAdapter mConcertsRecyclerViewAdapter;
     private TextView mEmptyView;
+
+    private BroadcastReceiver mEmptyTextViewBroadcastReceiver;
 
     // projection for our concert list loader
     final String[] CONCERTS_LIST_PROJECTION = new String[] {
@@ -56,6 +61,32 @@ public class ConcertListFragment extends Fragment implements LoaderManager.Loade
         super.onActivityCreated(savedInstanceState);
         setHasOptionsMenu(true);
         getLoaderManager().initLoader(CONCERTS_LOADER_ID, null, this);
+
+        //broadcast receiver for mEmptyTextView sent from ConcertsService
+        mEmptyTextViewBroadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                String emptyTextViewString = intent.getStringExtra(getString(R.string.empty_text_view_extra));
+                mConcertsRecyclerView.setVisibility(View.GONE);
+                mEmptyView.setVisibility(View.VISIBLE);
+                mEmptyView.setText(emptyTextViewString);
+            }
+        };
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        //register for mEmptyTextView local broadcast receiver
+        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(
+                mEmptyTextViewBroadcastReceiver, new IntentFilter(getString(R.string.empty_text_action)));
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        //unregister from mEmptyTextView local broadcast receiver
+        LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(mEmptyTextViewBroadcastReceiver);
     }
 
     @Override
@@ -99,19 +130,6 @@ public class ConcertListFragment extends Fragment implements LoaderManager.Loade
         }
     }
 
-    private void getConcerts() {
-        //Check network connection before "executing" GetConcertsTask
-        ConnectivityManager connMgr = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
-        if (networkInfo != null && networkInfo.isConnected()) {
-            String artistNameFromSharedPrefs = Utils.getSharedPrefsArtistName(getActivity());
-            GetConcertsTask getConcertsTask = new GetConcertsTask(getActivity(), mEmptyView);
-            getConcertsTask.execute(artistNameFromSharedPrefs);
-        } else {
-            Log.e(LOG_TAG, "Not connected to network");
-        }
-    }
-
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         //called when a new Loader needs to be created.
@@ -136,14 +154,20 @@ public class ConcertListFragment extends Fragment implements LoaderManager.Loade
                 mConcertsRecyclerView.setVisibility(View.GONE);
                 mEmptyView.setVisibility(View.VISIBLE);
                 mEmptyView.setText(getString(R.string.searching_for_artist,Utils.getSharedPrefsArtistName(getActivity())));
-                getConcerts();
+                //start the ConcertsService
+                Intent concertsServiceIntent = new Intent(getActivity(), ConcertsService.class);
+                concertsServiceIntent.putExtra(getString(extra_artist_name), Utils.getSharedPrefsArtistName(getActivity()));
+                getActivity().startService(concertsServiceIntent);
             }
         } else {
             mConcertsRecyclerViewAdapter.swapCursor(null);
             mConcertsRecyclerView.setVisibility(View.GONE);
             mEmptyView.setVisibility(View.VISIBLE);
             mEmptyView.setText(getString(R.string.searching_for_artist,Utils.getSharedPrefsArtistName(getActivity())));
-            getConcerts();
+            //start the ConcertsService
+            Intent concertsServiceIntent = new Intent(getActivity(), ConcertsService.class);
+            concertsServiceIntent.putExtra(getString(extra_artist_name), Utils.getSharedPrefsArtistName(getActivity()));
+            getActivity().startService(concertsServiceIntent);
         }
     }
 
@@ -154,4 +178,5 @@ public class ConcertListFragment extends Fragment implements LoaderManager.Loade
         mEmptyView.setVisibility(View.VISIBLE);
         mEmptyView.setText(getString(R.string.searching_for_artist,Utils.getSharedPrefsArtistName(getActivity())));
     }
+
 }

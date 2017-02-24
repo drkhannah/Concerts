@@ -106,5 +106,10 @@
     <string name="venue_region_label">Venue Region:</string>
     <string name="venue_country_label">Venue Country:</string>
 
+    <!-- ConcertsService constants-->
+    <string name="concerts_service_description">Downloads concerts from the BandsInTown API, stores them in the database of the Concerts app</string>
+    <string name="empty_text_action">EMPTY_TEXT_ACTION</string>
+    <string name="empty_text_view_extra">empty_text_view</string>
+
 
 </resources>
