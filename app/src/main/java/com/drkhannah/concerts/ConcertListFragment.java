@@ -62,7 +62,7 @@ public class ConcertListFragment extends Fragment implements LoaderManager.Loade
         setHasOptionsMenu(true);
         getLoaderManager().initLoader(CONCERTS_LOADER_ID, null, this);
 
-        //broadcast receiver for mEmptyTextView sent from ConcertsService
+        //broadcast receiver for mEmptyTextView text broadcast from ConcertsService
         mEmptyTextViewBroadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -138,6 +138,13 @@ public class ConcertListFragment extends Fragment implements LoaderManager.Loade
         return new CursorLoader(getActivity(), concertListForArtistUri, CONCERTS_LIST_PROJECTION, null, null, null);
     }
 
+    public void startConcertsService() {
+        //explicit intent to start the ConcertsService
+        Intent concertsServiceIntent = new Intent(getActivity(), ConcertsService.class);
+        concertsServiceIntent.putExtra(getString(extra_artist_name), Utils.getSharedPrefsArtistName(getActivity()));
+        getActivity().startService(concertsServiceIntent);
+    }
+
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
         if (cursor.moveToFirst()) {
@@ -154,20 +161,14 @@ public class ConcertListFragment extends Fragment implements LoaderManager.Loade
                 mConcertsRecyclerView.setVisibility(View.GONE);
                 mEmptyView.setVisibility(View.VISIBLE);
                 mEmptyView.setText(getString(R.string.searching_for_artist,Utils.getSharedPrefsArtistName(getActivity())));
-                //start the ConcertsService
-                Intent concertsServiceIntent = new Intent(getActivity(), ConcertsService.class);
-                concertsServiceIntent.putExtra(getString(extra_artist_name), Utils.getSharedPrefsArtistName(getActivity()));
-                getActivity().startService(concertsServiceIntent);
+                startConcertsService();
             }
         } else {
             mConcertsRecyclerViewAdapter.swapCursor(null);
             mConcertsRecyclerView.setVisibility(View.GONE);
             mEmptyView.setVisibility(View.VISIBLE);
             mEmptyView.setText(getString(R.string.searching_for_artist,Utils.getSharedPrefsArtistName(getActivity())));
-            //start the ConcertsService
-            Intent concertsServiceIntent = new Intent(getActivity(), ConcertsService.class);
-            concertsServiceIntent.putExtra(getString(extra_artist_name), Utils.getSharedPrefsArtistName(getActivity()));
-            getActivity().startService(concertsServiceIntent);
+            startConcertsService();
         }
     }
 
