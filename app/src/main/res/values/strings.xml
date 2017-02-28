@@ -111,5 +111,9 @@
     <string name="empty_text_action">EMPTY_TEXT_ACTION</string>
     <string name="empty_text_view_extra">empty_text_view</string>
 
+    <!-- Alarm Notification constants -->
+    <string name="alarm_notification_title">Alarm Has Fired</string>
+    <string name="alarm_notification_description">Alarm to run ConcertsService has fired</string>
+
 
 </resources>

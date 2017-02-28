@@ -60,6 +60,9 @@
             android:exported="false"
             android:description="@string/concerts_service_description"/>
 
+        <receiver android:name=".AlarmReceiver"
+            android:exported="false"/>
+
     </application>
 
 </manifest>
