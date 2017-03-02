@@ -35,6 +35,8 @@ public class AlarmReceiver extends BroadcastReceiver {
         //intent to launch MainActivity class when notification is clicked
         Intent intent = new Intent(context, MainActivity.class);
         //wrap Intent in a Pending Intent
+        //FLAG_UPDATE_CURRENT - Flag indicating that if the described PendingIntent already exists,
+        //then keep it but replace its extra data with what is in this new Intent.
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         //Set Notification's click behavior
         notificationBuilder.setContentIntent(pendingIntent);

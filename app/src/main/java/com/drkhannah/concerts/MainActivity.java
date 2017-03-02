@@ -3,7 +3,6 @@ package com.drkhannah.concerts;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.app.SearchManager;
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -53,7 +52,7 @@ public class MainActivity extends AppCompatActivity implements ConcertsRecyclerV
     }
 
     private void setAlarm() {
-        AlarmManager alarmMgr = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        AlarmManager alarmMgr = (AlarmManager) getSystemService(ALARM_SERVICE);
         Intent intent = new Intent(this, AlarmReceiver.class);
         PendingIntent alarmIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
 
