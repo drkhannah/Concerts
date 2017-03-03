@@ -115,5 +115,8 @@
     <string name="alarm_notification_title">Alarm Has Fired</string>
     <string name="alarm_notification_description">Alarm to run ConcertsService has fired</string>
 
+    <!--ConcertsJobService constants-->
+    <string name="job_finished_action">JOB_FINISHED_ACTION</string>
+
 
 </resources>

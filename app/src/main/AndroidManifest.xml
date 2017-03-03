@@ -16,6 +16,9 @@
     <!-- Allows applications to access information about networks-->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 
+    <!-- Allows JobScheduler jobs to be persisted across device reboots-->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+
 
     <application
         android:allowBackup="true"
@@ -61,6 +64,11 @@
             android:description="@string/concerts_service_description"/>
 
         <receiver android:name=".AlarmReceiver"/>
+
+        <service
+            android:name=".ConcertsJobService"
+            android:exported="false"
+            android:permission="android.permission.BIND_JOB_SERVICE"/>
 
     </application>
 

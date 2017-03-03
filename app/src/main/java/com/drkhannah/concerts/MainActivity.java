@@ -1,13 +1,19 @@
 package com.drkhannah.concerts;
 
+import android.annotation.TargetApi;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.app.SearchManager;
+import android.app.job.JobInfo;
+import android.app.job.JobScheduler;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.provider.SearchRecentSuggestions;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
@@ -16,10 +22,13 @@ import android.view.View;
 
 import com.drkhannah.concerts.adapters.ConcertsRecyclerViewAdapter;
 
+import java.util.concurrent.TimeUnit;
+
 public class MainActivity extends AppCompatActivity implements ConcertsRecyclerViewAdapter.ConcertsRecyclerViewAdapterItemClick {
 
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
     private static final String DETAIL_FRAGMENT_TAG = "detail_fragment";
+    private static final int JOB_NUMBER = 1;
 
     private boolean mTwoPane;
     private String mArtist;
@@ -48,7 +57,30 @@ public class MainActivity extends AppCompatActivity implements ConcertsRecyclerV
 
         mArtist = Utils.getSharedPrefsArtistName(this);
 
-        setAlarm();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            scheduleJob();
+        } else {
+            setAlarm();
+        }
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    private void scheduleJob() {
+        ComponentName serviceName = new ComponentName(this, ConcertsJobService.class);
+
+        JobScheduler jobScheduler = (JobScheduler) getSystemService(JOB_SCHEDULER_SERVICE);
+
+        long oneDay = TimeUnit.DAYS.toMillis(1);
+
+        JobInfo jobInfo = new JobInfo.Builder(JOB_NUMBER, serviceName)
+                .setRequiredNetworkType(JobInfo.NETWORK_TYPE_UNMETERED)
+                .setRequiresCharging(true)
+                .setPersisted(true)
+                .setPeriodic(oneDay)
+                .build();
+
+        jobScheduler.schedule(jobInfo);
     }
 
     private void setAlarm() {
@@ -56,8 +88,8 @@ public class MainActivity extends AppCompatActivity implements ConcertsRecyclerV
         Intent intent = new Intent(this, AlarmReceiver.class);
         PendingIntent alarmIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
 
-        alarmMgr.set(AlarmManager.ELAPSED_REALTIME_WAKEUP,
-                SystemClock.elapsedRealtime() + 60 * 1000, alarmIntent);
+        alarmMgr.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
+                SystemClock.elapsedRealtime(), AlarmManager.INTERVAL_DAY, alarmIntent);
     }
 
     @Override

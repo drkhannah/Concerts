@@ -37,8 +37,10 @@ public class ConcertsService extends IntentService {
         super("ConcertsService");
     }
 
+
     @Override
     protected void onHandleIntent(Intent intent) {
+
         //get the artist name from the Intent
         String artistName = intent.getStringExtra(getString(extra_artist_name));
 
@@ -78,6 +80,7 @@ public class ConcertsService extends IntentService {
                 Log.d(LOG_TAG, "Request Response Code: " + urlConnection.getResponseCode());
                 //send local broadcast to ConcertListFragment
                 sendEmptyTextViewLocalBroadcast(getString(R.string.no_such_artist, Utils.getSharedPrefsArtistName(getApplicationContext())));
+                sendJobFinishedBroadcast();
                 return;
             }
 
@@ -103,6 +106,7 @@ public class ConcertsService extends IntentService {
                 // nothing in the StringBuffer so return null
                 //send local broadcast to ConcertListFragment
                 sendEmptyTextViewLocalBroadcast(getString(R.string.no_concerts_for, Utils.getSharedPrefsArtistName(getApplicationContext())));
+                sendJobFinishedBroadcast();
                 return;
             }
 
@@ -113,6 +117,7 @@ public class ConcertsService extends IntentService {
                 // nothing in the concertsJsonStr so return null
                 //send local broadcast to ConcertListFragment
                 sendEmptyTextViewLocalBroadcast(getString(R.string.no_concerts_for, Utils.getSharedPrefsArtistName(getApplicationContext())));
+                sendJobFinishedBroadcast();
                 return;
             }
 
@@ -228,6 +233,7 @@ public class ConcertsService extends IntentService {
                 purgeOldConcerts(oldArtistId);
             }
 
+            sendJobFinishedBroadcast();
         }
     }
 
@@ -299,5 +305,11 @@ public class ConcertsService extends IntentService {
         Intent emptyTextViewIntent = new Intent(getString(R.string.empty_text_action));
         emptyTextViewIntent.putExtra(getString(R.string.empty_text_view_extra), string);
         LocalBroadcastManager.getInstance(this).sendBroadcast(emptyTextViewIntent);
+    }
+
+    //send job finished broadcast to ConcertsJobService so it can call jobFinished()
+    private void sendJobFinishedBroadcast() {
+        Intent jobFinishedIntent = new Intent(getString(R.string.job_finished_action));
+        LocalBroadcastManager.getInstance(this).sendBroadcast(jobFinishedIntent);
     }
 }
