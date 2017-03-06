@@ -43,7 +43,7 @@ public class ConcertsJobService extends JobService {
 
         //register for mEmptyTextView local broadcast receiver
         LocalBroadcastManager.getInstance(getApplicationContext()).registerReceiver(
-                mJobFinishedBroadcastReceiver, new IntentFilter(getString(R.string.empty_text_action)));
+                mJobFinishedBroadcastReceiver, new IntentFilter(getString(R.string.job_finished_action)));
 
         return true;
     }
