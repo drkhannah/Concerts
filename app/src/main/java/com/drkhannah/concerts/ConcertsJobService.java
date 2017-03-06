@@ -1,6 +1,8 @@
 package com.drkhannah.concerts;
 
 import android.annotation.TargetApi;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.job.JobParameters;
 import android.app.job.JobService;
 import android.content.BroadcastReceiver;
@@ -10,6 +12,7 @@ import android.content.IntentFilter;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v7.app.NotificationCompat;
 
 import static com.drkhannah.concerts.R.string.extra_artist_name;
 
@@ -38,6 +41,7 @@ public class ConcertsJobService extends JobService {
             @Override
             public void onReceive(Context context, Intent intent) {
                 jobFinished(mJobParameters, false);
+                showNotification();
             }
         };
 
@@ -58,5 +62,29 @@ public class ConcertsJobService extends JobService {
         return true;
     }
 
+    private void showNotification() {
+        //define the notification
+        NotificationCompat.Builder notificationBuilder = (NotificationCompat.Builder) new NotificationCompat.Builder(getApplicationContext())
+                .setSmallIcon(R.drawable.ic_music_note_black_24dp)
+                .setContentTitle(getApplicationContext().getString(R.string.job_notification_title))
+                .setContentText(getApplicationContext().getString(R.string.job_notification_description));
+
+        //intent to launch MainActivity class when notification is clicked
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        //wrap Intent in a Pending Intent
+        //FLAG_UPDATE_CURRENT - Flag indicating that if the described PendingIntent already exists,
+        //then keep it but replace its extra data with what is in this new Intent.
+        PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        //Set Notification's click behavior
+        notificationBuilder.setContentIntent(pendingIntent);
+
+        //issue the notification
+        // Sets an ID for the notification
+        int mNotificationId = 2;
+        // Gets an instance of the NotificationManager service
+        NotificationManager mNotifyMgr = (NotificationManager) getApplicationContext().getSystemService(NOTIFICATION_SERVICE);
+        // Builds the notification and issues it.
+        mNotifyMgr.notify(mNotificationId, notificationBuilder.build());
+    }
 
 }

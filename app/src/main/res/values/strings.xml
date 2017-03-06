@@ -117,6 +117,8 @@
 
     <!--ConcertsJobService constants-->
     <string name="job_finished_action">JOB_FINISHED_ACTION</string>
+    <string name="job_notification_title">Job Scheduler Has Run</string>
+    <string name="job_notification_description">Job scheduled to run ConcertsService has run</string>
 
 
 </resources>
