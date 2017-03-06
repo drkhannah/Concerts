@@ -67,8 +67,10 @@ public class MainActivity extends AppCompatActivity implements ConcertsRecyclerV
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void scheduleJob() {
+        //get the service's name
         ComponentName serviceName = new ComponentName(this, ConcertsJobService.class);
 
+        //get the job scheduler service
         JobScheduler jobScheduler = (JobScheduler) getSystemService(JOB_SCHEDULER_SERVICE);
 
         long oneDay = TimeUnit.DAYS.toMillis(1);
@@ -84,12 +86,18 @@ public class MainActivity extends AppCompatActivity implements ConcertsRecyclerV
     }
 
     private void setAlarm() {
+        //get the Alarm Service
         AlarmManager alarmMgr = (AlarmManager) getSystemService(ALARM_SERVICE);
+
+        //create an Intent and wrap it in a PendingIntent
+        //so the AlarmManager can execute it with the Concerts app's permissions
         Intent intent = new Intent(this, AlarmReceiver.class);
         PendingIntent alarmIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
 
+        long oneDay = TimeUnit.DAYS.toMillis(1);
+
         alarmMgr.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
-                SystemClock.elapsedRealtime(), AlarmManager.INTERVAL_DAY, alarmIntent);
+                SystemClock.elapsedRealtime() + oneDay, AlarmManager.INTERVAL_DAY, alarmIntent);
     }
 
     @Override
