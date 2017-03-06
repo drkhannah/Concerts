@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity implements ConcertsRecyclerV
                 .setRequiredNetworkType(JobInfo.NETWORK_TYPE_UNMETERED)
                 .setRequiresCharging(true)
                 .setPersisted(true)
-                .setPeriodic(oneDay)
+                .setPeriodic(SystemClock.elapsedRealtime() + oneDay)
                 .build();
 
         jobScheduler.schedule(jobInfo);
