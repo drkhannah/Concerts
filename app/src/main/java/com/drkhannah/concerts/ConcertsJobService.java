@@ -15,6 +15,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.NotificationCompat;
 
 import static com.drkhannah.concerts.R.string.extra_artist_name;
+import static com.drkhannah.concerts.R.string.extra_from_concerts_job_service;
 
 /**
  * Created by dhannah on 3/3/17.
@@ -34,13 +35,14 @@ public class ConcertsJobService extends JobService {
         //explicit intent to start the ConcertsService
         Intent concertsServiceIntent = new Intent(getApplicationContext(), ConcertsService.class);
         concertsServiceIntent.putExtra(getApplicationContext().getString(extra_artist_name), Utils.getSharedPrefsArtistName(getApplicationContext()));
+        concertsServiceIntent.putExtra(getApplicationContext().getString(extra_from_concerts_job_service), true);
         getApplicationContext().startService(concertsServiceIntent);
 
         //broadcast receiver for jobFinished broadcast from ConcertsService
         mJobFinishedBroadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                jobFinished(mJobParameters, false);
+                jobFinished(mJobParameters, true);
                 showNotification();
             }
         };

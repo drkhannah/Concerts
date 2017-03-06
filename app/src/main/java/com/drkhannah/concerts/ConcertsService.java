@@ -24,6 +24,7 @@ import java.net.URL;
 import java.util.Vector;
 
 import static com.drkhannah.concerts.R.string.extra_artist_name;
+import static com.drkhannah.concerts.R.string.extra_from_concerts_job_service;
 
 /**
  * Created by dhannah on 2/23/17.
@@ -33,16 +34,19 @@ public class ConcertsService extends IntentService {
 
     private static final String LOG_TAG = ConcertsService.class.getSimpleName();
 
+    private boolean mFromJobService;
+
     public ConcertsService() {
         super("ConcertsService");
     }
-
 
     @Override
     protected void onHandleIntent(Intent intent) {
 
         //get the artist name from the Intent
         String artistName = intent.getStringExtra(getString(extra_artist_name));
+
+        mFromJobService = intent.getBooleanExtra(getString(extra_from_concerts_job_service), false);
 
         // Will contain the raw JSON response as a string.
         String concertsJsonStr = null;
@@ -80,7 +84,9 @@ public class ConcertsService extends IntentService {
                 Log.d(LOG_TAG, "Request Response Code: " + urlConnection.getResponseCode());
                 //send local broadcast to ConcertListFragment
                 sendEmptyTextViewLocalBroadcast(getString(R.string.no_such_artist, Utils.getSharedPrefsArtistName(getApplicationContext())));
-                sendJobFinishedBroadcast();
+                if (mFromJobService) {
+                    sendJobFinishedBroadcast();
+                }
                 return;
             }
 
@@ -106,7 +112,9 @@ public class ConcertsService extends IntentService {
                 // nothing in the StringBuffer so return null
                 //send local broadcast to ConcertListFragment
                 sendEmptyTextViewLocalBroadcast(getString(R.string.no_concerts_for, Utils.getSharedPrefsArtistName(getApplicationContext())));
-                sendJobFinishedBroadcast();
+                if (mFromJobService) {
+                    sendJobFinishedBroadcast();
+                }
                 return;
             }
 
@@ -117,7 +125,9 @@ public class ConcertsService extends IntentService {
                 // nothing in the concertsJsonStr so return null
                 //send local broadcast to ConcertListFragment
                 sendEmptyTextViewLocalBroadcast(getString(R.string.no_concerts_for, Utils.getSharedPrefsArtistName(getApplicationContext())));
-                sendJobFinishedBroadcast();
+                if (mFromJobService) {
+                    sendJobFinishedBroadcast();
+                }
                 return;
             }
 
@@ -233,7 +243,9 @@ public class ConcertsService extends IntentService {
                 purgeOldConcerts(oldArtistId);
             }
 
-            sendJobFinishedBroadcast();
+            if (mFromJobService) {
+                sendJobFinishedBroadcast();
+            }
         }
     }
 

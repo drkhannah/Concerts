@@ -113,12 +113,13 @@
 
     <!-- Alarm Notification constants -->
     <string name="alarm_notification_title">Artist updated</string>
-    <string name="alarm_notification_description">"Concerts for <xliff:g name="name">%s</xliff:g> have been updated"</string>
+    <string name="alarm_notification_description">"Alarm ran to update concerts for <xliff:g name="name">%s</xliff:g>"</string>
 
     <!--ConcertsJobService constants-->
     <string name="job_finished_action">JOB_FINISHED_ACTION</string>
+    <string name="extra_from_concerts_job_service">extra_from_concerts_job_service</string>
     <string name="job_notification_title">Artist updated</string>
-    <string name="job_notification_description">"Concerts for <xliff:g name="name">%s</xliff:g> have been updated"</string>
+    <string name="job_notification_description">"Job ran to update concerts for <xliff:g name="name">%s</xliff:g>"</string>
 
 
 </resources>
