@@ -44,6 +44,8 @@ public class ConcertsJobService extends JobService {
             public void onReceive(Context context, Intent intent) {
                 jobFinished(mJobParameters, true);
                 showNotification();
+                //unregister from jobFinished local broadcast receiver
+                LocalBroadcastManager.getInstance(getApplicationContext()).unregisterReceiver(mJobFinishedBroadcastReceiver);
             }
         };
 
@@ -56,7 +58,7 @@ public class ConcertsJobService extends JobService {
 
     @Override
     public boolean onStopJob(JobParameters params) {
-        //unregister from mEmptyTextView local broadcast receiver
+        //unregister from jobFinished local broadcast receiver
         LocalBroadcastManager.getInstance(getApplicationContext()).unregisterReceiver(mJobFinishedBroadcastReceiver);
 
         //return true because we want to reschedule

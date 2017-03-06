@@ -319,7 +319,7 @@ public class ConcertsService extends IntentService {
         LocalBroadcastManager.getInstance(this).sendBroadcast(emptyTextViewIntent);
     }
 
-    //send job finished broadcast to ConcertsJobService so it can call jobFinished()
+    //send jobFinished broadcast to ConcertsJobService so it can call jobFinished()
     private void sendJobFinishedBroadcast() {
         Intent jobFinishedIntent = new Intent(getString(R.string.job_finished_action));
         LocalBroadcastManager.getInstance(this).sendBroadcast(jobFinishedIntent);
