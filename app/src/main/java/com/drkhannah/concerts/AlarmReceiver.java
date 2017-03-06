@@ -30,7 +30,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         NotificationCompat.Builder notificationBuilder = (NotificationCompat.Builder) new NotificationCompat.Builder(context)
                 .setSmallIcon(R.drawable.ic_music_note_black_24dp)
                 .setContentTitle(context.getString(R.string.alarm_notification_title))
-                .setContentText(context.getString(R.string.alarm_notification_description));
+                .setContentText(context.getString(R.string.alarm_notification_description, Utils.getSharedPrefsArtistName(context)));
 
         //intent to launch MainActivity class when notification is clicked
         Intent intent = new Intent(context, MainActivity.class);

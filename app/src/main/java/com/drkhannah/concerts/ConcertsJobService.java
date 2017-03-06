@@ -67,7 +67,7 @@ public class ConcertsJobService extends JobService {
         NotificationCompat.Builder notificationBuilder = (NotificationCompat.Builder) new NotificationCompat.Builder(getApplicationContext())
                 .setSmallIcon(R.drawable.ic_music_note_black_24dp)
                 .setContentTitle(getApplicationContext().getString(R.string.job_notification_title))
-                .setContentText(getApplicationContext().getString(R.string.job_notification_description));
+                .setContentText(getApplicationContext().getString(R.string.job_notification_description, Utils.getSharedPrefsArtistName(getApplicationContext())));
 
         //intent to launch MainActivity class when notification is clicked
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
