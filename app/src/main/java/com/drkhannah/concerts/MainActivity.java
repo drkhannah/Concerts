@@ -67,19 +67,19 @@ public class MainActivity extends AppCompatActivity implements ConcertsRecyclerV
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void scheduleJob() {
-        //get the service's name
-        ComponentName serviceName = new ComponentName(this, ConcertsJobService.class);
-
         //get the job scheduler service
         JobScheduler jobScheduler = (JobScheduler) getSystemService(JOB_SCHEDULER_SERVICE);
 
         long oneDay = TimeUnit.DAYS.toMillis(1);
 
+        //get the service's name
+        ComponentName serviceName = new ComponentName(this, ConcertsJobService.class);
+
         JobInfo jobInfo = new JobInfo.Builder(JOB_NUMBER, serviceName)
                 .setRequiredNetworkType(JobInfo.NETWORK_TYPE_UNMETERED)
                 .setRequiresCharging(true)
                 .setPersisted(true)
-                .setPeriodic(SystemClock.elapsedRealtime() + 60000)
+                .setPeriodic(oneDay)
                 .build();
 
         jobScheduler.schedule(jobInfo);
