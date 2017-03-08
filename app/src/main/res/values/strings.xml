@@ -77,7 +77,7 @@
     <string name="search_artist_by_name">Search Artist</string>
 
     <!-- The artist you would like to search-->
-    <string name="artist_to_search">artist</string>
+    <string name="artist_to_search" translatable="false">artist</string>
 
     <!-- Shared Preferences Constants-->
     <string name="preference_file_key" translatable="false">com.drkhannah.concerts.CONCERTS_SHARED_PREFERENCE_FILE</string>
@@ -85,10 +85,10 @@
     <string name="default_artist_name" translatable="false">steve aoki</string>
 
     <!-- Content Authority -->
-    <string name="content_authority">com.drkhannah.concerts.provider</string>
+    <string name="content_authority" translatable="false">com.drkhannah.concerts.provider</string>
 
     <!-- Content Authority for ArtistSuggestionsProvider-->
-    <string name="suggestions_authority">com.drkhannah.concerts.ArtistSuggestionsProvider</string>
+    <string name="suggestions_authority" translatable="false">com.drkhannah.concerts.ArtistSuggestionsProvider</string>
 
     <!--Concert Detail Labels-->
     <string name="title_label">Title:</string>
@@ -109,17 +109,21 @@
     <!-- ConcertsService constants-->
     <string name="concerts_service_description">Downloads concerts from the BandsInTown API, stores them in the database of the Concerts app</string>
     <string name="empty_text_action">EMPTY_TEXT_ACTION</string>
-    <string name="empty_text_view_extra">empty_text_view</string>
+    <string name="empty_text_view_extra" translatable="false">empty_text_view</string>
 
     <!-- Alarm Notification constants -->
     <string name="alarm_notification_title">Artist updated</string>
     <string name="alarm_notification_description">"Alarm ran to update concerts for <xliff:g name="name">%s</xliff:g>"</string>
 
     <!--ConcertsJobService constants-->
-    <string name="job_finished_action">JOB_FINISHED_ACTION</string>
-    <string name="extra_from_concerts_job_service">extra_from_concerts_job_service</string>
+    <string name="job_finished_action" translatable="false">JOB_FINISHED_ACTION</string>
+    <string name="extra_from_concerts_job_service" translatable="false">extra_from_concerts_job_service</string>
     <string name="job_notification_title">Artist updated</string>
     <string name="job_notification_description">"Job ran to update concerts for <xliff:g name="name">%s</xliff:g>"</string>
+
+    <!--Sync Adapter Constants-->
+    <string name="dummy_account" translatable="false">dummyaccount</string>
+    <string name="account_type" translatable="false">softwareguild.com</string>
 
 
 </resources>

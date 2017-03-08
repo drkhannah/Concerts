@@ -24,6 +24,8 @@ import com.drkhannah.concerts.adapters.ConcertsRecyclerViewAdapter;
 
 import java.util.concurrent.TimeUnit;
 
+import sync.ConcertsSyncAdapter;
+
 public class MainActivity extends AppCompatActivity implements ConcertsRecyclerViewAdapter.ConcertsRecyclerViewAdapterItemClick {
 
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
@@ -62,6 +64,9 @@ public class MainActivity extends AppCompatActivity implements ConcertsRecyclerV
         } else {
             setAlarm();
         }
+
+        //create account for ConcertsSyncAdapter
+        ConcertsSyncAdapter.CreateSyncAccount(this);
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
