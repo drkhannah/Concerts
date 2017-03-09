@@ -1,20 +1,11 @@
 package com.drkhannah.concerts;
 
 import android.accounts.Account;
-import android.annotation.TargetApi;
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.app.SearchManager;
-import android.app.job.JobInfo;
-import android.app.job.JobScheduler;
-import android.content.ComponentName;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.provider.SearchRecentSuggestions;
-import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
@@ -22,8 +13,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.drkhannah.concerts.adapters.ConcertsRecyclerViewAdapter;
-
-import java.util.concurrent.TimeUnit;
 
 import static sync.ConcertsSyncAdapter.initSyncAdapter;
 
@@ -35,7 +24,6 @@ public class MainActivity extends AppCompatActivity implements ConcertsRecyclerV
 
     private Account mAccount;
     private final String ACCOUNT = "dummy_account";
-    private final String ACCOUNT_TYPE = "softwareguild.com";
 
     private boolean mTwoPane;
     private String mArtist;
@@ -65,50 +53,8 @@ public class MainActivity extends AppCompatActivity implements ConcertsRecyclerV
 
         mArtist = Utils.getSharedPrefsArtistName(this);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            scheduleJob();
-        } else {
-            setAlarm();
-        }
-
         //initialize the ConcertsSyncAdapter
-        initSyncAdapter(this, ACCOUNT, ACCOUNT_TYPE);
-    }
-
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    private void scheduleJob() {
-        //get the job scheduler service
-        JobScheduler jobScheduler = (JobScheduler) getSystemService(JOB_SCHEDULER_SERVICE);
-
-        long oneDay = TimeUnit.DAYS.toMillis(1);
-
-        //get the service's name
-        ComponentName serviceName = new ComponentName(this, ConcertsJobService.class);
-
-        JobInfo jobInfo = new JobInfo.Builder(JOB_NUMBER, serviceName)
-                .setRequiredNetworkType(JobInfo.NETWORK_TYPE_UNMETERED)
-                .setRequiresCharging(true)
-                .setPersisted(true)
-                .setPeriodic(SystemClock.elapsedRealtime() + oneDay)
-                .build();
-
-        jobScheduler.schedule(jobInfo);
-    }
-
-    private void setAlarm() {
-        //get the Alarm Service
-        AlarmManager alarmMgr = (AlarmManager) getSystemService(ALARM_SERVICE);
-
-        //create an Intent and wrap it in a PendingIntent
-        //so the AlarmManager can execute it with the Concerts app's permissions
-        Intent intent = new Intent(this, AlarmReceiver.class);
-        PendingIntent alarmIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
-
-        long oneDay = TimeUnit.DAYS.toMillis(1);
-
-        alarmMgr.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
-                SystemClock.elapsedRealtime() + oneDay, AlarmManager.INTERVAL_DAY, alarmIntent);
+        initSyncAdapter(this, ACCOUNT, getString(R.string.account_type));
     }
 
     @Override

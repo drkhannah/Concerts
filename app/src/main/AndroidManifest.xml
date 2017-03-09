@@ -22,6 +22,9 @@
     <!--Allows AccountManager to Authenticate Accounts-->
     <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS"/>
 
+    <!--Allows AccountManager to Get Accounts from AccountManager-->
+    <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
+
     <!--Allows Concerts app to read the current sync adapter settings-->
     <uses-permission android:name="android.permission.READ_SYNC_SETTINGS"/>
 
@@ -69,16 +72,16 @@
             android:authorities="@string/suggestions_authority"
             android:name=".ArtistSuggestionsProvider"/>
 
-        <service android:name=".ConcertsService"
-            android:exported="false"
-            android:description="@string/concerts_service_description"/>
+        <!--<service android:name=".ConcertsService"-->
+            <!--android:exported="false"-->
+            <!--android:description="@string/concerts_service_description"/>-->
 
-        <receiver android:name=".AlarmReceiver"/>
+        <!--<receiver android:name=".AlarmReceiver"/>-->
 
-        <service
-            android:name=".ConcertsJobService"
-            android:exported="false"
-            android:permission="android.permission.BIND_JOB_SERVICE"/>
+        <!--<service-->
+            <!--android:name=".ConcertsJobService"-->
+            <!--android:exported="false"-->
+            <!--android:permission="android.permission.BIND_JOB_SERVICE"/>-->
 
         <service android:name="sync.AuthenticatorService">
             <intent-filter>

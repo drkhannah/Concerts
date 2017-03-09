@@ -9,9 +9,11 @@ import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SyncRequest;
 import android.content.SyncResult;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
@@ -43,6 +45,7 @@ public class ConcertsSyncAdapter extends AbstractThreadedSyncAdapter {
 
     private static Account mAccount;
     public static final long SYNC_INTERVAL_DAY = TimeUnit.DAYS.toMillis(1);
+    private static final long SYNC_FLEXTIME = TimeUnit.HOURS.toMillis(1);
     private ContentResolver mContentResolver;
 
 
@@ -58,33 +61,58 @@ public class ConcertsSyncAdapter extends AbstractThreadedSyncAdapter {
         mContentResolver = context.getContentResolver();
     }
 
-    public static void initSyncAdapter(Context context, String account, String accountType){
+    public static void initSyncAdapter(Context context, String account, String accountType) {
         //create account for ConcertsSyncAdapter
-        mAccount = CreateSyncAccount(context, account, accountType);
+        createSyncAccount(context);
+    }
 
-        //add periodic sync for ConcertsSyncAdapter
-        ContentResolver.addPeriodicSync(mAccount, context.getString(R.string.content_authority), Bundle.EMPTY, SYNC_INTERVAL_DAY);
+    public static void configurePeriodicSync(Context context, long syncInterval, long flexTime) {
+        Account account = createSyncAccount(context);
+        String authority = context.getString(R.string.content_authority);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            // we can enable inexact timers in our periodic sync
+            // for KITKAT and greater
+            SyncRequest request = new SyncRequest.Builder().
+                    syncPeriodic(syncInterval, flexTime).
+                    setSyncAdapter(account, authority).
+                    setExtras(new Bundle()).build();
+            ContentResolver.requestSync(request);
+        } else {
+            ContentResolver.addPeriodicSync(account,
+                    authority, new Bundle(), syncInterval);
+        }
     }
 
     //create a dummy account for ConcertsSyncAdapter
-    private static Account CreateSyncAccount(Context context, String account, String accountType) {
-        //create account
-        Account newAccount = new Account(account, accountType);
+    private static Account createSyncAccount(Context context) {
+        // Get the Android account manager
+        AccountManager accountManager =
+                (AccountManager) context.getSystemService(Context.ACCOUNT_SERVICE);
 
-        //get AccountManager System Service
-        AccountManager accountManager = (AccountManager) context.getSystemService(Context.ACCOUNT_SERVICE);
+        // Create the account type and default account
+        Account newAccount = new Account(context.getString(R.string.dummy_account), context.getString(R.string.account_type));
 
-        //add account and account type
-        //return Account object or report error
-        if (accountManager.addAccountExplicitly(newAccount, null, null)) {
+        // If the password doesn't exist, the account doesn't exist
+        if ( null == accountManager.getPassword(newAccount) ) {
 
+         //Add the account and account type, no password or user data
+         // return the Account object, otherwise report an error.
+            if (!accountManager.addAccountExplicitly(newAccount, "", null)) {
+                return null;
+            }
             //if you don't set android:syncable="true" in the <provider> element
             //in the Manifest, then call context.setIsSyncable(account, AUTHORITY, 1); here
-            return newAccount;
-        } else {
-            //the account already exists, or some other error has occur
-            return null;
+            onAccountCreated(newAccount, context);
         }
+        return newAccount;
+    }
+
+    private static void onAccountCreated(Account newAccount, Context context) {
+        //Since we've created an account
+        configurePeriodicSync(context, SYNC_INTERVAL_DAY, SYNC_FLEXTIME);
+
+         //Without calling setSyncAutomatically, periodic sync will not be enabled.
+        ContentResolver.setSyncAutomatically(newAccount, context.getString(R.string.content_authority), true);
     }
 
     public static void syncNow(Context context) {
@@ -92,10 +120,8 @@ public class ConcertsSyncAdapter extends AbstractThreadedSyncAdapter {
         //SYNC_EXTRAS_MANUAL - forces manual sync
         //SYNC_EXTRAS_EXPEDITED - starts sync immediately so that the system doesn't wait to run they sync adapter
         Bundle settingsBundle = new Bundle();
-        settingsBundle.putBoolean(
-                ContentResolver.SYNC_EXTRAS_MANUAL, true);
-        settingsBundle.putBoolean(
-                ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
+        settingsBundle.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
+        settingsBundle.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
         //Request the sync for the default account, authority, and
         //manual sync settings
         ContentResolver.requestSync(mAccount, context.getString(R.string.content_authority), settingsBundle);
@@ -138,12 +164,12 @@ public class ConcertsSyncAdapter extends AbstractThreadedSyncAdapter {
             urlConnection.setRequestMethod("GET");
             urlConnection.connect();
 
-            if (urlConnection.getResponseCode() != HttpURLConnection.HTTP_OK) {
-                Log.d(LOG_TAG, "Request Response Code: " + urlConnection.getResponseCode());
-                //send local broadcast to ConcertListFragment
-                sendEmptyTextViewLocalBroadcast(getContext().getString(R.string.no_such_artist, Utils.getSharedPrefsArtistName(getContext())));
-                return;
-            }
+//            if (urlConnection.getResponseCode() != HttpURLConnection.HTTP_OK) {
+//                Log.d(LOG_TAG, "Request Response Code: " + urlConnection.getResponseCode());
+//                //send local broadcast to ConcertListFragment
+//                sendEmptyTextViewLocalBroadcast(getContext().getString(R.string.no_such_artist, Utils.getSharedPrefsArtistName(getContext())));
+//                return;
+//            }
 
             // Read the input stream into a String
             InputStream inputStream = urlConnection.getInputStream();

@@ -19,10 +19,9 @@ public class SyncAdapterService extends Service {
 
     @Override
     public void onCreate() {
-        super.onCreate();
         //use thread-safe lock object to create a singleton instance
         //of the ConcertsSyncAdatper
-        synchronized (sConcertsSyncAdapter) {
+        synchronized (sConcertsSyncAdapterLock) {
             if (sConcertsSyncAdapter == null) {
                 sConcertsSyncAdapter = new ConcertsSyncAdapter(getApplicationContext(), true);
             }
