@@ -1,5 +1,6 @@
 package com.drkhannah.concerts;
 
+import android.accounts.Account;
 import android.annotation.TargetApi;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -24,7 +25,7 @@ import com.drkhannah.concerts.adapters.ConcertsRecyclerViewAdapter;
 
 import java.util.concurrent.TimeUnit;
 
-import sync.ConcertsSyncAdapter;
+import static sync.ConcertsSyncAdapter.initSyncAdapter;
 
 public class MainActivity extends AppCompatActivity implements ConcertsRecyclerViewAdapter.ConcertsRecyclerViewAdapterItemClick {
 
@@ -32,8 +33,13 @@ public class MainActivity extends AppCompatActivity implements ConcertsRecyclerV
     private static final String DETAIL_FRAGMENT_TAG = "detail_fragment";
     private static final int JOB_NUMBER = 1;
 
+    private Account mAccount;
+    private final String ACCOUNT = "dummy_account";
+    private final String ACCOUNT_TYPE = "softwareguild.com";
+
     private boolean mTwoPane;
     private String mArtist;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,8 +71,8 @@ public class MainActivity extends AppCompatActivity implements ConcertsRecyclerV
             setAlarm();
         }
 
-        //create account for ConcertsSyncAdapter
-        ConcertsSyncAdapter.CreateSyncAccount(this);
+        //initialize the ConcertsSyncAdapter
+        initSyncAdapter(this, ACCOUNT, ACCOUNT_TYPE);
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)

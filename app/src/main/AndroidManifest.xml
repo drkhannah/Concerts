@@ -62,7 +62,8 @@
             android:name=".data.ConcertsProvider"
             android:exported="true"
             android:readPermission="com.drkhannah.concerts.provider.READ"
-            android:writePermission="com.drkhannah.concerts.provider.WRITE"/>
+            android:writePermission="com.drkhannah.concerts.provider.WRITE"
+            android:syncable="true"/>
 
         <provider
             android:authorities="@string/suggestions_authority"

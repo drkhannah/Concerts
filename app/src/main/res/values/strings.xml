@@ -121,9 +121,4 @@
     <string name="job_notification_title">Artist updated</string>
     <string name="job_notification_description">"Job ran to update concerts for <xliff:g name="name">%s</xliff:g>"</string>
 
-    <!--Sync Adapter Constants-->
-    <string name="dummy_account" translatable="false">dummyaccount</string>
-    <string name="account_type" translatable="false">softwareguild.com</string>
-
-
 </resources>

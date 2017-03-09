@@ -28,7 +28,7 @@ import com.drkhannah.concerts.data.ConcertsContract;
 
 import java.util.concurrent.TimeUnit;
 
-import static com.drkhannah.concerts.R.string.extra_artist_name;
+import static sync.ConcertsSyncAdapter.syncNow;
 
 
 public class ConcertListFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
@@ -138,13 +138,6 @@ public class ConcertListFragment extends Fragment implements LoaderManager.Loade
         return new CursorLoader(getActivity(), concertListForArtistUri, CONCERTS_LIST_PROJECTION, null, null, null);
     }
 
-    public void startConcertsService() {
-        //explicit intent to start the ConcertsService
-        Intent concertsServiceIntent = new Intent(getActivity(), ConcertsService.class);
-        concertsServiceIntent.putExtra(getString(extra_artist_name), Utils.getSharedPrefsArtistName(getActivity()));
-        getActivity().startService(concertsServiceIntent);
-    }
-
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
         if (cursor.moveToFirst()) {
@@ -153,22 +146,29 @@ public class ConcertListFragment extends Fragment implements LoaderManager.Loade
             long timeDifference = currentTime - timeStamp;
             long oneDay = TimeUnit.DAYS.toMillis(1);
             if (timeDifference < oneDay) {
+                //show data to the user
                 mConcertsRecyclerViewAdapter.swapCursor(cursor);
                 mConcertsRecyclerView.setVisibility(View.VISIBLE);
                 mEmptyView.setVisibility(View.GONE);
             } else {
+                //show data to the user even though its not up-to-date
+                //then start the sync adapter
+                //sync adapter will download and store data into the database
+                //when data at this URI changes, the UI will update automatically
                 mConcertsRecyclerViewAdapter.swapCursor(cursor);
                 mConcertsRecyclerView.setVisibility(View.GONE);
                 mEmptyView.setVisibility(View.VISIBLE);
                 mEmptyView.setText(getString(R.string.searching_for_artist,Utils.getSharedPrefsArtistName(getActivity())));
-                startConcertsService();
+                syncNow(getActivity());
             }
         } else {
+            //no data returned from database
+            //start the sync adapter
             mConcertsRecyclerViewAdapter.swapCursor(null);
             mConcertsRecyclerView.setVisibility(View.GONE);
             mEmptyView.setVisibility(View.VISIBLE);
             mEmptyView.setText(getString(R.string.searching_for_artist,Utils.getSharedPrefsArtistName(getActivity())));
-            startConcertsService();
+            syncNow(getActivity());
         }
     }
 
