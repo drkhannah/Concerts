@@ -1,6 +1,5 @@
 package com.drkhannah.concerts;
 
-import android.accounts.Account;
 import android.app.SearchManager;
 import android.content.Intent;
 import android.net.Uri;
@@ -15,6 +14,7 @@ import android.view.View;
 import com.drkhannah.concerts.adapters.ConcertsRecyclerViewAdapter;
 
 import static sync.ConcertsSyncAdapter.initSyncAdapter;
+import static sync.ConcertsSyncAdapter.syncNow;
 
 public class MainActivity extends AppCompatActivity implements ConcertsRecyclerViewAdapter.ConcertsRecyclerViewAdapterItemClick {
 
@@ -22,7 +22,6 @@ public class MainActivity extends AppCompatActivity implements ConcertsRecyclerV
     private static final String DETAIL_FRAGMENT_TAG = "detail_fragment";
     private static final int JOB_NUMBER = 1;
 
-    private Account mAccount;
     private final String ACCOUNT = "dummy_account";
 
     private boolean mTwoPane;
@@ -75,6 +74,9 @@ public class MainActivity extends AppCompatActivity implements ConcertsRecyclerV
 
             //save artist name from Search Dialog to SharedPreferences
             Utils.saveSharedPrefsArtistName(getApplicationContext(), artistName);
+
+            //perform sync
+            syncNow(this);
 
             if (!artistName.equalsIgnoreCase(mArtist)) {
                 //Restart CursorLoader in ConcertListFragment

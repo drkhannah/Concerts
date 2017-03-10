@@ -26,10 +26,6 @@ import android.widget.TextView;
 import com.drkhannah.concerts.adapters.ConcertsRecyclerViewAdapter;
 import com.drkhannah.concerts.data.ConcertsContract;
 
-import java.util.concurrent.TimeUnit;
-
-import static sync.ConcertsSyncAdapter.syncNow;
-
 
 public class ConcertListFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
@@ -140,35 +136,17 @@ public class ConcertListFragment extends Fragment implements LoaderManager.Loade
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-        if (cursor.moveToFirst()) {
-            long currentTime = System.currentTimeMillis();
-            long timeStamp = cursor.getLong(cursor.getColumnIndexOrThrow(ConcertsContract.ArtistEntry.COLUMN_TIME_STAMP));
-            long timeDifference = currentTime - timeStamp;
-            long oneDay = TimeUnit.DAYS.toMillis(1);
-            if (timeDifference < oneDay) {
+        if (cursor.getCount() > 0) {
                 //show data to the user
                 mConcertsRecyclerViewAdapter.swapCursor(cursor);
                 mConcertsRecyclerView.setVisibility(View.VISIBLE);
                 mEmptyView.setVisibility(View.GONE);
-            } else {
-                //show data to the user even though its not up-to-date
-                //then start the sync adapter
-                //sync adapter will download and store data into the database
-                //when data at this URI changes, the UI will update automatically
-                mConcertsRecyclerViewAdapter.swapCursor(cursor);
-                mConcertsRecyclerView.setVisibility(View.GONE);
-                mEmptyView.setVisibility(View.VISIBLE);
-                mEmptyView.setText(getString(R.string.searching_for_artist,Utils.getSharedPrefsArtistName(getActivity())));
-                syncNow(getActivity());
-            }
         } else {
             //no data returned from database
-            //start the sync adapter
             mConcertsRecyclerViewAdapter.swapCursor(null);
             mConcertsRecyclerView.setVisibility(View.GONE);
             mEmptyView.setVisibility(View.VISIBLE);
             mEmptyView.setText(getString(R.string.searching_for_artist,Utils.getSharedPrefsArtistName(getActivity())));
-            syncNow(getActivity());
         }
     }
 

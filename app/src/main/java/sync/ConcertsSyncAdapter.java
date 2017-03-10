@@ -132,6 +132,14 @@ public class ConcertsSyncAdapter extends AbstractThreadedSyncAdapter {
         //get the artist name from SharedPreferences
         String artistName = Utils.getSharedPrefsArtistName(getContext());
 
+        //dont make network call if artist is in database already
+        //and they were updated within the last 24 hours
+        if (!checkArtistTimestamp(artistName)) {
+            Log.d(LOG_TAG, "we returned");
+            return;
+        }
+
+
         // Will contain the raw JSON response as a string.
         String concertsJsonStr = null;
 
@@ -164,12 +172,12 @@ public class ConcertsSyncAdapter extends AbstractThreadedSyncAdapter {
             urlConnection.setRequestMethod("GET");
             urlConnection.connect();
 
-//            if (urlConnection.getResponseCode() != HttpURLConnection.HTTP_OK) {
-//                Log.d(LOG_TAG, "Request Response Code: " + urlConnection.getResponseCode());
-//                //send local broadcast to ConcertListFragment
-//                sendEmptyTextViewLocalBroadcast(getContext().getString(R.string.no_such_artist, Utils.getSharedPrefsArtistName(getContext())));
-//                return;
-//            }
+            if (urlConnection.getResponseCode() != HttpURLConnection.HTTP_OK) {
+                Log.d(LOG_TAG, "Request Response Code: " + urlConnection.getResponseCode());
+                //send local broadcast to ConcertListFragment
+                sendEmptyTextViewLocalBroadcast(getContext().getString(R.string.no_such_artist, Utils.getSharedPrefsArtistName(getContext())));
+                return;
+            }
 
             // Read the input stream into a String
             InputStream inputStream = urlConnection.getInputStream();
@@ -255,7 +263,7 @@ public class ConcertsSyncAdapter extends AbstractThreadedSyncAdapter {
             String artistImage = firstArtistJsonObject.optString(getContext().getString(R.string.response_object_key_thumb_url), getContext().getString(R.string.no_artist_image_available));
             String artistWebsite = firstArtistJsonObject.optString(getContext().getString(R.string.response_object_key_website), getContext().getString(R.string.no_artist_website_available));
 
-            oldArtistId = checkForArtist(artistName);
+            oldArtistId = checkArtistId(artistName);
 
             long newArtistId = insertArtist(artistName, artistImage, artistWebsite);
 
@@ -332,7 +340,7 @@ public class ConcertsSyncAdapter extends AbstractThreadedSyncAdapter {
         );
     }
 
-    private long checkForArtist(String artistName) {
+    private long checkArtistId(String artistName) {
         long artistId = 0;
 
         // check if the artist with this name exists in the db
@@ -350,10 +358,40 @@ public class ConcertsSyncAdapter extends AbstractThreadedSyncAdapter {
             //get the artist _id
             artistId = artistCursor.getLong(artistIdIndex);
         }
+        //close cursor
         if (artistCursor != null) {
             artistCursor.close();
         }
         return artistId;
+    }
+
+    private boolean checkArtistTimestamp(String artistName) {
+        // check if the artist with this name exists in the db
+        Cursor artistCursor = mContentResolver.query(
+                ConcertsContract.ArtistEntry.CONTENT_URI, //URI
+                new String[]{ConcertsContract.ArtistEntry.COLUMN_TIME_STAMP}, //projection
+                ConcertsContract.ArtistEntry.COLUMN_ARTIST_NAME + " = ?", //selection
+                new String[]{artistName}, //selectionArgs
+                null //sortOrder
+        );
+
+        if (artistCursor != null && artistCursor.moveToFirst()) {
+            //find the column index number for the artist timestamp column
+            int artistTimestampIndex = artistCursor.getColumnIndex(ConcertsContract.ArtistEntry.COLUMN_TIME_STAMP);
+            //get the artist timestamp
+            long artistTimestamp = artistCursor.getLong(artistTimestampIndex);
+            long currentTime = System.currentTimeMillis();
+            long timeDifference = currentTime - artistTimestamp;
+            long oneDay = TimeUnit.DAYS.toMillis(1);
+            artistCursor.close();
+            return (timeDifference > oneDay);
+        }
+
+        //close cursor
+        if (artistCursor != null) {
+            artistCursor.close();
+        }
+        return true;
     }
 
     private long insertArtist(String artistName, String img_url, String website_url) {
@@ -389,5 +427,4 @@ public class ConcertsSyncAdapter extends AbstractThreadedSyncAdapter {
         emptyTextViewIntent.putExtra(getContext().getString(R.string.empty_text_view_extra), string);
         LocalBroadcastManager.getInstance(getContext()).sendBroadcast(emptyTextViewIntent);
     }
-
 }
