@@ -43,22 +43,18 @@ public class ConcertsSyncAdapter extends AbstractThreadedSyncAdapter {
 
     private static final String LOG_TAG = ConcertsSyncAdapter.class.getSimpleName();
 
-    private static Account mAccount;
     public static final long SYNC_INTERVAL_DAY = TimeUnit.DAYS.toMillis(1);
     private static final long SYNC_FLEXTIME = TimeUnit.HOURS.toMillis(1);
-    private ContentResolver mContentResolver;
 
 
     //constructor
     public ConcertsSyncAdapter(Context context, boolean autoInitialize) {
         super(context, autoInitialize);
-        mContentResolver = context.getContentResolver();
     }
 
     //second form of constructor maintains compatibility with Android 3.0 and later
     public ConcertsSyncAdapter(Context context, boolean autoInitialize, boolean allowParallelSyncs) {
         super(context, autoInitialize, allowParallelSyncs);
-        mContentResolver = context.getContentResolver();
     }
 
     public static void initSyncAdapter(Context context, String account, String accountType) {
@@ -124,7 +120,8 @@ public class ConcertsSyncAdapter extends AbstractThreadedSyncAdapter {
         settingsBundle.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
         //Request the sync for the default account, authority, and
         //manual sync settings
-        ContentResolver.requestSync(mAccount, context.getString(R.string.content_authority), settingsBundle);
+        Account account = createSyncAccount(context);
+        ContentResolver.requestSync(account, context.getString(R.string.content_authority), settingsBundle);
     }
 
     @Override
@@ -135,7 +132,7 @@ public class ConcertsSyncAdapter extends AbstractThreadedSyncAdapter {
         //dont make network call if artist is in database already
         //and they were updated within the last 24 hours
         if (!checkArtistTimestamp(artistName)) {
-            Log.d(LOG_TAG, "we returned");
+            Log.d(LOG_TAG, "artist searched within the last 24 hours");
             return;
         }
 
@@ -319,7 +316,7 @@ public class ConcertsSyncAdapter extends AbstractThreadedSyncAdapter {
                 contentValuesVector.toArray(concertsArray);
 
                 // bulkInsert concerts into database
-                mContentResolver.bulkInsert(ConcertsContract.ConcertEntry.CONTENT_URI, concertsArray);
+                getContext().getContentResolver().bulkInsert(ConcertsContract.ConcertEntry.CONTENT_URI, concertsArray);
             }
 
             if (oldArtistId > 0) {
@@ -333,7 +330,7 @@ public class ConcertsSyncAdapter extends AbstractThreadedSyncAdapter {
 
         //delete all concerts records with an artist_id
         //that matches the old artist _id
-        return mContentResolver.delete(
+        return getContext().getContentResolver().delete(
                 ConcertsContract.ConcertEntry.CONTENT_URI,
                 ConcertsContract.ConcertEntry.COLUMN_ARTIST_KEY + " = ?", //selection
                 new String[]{oldId} //selectionArgs
@@ -344,7 +341,7 @@ public class ConcertsSyncAdapter extends AbstractThreadedSyncAdapter {
         long artistId = 0;
 
         // check if the artist with this name exists in the db
-        Cursor artistCursor = mContentResolver.query(
+        Cursor artistCursor = getContext().getContentResolver().query(
                 ConcertsContract.ArtistEntry.CONTENT_URI, //URI
                 new String[]{ConcertsContract.ArtistEntry._ID}, //projection
                 ConcertsContract.ArtistEntry.COLUMN_ARTIST_NAME + " = ?", //selection
@@ -367,7 +364,7 @@ public class ConcertsSyncAdapter extends AbstractThreadedSyncAdapter {
 
     private boolean checkArtistTimestamp(String artistName) {
         // check if the artist with this name exists in the db
-        Cursor artistCursor = mContentResolver.query(
+        Cursor artistCursor = getContext().getContentResolver().query(
                 ConcertsContract.ArtistEntry.CONTENT_URI, //URI
                 new String[]{ConcertsContract.ArtistEntry.COLUMN_TIME_STAMP}, //projection
                 ConcertsContract.ArtistEntry.COLUMN_ARTIST_NAME + " = ?", //selection
@@ -410,7 +407,7 @@ public class ConcertsSyncAdapter extends AbstractThreadedSyncAdapter {
         artistValues.put(ConcertsContract.ArtistEntry.COLUMN_TIME_STAMP, timestamp);
 
         // Finally, insert artist record.
-        Uri insertedUri = mContentResolver.insert(
+        Uri insertedUri = getContext().getContentResolver().insert(
                 ConcertsContract.ArtistEntry.CONTENT_URI,
                 artistValues
         );
