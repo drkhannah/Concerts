@@ -11,12 +11,12 @@ import android.os.Bundle;
  * Created by dhannah on 3/8/17.
  */
 
-public class ConcertsAuthenticator extends AbstractAccountAuthenticator {
+class ConcertsAuthenticator extends AbstractAccountAuthenticator {
 
     //Since we don't use accounts to authenticate with a server
     //this is just a stub
 
-    public ConcertsAuthenticator(Context context) {
+    ConcertsAuthenticator(Context context) {
         super(context);
     }
 
