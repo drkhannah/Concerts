@@ -20,9 +20,6 @@ public class MainActivity extends AppCompatActivity implements ConcertsRecyclerV
 
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
     private static final String DETAIL_FRAGMENT_TAG = "detail_fragment";
-    private static final int JOB_NUMBER = 1;
-
-    private final String ACCOUNT = "dummy_account";
 
     private boolean mTwoPane;
     private String mArtist;
@@ -53,7 +50,7 @@ public class MainActivity extends AppCompatActivity implements ConcertsRecyclerV
         mArtist = Utils.getSharedPrefsArtistName(this);
 
         //initialize the ConcertsSyncAdapter
-        initSyncAdapter(this, ACCOUNT, getString(R.string.account_type));
+        initSyncAdapter(this);
     }
 
     @Override

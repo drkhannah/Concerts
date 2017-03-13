@@ -57,9 +57,41 @@ public class ConcertsSyncAdapter extends AbstractThreadedSyncAdapter {
         super(context, autoInitialize, allowParallelSyncs);
     }
 
-    public static void initSyncAdapter(Context context, String account, String accountType) {
+    public static void initSyncAdapter(Context context) {
         //create account for ConcertsSyncAdapter
         createSyncAccount(context);
+    }
+
+    //create a dummy account for ConcertsSyncAdapter
+    private static Account createSyncAccount(Context context) {
+        // Get the Android account manager
+        AccountManager accountManager =
+                (AccountManager) context.getSystemService(Context.ACCOUNT_SERVICE);
+
+        // Create the account type and default account
+        Account newAccount = new Account(context.getString(R.string.dummy_account), context.getString(R.string.account_type));
+
+        // If the password doesn't exist, the account doesn't exist
+        if ( null == accountManager.getPassword(newAccount) ) {
+
+            //Add the account and account type, no password or user data
+            // return the Account object, otherwise report an error.
+            if (!accountManager.addAccountExplicitly(newAccount, "", null)) {
+                return null;
+            }
+            //if you don't set android:syncable="true" in the <provider> element
+            //in the Manifest, then call context.setIsSyncable(account, AUTHORITY, 1); here
+            onAccountCreated(newAccount, context);
+        }
+        return newAccount;
+    }
+
+    private static void onAccountCreated(Account newAccount, Context context) {
+        //Since we've created an account
+        configurePeriodicSync(context, SYNC_INTERVAL_DAY, SYNC_FLEXTIME);
+
+        //Without calling setSyncAutomatically, periodic sync will not be enabled.
+        ContentResolver.setSyncAutomatically(newAccount, context.getString(R.string.content_authority), true);
     }
 
     public static void configurePeriodicSync(Context context, long syncInterval, long flexTime) {
@@ -77,38 +109,6 @@ public class ConcertsSyncAdapter extends AbstractThreadedSyncAdapter {
             ContentResolver.addPeriodicSync(account,
                     authority, new Bundle(), syncInterval);
         }
-    }
-
-    //create a dummy account for ConcertsSyncAdapter
-    private static Account createSyncAccount(Context context) {
-        // Get the Android account manager
-        AccountManager accountManager =
-                (AccountManager) context.getSystemService(Context.ACCOUNT_SERVICE);
-
-        // Create the account type and default account
-        Account newAccount = new Account(context.getString(R.string.dummy_account), context.getString(R.string.account_type));
-
-        // If the password doesn't exist, the account doesn't exist
-        if ( null == accountManager.getPassword(newAccount) ) {
-
-         //Add the account and account type, no password or user data
-         // return the Account object, otherwise report an error.
-            if (!accountManager.addAccountExplicitly(newAccount, "", null)) {
-                return null;
-            }
-            //if you don't set android:syncable="true" in the <provider> element
-            //in the Manifest, then call context.setIsSyncable(account, AUTHORITY, 1); here
-            onAccountCreated(newAccount, context);
-        }
-        return newAccount;
-    }
-
-    private static void onAccountCreated(Account newAccount, Context context) {
-        //Since we've created an account
-        configurePeriodicSync(context, SYNC_INTERVAL_DAY, SYNC_FLEXTIME);
-
-         //Without calling setSyncAutomatically, periodic sync will not be enabled.
-        ContentResolver.setSyncAutomatically(newAccount, context.getString(R.string.content_authority), true);
     }
 
     public static void syncNow(Context context) {
