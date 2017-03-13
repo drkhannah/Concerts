@@ -43,8 +43,8 @@ public class ConcertsSyncAdapter extends AbstractThreadedSyncAdapter {
 
     private static final String LOG_TAG = ConcertsSyncAdapter.class.getSimpleName();
 
-    public static final long SYNC_INTERVAL_DAY = TimeUnit.DAYS.toMillis(1);
-    private static final long SYNC_FLEXTIME = TimeUnit.HOURS.toMillis(1);
+    public static final long SYNC_INTERVAL_DAY = TimeUnit.DAYS.toSeconds(1);
+    private static final long SYNC_FLEXTIME = TimeUnit.HOURS.toSeconds(1);
 
 
     //constructor
