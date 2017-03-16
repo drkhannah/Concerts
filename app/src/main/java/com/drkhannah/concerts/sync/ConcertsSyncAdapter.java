@@ -1,4 +1,4 @@
-package sync;
+package com.drkhannah.concerts.sync;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
@@ -90,7 +90,7 @@ public class ConcertsSyncAdapter extends AbstractThreadedSyncAdapter {
         //Since we've created an account
         configurePeriodicSync(context, SYNC_INTERVAL_DAY, SYNC_FLEXTIME);
 
-        //Without calling setSyncAutomatically, periodic sync will not be enabled.
+        //Without calling setSyncAutomatically, periodic com.drkhannah.concerts.sync will not be enabled.
         ContentResolver.setSyncAutomatically(newAccount, context.getString(R.string.content_authority), true);
     }
 
@@ -98,7 +98,7 @@ public class ConcertsSyncAdapter extends AbstractThreadedSyncAdapter {
         Account account = createSyncAccount(context);
         String authority = context.getString(R.string.content_authority);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            // we can enable inexact timers in our periodic sync
+            // we can enable inexact timers in our periodic com.drkhannah.concerts.sync
             // for KITKAT and greater
             SyncRequest request = new SyncRequest.Builder().
                     syncPeriodic(syncInterval, flexTime).
@@ -113,13 +113,13 @@ public class ConcertsSyncAdapter extends AbstractThreadedSyncAdapter {
 
     public static void syncNow(Context context) {
         // Pass the settings flags by inserting them in a bundle
-        //SYNC_EXTRAS_MANUAL - forces manual sync
-        //SYNC_EXTRAS_EXPEDITED - starts sync immediately so that the system doesn't wait to run they sync adapter
+        //SYNC_EXTRAS_MANUAL - forces manual com.drkhannah.concerts.sync
+        //SYNC_EXTRAS_EXPEDITED - starts com.drkhannah.concerts.sync immediately so that the system doesn't wait to run they com.drkhannah.concerts.sync adapter
         Bundle settingsBundle = new Bundle();
         settingsBundle.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
         settingsBundle.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
-        //Request the sync for the default account, authority, and
-        //manual sync settings
+        //Request the com.drkhannah.concerts.sync for the default account, authority, and
+        //manual com.drkhannah.concerts.sync settings
         Account account = createSyncAccount(context);
         ContentResolver.requestSync(account, context.getString(R.string.content_authority), settingsBundle);
     }

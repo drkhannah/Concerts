@@ -25,10 +25,10 @@
     <!--Allows AccountManager to Get Accounts from AccountManager-->
     <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
 
-    <!--Allows Concerts app to read the current sync adapter settings-->
+    <!--Allows Concerts app to read the current com.drkhannah.concerts.sync adapter settings-->
     <uses-permission android:name="android.permission.READ_SYNC_SETTINGS"/>
 
-    <!--Allows Concerts app to write the current sync adapter settings-->
+    <!--Allows Concerts app to write the current com.drkhannah.concerts.sync adapter settings-->
     <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS"/>
 
 
@@ -72,7 +72,7 @@
             android:authorities="@string/suggestions_authority"
             android:name=".ArtistSuggestionsProvider"/>
 
-        <service android:name="sync.AuthenticatorService">
+        <service android:name="com.drkhannah.concerts.sync.AuthenticatorService">
             <intent-filter>
                 <action android:name="android.accounts.AccountAuthenticator"/>
             </intent-filter>
@@ -80,7 +80,7 @@
                        android:resource="@xml/authenticator"/>
         </service>
 
-        <service android:name="sync.SyncAdapterService"
+        <service android:name="com.drkhannah.concerts.sync.SyncAdapterService"
                  android:exported="true">
             <intent-filter>
                 <action android:name="android.content.SyncAdapter"/>
@@ -88,6 +88,20 @@
             <meta-data
                 android:name="android.content.SyncAdapter"
                 android:resource="@xml/syncadapter"/>
+        </service>
+
+        <service
+            android:name=".FirebaseMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>
+
+        <service
+            android:name=".FirebaseInstanceIDService">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
+            </intent-filter>
         </service>
 
     </application>

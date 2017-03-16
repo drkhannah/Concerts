@@ -1,4 +1,4 @@
-package sync;
+package com.drkhannah.concerts.sync;
 
 import android.accounts.AbstractAccountAuthenticator;
 import android.accounts.Account;

@@ -13,8 +13,8 @@ import android.view.View;
 
 import com.drkhannah.concerts.adapters.ConcertsRecyclerViewAdapter;
 
-import static sync.ConcertsSyncAdapter.initSyncAdapter;
-import static sync.ConcertsSyncAdapter.syncNow;
+import static com.drkhannah.concerts.sync.ConcertsSyncAdapter.initSyncAdapter;
+import static com.drkhannah.concerts.sync.ConcertsSyncAdapter.syncNow;
 
 public class MainActivity extends AppCompatActivity implements ConcertsRecyclerViewAdapter.ConcertsRecyclerViewAdapterItemClick {
 
@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity implements ConcertsRecyclerV
             //save artist name from Search Dialog to SharedPreferences
             Utils.saveSharedPrefsArtistName(getApplicationContext(), artistName);
 
-            //perform sync
+            //perform com.drkhannah.concerts.sync
             syncNow(this);
 
             if (!artistName.equalsIgnoreCase(mArtist)) {
