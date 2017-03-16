@@ -9,9 +9,12 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 
 import com.drkhannah.concerts.adapters.ConcertsRecyclerViewAdapter;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 
 import static com.drkhannah.concerts.sync.ConcertsSyncAdapter.initSyncAdapter;
 import static com.drkhannah.concerts.sync.ConcertsSyncAdapter.syncNow;
@@ -20,6 +23,7 @@ public class MainActivity extends AppCompatActivity implements ConcertsRecyclerV
 
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
     private static final String DETAIL_FRAGMENT_TAG = "detail_fragment";
+    private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 100;
 
     private boolean mTwoPane;
     private String mArtist;
@@ -51,6 +55,26 @@ public class MainActivity extends AppCompatActivity implements ConcertsRecyclerV
 
         //initialize the ConcertsSyncAdapter
         initSyncAdapter(this);
+
+        checkPlayServices();
+    }
+
+    //check if Google Play Services is installed on the device
+    //if not, prompt the user to do so
+    private boolean checkPlayServices() {
+        GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();
+        int resultCode = apiAvailability.isGooglePlayServicesAvailable(this);
+        if (resultCode != ConnectionResult.SUCCESS) {
+            if (apiAvailability.isUserResolvableError(resultCode)) {
+                apiAvailability.getErrorDialog(this, resultCode, PLAY_SERVICES_RESOLUTION_REQUEST)
+                        .show();
+            } else {
+                Log.i(LOG_TAG, "This device is not supported.");
+                finish();
+            }
+            return false;
+        }
+        return true;
     }
 
     @Override
