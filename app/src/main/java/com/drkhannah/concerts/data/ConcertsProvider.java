@@ -63,7 +63,7 @@ public class ConcertsProvider extends ContentProvider {
     }
 
     //selection for artist name and concert date
-    //example: artist.artist_name = ? AND formated_date_time = ?
+    //example: artist.artist_name = ? AND formatted_date_time = ?
     public static final String sArtistAndDateSelection =
             ConcertsContract.ArtistEntry.TABLE_NAME +
                     "." + ConcertsContract.ArtistEntry.COLUMN_ARTIST_NAME + " = ? AND " +

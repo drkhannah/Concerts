@@ -65,8 +65,8 @@ public class ConcertsContract {
         public static final String TABLE_NAME = "concert";
         public static final String COLUMN_ARTIST_KEY = "artist_id";
         public static final String COLUMN_TTILE = "title";
-        public static final String COLUMN_FORMATTED_DATE_TIME = "formated_date_time";
-        public static final String COLUMN_FORMATTED_LOCATION = "formated_location";
+        public static final String COLUMN_FORMATTED_DATE_TIME = "formatted_date_time";
+        public static final String COLUMN_FORMATTED_LOCATION = "formatted_location";
         public static final String COLUMN_TICKET_URL = "ticket_url";
         public static final String COLUMN_TICKET_TYPE = "ticket_type";
         public static final String COLUMN_TICKET_STATUS = "ticket_status";
