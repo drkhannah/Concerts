@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "572791461865",
-    "firebase_url": "https://concerts-b9eca.firebaseio.com",
-    "project_id": "concerts-b9eca",
-    "storage_bucket": "concerts-b9eca.appspot.com"
+    "project_number": "72311963231",
+    "firebase_url": "https://concerts-5dc03.firebaseio.com",
+    "project_id": "concerts-5dc03",
+    "storage_bucket": "concerts-5dc03.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:572791461865:android:cd1b61fc8273533a",
+        "mobilesdk_app_id": "1:72311963231:android:cd1b61fc8273533a",
         "android_client_info": {
           "package_name": "com.drkhannah.concerts"
         }
       },
       "oauth_client": [
         {
-          "client_id": "572791461865-atviq4cf57jn2hn92sd0imo6jhddh1pv.apps.googleusercontent.com",
+          "client_id": "72311963231-bihtp8rofm10ohsafnoffl2f2oplu5qm.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.drkhannah.concerts",
@@ -23,13 +23,13 @@
           }
         },
         {
-          "client_id": "572791461865-fcgdvbs8c7uu5scejrmq17fmmqch2u14.apps.googleusercontent.com",
+          "client_id": "72311963231-rgvdic2d4carlik8d4jjepfhihpr21gu.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBUA3DiLX6OQr0Ksu6Ihs11sGZUYl6xOrM"
+          "current_key": "AIzaSyBXSFYS1sDoNQVY085cA4BwKUN6Gi7iugk"
         }
       ],
       "services": {
@@ -40,7 +40,7 @@
           "status": 2,
           "other_platform_oauth_client": [
             {
-              "client_id": "572791461865-fcgdvbs8c7uu5scejrmq17fmmqch2u14.apps.googleusercontent.com",
+              "client_id": "72311963231-rgvdic2d4carlik8d4jjepfhihpr21gu.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
