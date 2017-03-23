@@ -48,10 +48,12 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
             <intent-filter>
-                <action android:name="android.intent.action.SEARCH" />
+                <action android:name="android.intent.action.SEARCH"/>
             </intent-filter>
-            <meta-data android:name="android.app.searchable"
-                       android:resource="@xml/searchable"/>
+
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable"/>
         </activity>
 
         <activity
@@ -60,28 +62,38 @@
             android:parentActivityName=".MainActivity">
         </activity>
 
-        <provider
-            android:authorities="@string/content_authority"
-            android:name=".data.ConcertsProvider"
-            android:exported="true"
-            android:readPermission="com.drkhannah.concerts.provider.READ"
-            android:writePermission="com.drkhannah.concerts.provider.WRITE"
-            android:syncable="true"/>
+        <activity android:name="SettingsActivity"
+                  android:label="@string/settings_label">
+            <intent-filter>
+                <action android:name="android.intent.action.MANAGE_NETWORK_USAGE"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
 
         <provider
-            android:authorities="@string/suggestions_authority"
-            android:name=".ArtistSuggestionsProvider"/>
+            android:name=".data.ConcertsProvider"
+            android:authorities="@string/content_authority"
+            android:exported="true"
+            android:readPermission="com.drkhannah.concerts.provider.READ"
+            android:syncable="true"
+            android:writePermission="com.drkhannah.concerts.provider.WRITE"/>
+
+        <provider
+            android:name=".ArtistSuggestionsProvider"
+            android:authorities="@string/suggestions_authority"/>
 
         <service android:name="com.drkhannah.concerts.sync.AuthenticatorService">
             <intent-filter>
                 <action android:name="android.accounts.AccountAuthenticator"/>
             </intent-filter>
-            <meta-data android:name="android.accounts.AccountAuthenticator"
-                       android:resource="@xml/authenticator"/>
+            <meta-data
+                android:name="android.accounts.AccountAuthenticator"
+                android:resource="@xml/authenticator"/>
         </service>
 
-        <service android:name="com.drkhannah.concerts.sync.SyncAdapterService"
-                 android:exported="true">
+        <service
+            android:name="com.drkhannah.concerts.sync.SyncAdapterService"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.content.SyncAdapter"/>
             </intent-filter>

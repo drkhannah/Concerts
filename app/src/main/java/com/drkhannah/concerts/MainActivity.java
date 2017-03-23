@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity implements ConcertsRecyclerV
         //initialize the ConcertsSyncAdapter
         initSyncAdapter(this);
 
-        checkPlayServices();
+//        checkPlayServices();
     }
 
     //check if Google Play Services is installed on the device

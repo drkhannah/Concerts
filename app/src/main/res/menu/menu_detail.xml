@@ -13,4 +13,10 @@
         android:title="@string/action_share_concert"
         app:actionProviderClass="android.support.v7.widget.ShareActionProvider"
         app:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@+id/action_settings"
+        android:icon="@drawable/ic_map_white_24dp"
+        android:title="@string/action_show_settings"
+        app:showAsAction="never"/>
 </menu>
