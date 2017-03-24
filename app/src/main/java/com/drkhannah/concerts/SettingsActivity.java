@@ -71,7 +71,7 @@ public class SettingsActivity extends AppCompatActivity {
             SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
             Preference syncPref = findPreference(Utils.KEY_PREF_SYNC);
             // Set summary to be the user-description for the selected value
-            syncPref.setSummary("Sync with server every " + sharedPreferences.getString(Utils.KEY_PREF_SYNC, "") + " days");
+            syncPref.setSummary("Sync with server every " + sharedPreferences.getInt(Utils.KEY_PREF_SYNC, 1) + " days");
         }
 
         // Unregisters a shared preference change listener
@@ -87,7 +87,7 @@ public class SettingsActivity extends AppCompatActivity {
             if (key.equals(Utils.KEY_PREF_SYNC)) {
                 Preference syncPref = findPreference(key);
                 // Set summary to be the user-description for the selected value
-                syncPref.setSummary("Sync with server every " + sharedPreferences.getString(key, "1") + " days");
+                syncPref.setSummary("Sync with server every " + sharedPreferences.getInt(key, 1) + " days");
 
                 long syncInterval = Utils.getSyncInterval(getActivity());
                 long flexTime = ConcertsSyncAdapter.SYNC_FLEXTIME;

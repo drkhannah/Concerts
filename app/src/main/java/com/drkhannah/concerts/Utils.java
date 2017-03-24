@@ -33,6 +33,6 @@ public class Utils {
 
     public static long getSyncInterval(Context context) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        return TimeUnit.DAYS.toSeconds(Long.parseLong(sharedPreferences.getString(KEY_PREF_SYNC, "1")));
+        return TimeUnit.DAYS.toSeconds(sharedPreferences.getInt(KEY_PREF_SYNC, 1));
     }
 }
