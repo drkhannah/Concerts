@@ -9,7 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
-import java.util.concurrent.TimeUnit;
+import com.drkhannah.concerts.sync.ConcertsSyncAdapter;
 
 import static com.drkhannah.concerts.sync.ConcertsSyncAdapter.configurePeriodicSync;
 
@@ -18,9 +18,6 @@ import static com.drkhannah.concerts.sync.ConcertsSyncAdapter.configurePeriodicS
  */
 
 public class SettingsActivity extends AppCompatActivity {
-
-    private static final String KEY_PREF_SYNC = "sync_interval";
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +52,6 @@ public class SettingsActivity extends AppCompatActivity {
 
     //preference fragment
     public static class SettingsFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener {
-        private static final String KEY_PREF_SYNC = "sync_interval";
 
         @Override
         public void onCreate(Bundle savedInstanceState) {
@@ -73,9 +69,9 @@ public class SettingsActivity extends AppCompatActivity {
             super.onResume();
 
             SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-            Preference syncPref = findPreference(KEY_PREF_SYNC);
+            Preference syncPref = findPreference(Utils.KEY_PREF_SYNC);
             // Set summary to be the user-description for the selected value
-            syncPref.setSummary("Sync with server every " + sharedPreferences.getString(KEY_PREF_SYNC, "") + " days");
+            syncPref.setSummary("Sync with server every " + sharedPreferences.getString(Utils.KEY_PREF_SYNC, "") + " days");
         }
 
         // Unregisters a shared preference change listener
@@ -88,13 +84,13 @@ public class SettingsActivity extends AppCompatActivity {
 
         @Override
         public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-            if (key.equals(KEY_PREF_SYNC)) {
+            if (key.equals(Utils.KEY_PREF_SYNC)) {
                 Preference syncPref = findPreference(key);
                 // Set summary to be the user-description for the selected value
-                syncPref.setSummary("Sync with server every " + sharedPreferences.getString(key, "") + " days");
+                syncPref.setSummary("Sync with server every " + sharedPreferences.getString(key, "1") + " days");
 
-                long syncInterval = TimeUnit.DAYS.toSeconds(Long.parseLong(sharedPreferences.getString(key, "1")));
-                long flexTime = TimeUnit.HOURS.toSeconds(1);
+                long syncInterval = Utils.getSyncInterval(getActivity());
+                long flexTime = ConcertsSyncAdapter.SYNC_FLEXTIME;
 
                 //configure periodic sync
                 configurePeriodicSync(getActivity(), syncInterval, flexTime);

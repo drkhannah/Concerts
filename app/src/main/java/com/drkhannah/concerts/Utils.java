@@ -2,6 +2,9 @@ package com.drkhannah.concerts;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+
+import java.util.concurrent.TimeUnit;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -10,6 +13,8 @@ import static android.content.Context.MODE_PRIVATE;
  */
 
 public class Utils {
+
+    public static final String KEY_PREF_SYNC = "sync_interval";
 
     public static String getSharedPrefsArtistName(Context context) {
         //get the artist name saved in the com.drkhannah.concerts.CONCERTS_SHARED_PREFERENCE_FILE Shared Preferences file
@@ -24,5 +29,10 @@ public class Utils {
         SharedPreferences.Editor sharedPrefsEditor = sharedPrefs.edit();
         sharedPrefsEditor.putString(context.getString(R.string.shared_prefs_artist_name), artistName.toLowerCase());
         sharedPrefsEditor.commit();
+    }
+
+    public static long getSyncInterval(Context context) {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return TimeUnit.DAYS.toSeconds(Long.parseLong(sharedPreferences.getString(KEY_PREF_SYNC, "1")));
     }
 }
