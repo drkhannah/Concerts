@@ -3,6 +3,6 @@
     <EditTextPreference
         android:defaultValue="1"
         android:key="@string/sync_interval_preference"
-        android:title="Update Artist Every (days):"
+        android:title="Automatic Sync Interval:"
         />
 </PreferenceScreen>

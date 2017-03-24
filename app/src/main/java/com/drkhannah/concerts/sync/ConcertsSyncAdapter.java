@@ -9,12 +9,14 @@ import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.SyncRequest;
 import android.content.SyncResult;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
@@ -43,8 +45,8 @@ public class ConcertsSyncAdapter extends AbstractThreadedSyncAdapter {
 
     private static final String LOG_TAG = ConcertsSyncAdapter.class.getSimpleName();
 
-    public static final long SYNC_INTERVAL_DAY = TimeUnit.DAYS.toSeconds(1);
     private static final long SYNC_FLEXTIME = TimeUnit.HOURS.toSeconds(1);
+    private static final String KEY_PREF_SYNC = "sync_interval";
 
 
     //constructor
@@ -88,7 +90,10 @@ public class ConcertsSyncAdapter extends AbstractThreadedSyncAdapter {
 
     private static void onAccountCreated(Account newAccount, Context context) {
         //Since we've created an account
-        configurePeriodicSync(context, SYNC_INTERVAL_DAY, SYNC_FLEXTIME);
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        long syncInterval = TimeUnit.DAYS.toSeconds(Long.parseLong(sharedPreferences.getString(KEY_PREF_SYNC, "1")));
+
+        configurePeriodicSync(context, syncInterval, SYNC_FLEXTIME);
 
         //Without calling setSyncAutomatically, periodic com.drkhannah.concerts.sync will not be enabled.
         ContentResolver.setSyncAutomatically(newAccount, context.getString(R.string.content_authority), true);
@@ -118,8 +123,7 @@ public class ConcertsSyncAdapter extends AbstractThreadedSyncAdapter {
         Bundle settingsBundle = new Bundle();
         settingsBundle.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
         settingsBundle.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
-        //Request the com.drkhannah.concerts.sync for the default account, authority, and
-        //manual com.drkhannah.concerts.sync settings
+
         Account account = createSyncAccount(context);
         ContentResolver.requestSync(account, context.getString(R.string.content_authority), settingsBundle);
     }
