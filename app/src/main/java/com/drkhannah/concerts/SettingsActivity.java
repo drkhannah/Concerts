@@ -40,8 +40,6 @@ public class SettingsActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
-
-
     //respond to Toolbar Actions
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
