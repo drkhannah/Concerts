@@ -16,7 +16,6 @@ public class NumberPickerPreference extends DialogPreference {
     private int mDefaultValue;
     private int mMinValue;
     private int mMaxValue;
-    private int mValue;
 
     private NumberPicker mNumberPicker;
 
@@ -44,11 +43,11 @@ public class NumberPickerPreference extends DialogPreference {
     @Override
     protected void onBindDialogView(View view) {
         super.onBindDialogView(view);
-        mNumberPicker = (NumberPicker) view.findViewById(R.id.pref_num_picker);
+        mNumberPicker = (NumberPicker) view.findViewById(R.id.picker);
         mNumberPicker.setMinValue(mMinValue);
         mNumberPicker.setMaxValue(mMaxValue);
         mNumberPicker.setValue((int) Utils.getSyncInterval(getContext()));
-        mNumberPicker.setWrapSelectorWheel(false);
+        mNumberPicker.setWrapSelectorWheel(true);
     }
 
     @Override
@@ -57,14 +56,13 @@ public class NumberPickerPreference extends DialogPreference {
         return a.getInteger(index, mDefaultValue);
     }
 
-    //set initial value in default shared preferences
+    //set initial default value in default shared preferences
     @Override
     protected void onSetInitialValue(boolean restorePersistedValue, Object defaultValue) {
         if (restorePersistedValue) {
-            mValue = getPersistedInt(mDefaultValue);
+            mDefaultValue = getPersistedInt(mDefaultValue);
         } else {
-            mValue = (Integer) defaultValue;
-            persistInt(mValue);
+            persistInt((Integer)defaultValue);
         }
     }
 
@@ -73,8 +71,8 @@ public class NumberPickerPreference extends DialogPreference {
         //was positive button clicked?
         if (positiveResult) {
             //save data to default shared preferences
-            mValue = mNumberPicker.getValue();
-            persistInt(mValue);
+            mDefaultValue = mNumberPicker.getValue();
+            persistInt(mDefaultValue);
         }
     }
 }
