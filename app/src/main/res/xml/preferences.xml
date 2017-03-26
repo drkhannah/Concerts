@@ -3,7 +3,6 @@
                   xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <com.drkhannah.concerts.NumberPickerPreference
-        android:id="@+id/pref_num_picker"
         android:defaultValue="1"
         app:minValue="1"
         app:maxValue="10"
