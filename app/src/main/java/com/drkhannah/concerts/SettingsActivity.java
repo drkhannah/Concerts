@@ -68,10 +68,9 @@ public class SettingsActivity extends AppCompatActivity {
             sp.registerOnSharedPreferenceChangeListener(this);
             super.onResume();
 
-            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
             Preference syncPref = findPreference(Utils.KEY_PREF_SYNC);
             // Set summary to be the user-description for the selected value
-            syncPref.setSummary("Sync with server every " + sharedPreferences.getInt(Utils.KEY_PREF_SYNC, 1) + " days");
+            syncPref.setSummary("Sync with server every " + sp.getInt(Utils.KEY_PREF_SYNC, 1) + " days");
         }
 
         // Unregisters a shared preference change listener
