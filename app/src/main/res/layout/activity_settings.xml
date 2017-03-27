@@ -11,7 +11,6 @@
     <!--SettingsFragment Container-->
     <FrameLayout
         android:id="@+id/settings_container"
-        android:name="com.drkhannah.concerts.SettingsActivity$SettingsFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
