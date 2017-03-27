@@ -62,7 +62,7 @@
             android:parentActivityName=".MainActivity">
         </activity>
 
-        <activity android:name="SettingsActivity"
+        <activity android:name=".SettingsActivity"
                   android:label="@string/settings_label">
             <intent-filter>
                 <action android:name="android.intent.action.MANAGE_NETWORK_USAGE"/>
