@@ -8,7 +8,7 @@
     android:fitsSystemWindows="true"
     tools:context=".SettingsActivity">
 
-    <!--SettingsFragment Static Fragment-->
+    <!--SettingsFragment Container-->
     <FrameLayout
         android:id="@+id/settings_container"
         android:name="com.drkhannah.concerts.SettingsActivity$SettingsFragment"
