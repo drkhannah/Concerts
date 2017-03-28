@@ -125,7 +125,7 @@
     <string name="dummy_account" translatable="false">dummy_account</string>
     <string name="account_type" translatable="false">softwareguild.com</string>
     <string name="sync_interval_preference">sync_interval</string>
-    <string name="action_show_settings">settings</string>
+    <string name="action_show_settings">Settings</string>
     <string name="settings_label">Settings</string>
 
 
