@@ -47,8 +47,8 @@ public class NumberPickerPreference extends DialogPreference {
         mNumberPicker = (NumberPicker) view.findViewById(R.id.picker);
         mNumberPicker.setMinValue(mMinValue);
         mNumberPicker.setMaxValue(mMaxValue);
-        mNumberPicker.setValue((int) Utils.getSyncInterval(getContext()));
-        mNumberPicker.setWrapSelectorWheel(true);
+        mNumberPicker.setValue(getPersistedInt(mCurrentValue));
+        mNumberPicker.setWrapSelectorWheel(false);
     }
 
     @Override
