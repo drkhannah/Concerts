@@ -8,6 +8,6 @@
         app:maxValue="10"
         android:key="@string/sync_interval_preference"
         android:title="Automatic Sync Interval:"
-        android:contentDescription="How often should data be automatically synced"/>
+        android:contentDescription="@string/custom_view_content_description"/>
 
 </PreferenceScreen>
