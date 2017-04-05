@@ -1,8 +1,10 @@
 package com.drkhannah.concerts;
 
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.AppBarLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
@@ -13,8 +15,6 @@ import com.drkhannah.concerts.data.ConcertsContract;
  */
 
 public class ConcertDetailActivity extends AppCompatActivity {
-
-    private static final String ARG_CONCERT_URI = "concert_uri";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -48,5 +48,16 @@ public class ConcertDetailActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(artistName);
+
+        //get device orientation
+        int orientation = getResources().getConfiguration().orientation;
+
+        //get appbarlayout
+        AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.appbar);
+
+        //if device is in landscape mode, collapse the appbar
+        if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            appBarLayout.setExpanded(false);
+        }
     }
 }

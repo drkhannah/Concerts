@@ -13,6 +13,7 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -41,10 +42,10 @@ public class ConcertListFragment extends Fragment implements LoaderManager.Loade
     // projection for our concert list loader
     final String[] CONCERTS_LIST_PROJECTION = new String[] {
             ConcertsContract.ArtistEntry.COLUMN_ARTIST_NAME,
-            ConcertsContract.ArtistEntry.COLUMN_ARTIST_IMAGE,
             ConcertsContract.ArtistEntry.COLUMN_TIME_STAMP,
             ConcertsContract.ConcertEntry.COLUMN_TTILE,
             ConcertsContract.ConcertEntry.COLUMN_FORMATTED_DATE_TIME,
+            ConcertsContract.ConcertEntry.COLUMN_VENUE_CITY,
             ConcertsContract.ConcertEntry.COLUMN_TICKET_STATUS
     };
 
@@ -102,6 +103,10 @@ public class ConcertListFragment extends Fragment implements LoaderManager.Loade
         mConcertsRecyclerViewAdapter = new ConcertsRecyclerViewAdapter(getActivity(), null);
         mConcertsRecyclerView.setAdapter(mConcertsRecyclerViewAdapter);
 
+        //add item divider to recyclerview
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mConcertsRecyclerView.getContext(), DividerItemDecoration.VERTICAL);
+        mConcertsRecyclerView.addItemDecoration(dividerItemDecoration);
+
         return rootView;
     }
 
@@ -135,7 +140,7 @@ public class ConcertListFragment extends Fragment implements LoaderManager.Loade
         //called when a new Loader needs to be created.
         String artistName = Utils.getSharedPrefsArtistName(getActivity());
         Uri concertListForArtistUri = ConcertsContract.ConcertEntry.buildConcertListForArtistUri(artistName);
-        return new CursorLoader(getActivity(), concertListForArtistUri, CONCERTS_LIST_PROJECTION, null, null, null);
+        return new CursorLoader(getActivity(), concertListForArtistUri, CONCERTS_LIST_PROJECTION, null, null, ConcertsContract.ConcertEntry.COLUMN_FORMATTED_DATE_TIME + " DESC");
     }
 
     @Override

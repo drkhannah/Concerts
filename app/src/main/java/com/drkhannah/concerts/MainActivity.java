@@ -36,8 +36,7 @@ public class MainActivity extends AppCompatActivity implements ConcertsRecyclerV
         handleIntent(getIntent());
 
         //setup App Bar
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        setupToolbar();
 
         mTwoPane = findViewById(R.id.concert_detail_container) != null;
 
@@ -57,6 +56,13 @@ public class MainActivity extends AppCompatActivity implements ConcertsRecyclerV
         initSyncAdapter(this);
 
 //        checkPlayServices();
+    }
+
+    private void setupToolbar() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setLogo(R.drawable.concerts_logo);
     }
 
     //check if Google Play Services is installed on the device
