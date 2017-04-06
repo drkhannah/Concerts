@@ -7,13 +7,19 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
 
-        <item name="actionModeShareDrawable">@drawable/ic_share_white_24dp</item>
+        <item name="actionModeShareDrawable">@drawable/ic_action_share</item>
         <item name="android:actionOverflowButtonStyle">@style/customOverFlowMenu</item>
-        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp</item>
+        <item name="android:homeAsUpIndicator">@drawable/ic_action_back</item>
     </style>
 
+    <!--overflow menu icon-->
     <style name="customOverFlowMenu" parent="android:Widget.ActionButton.Overflow">
-        <item name="android:src">@drawable/ic_more_vert_white_24dp</item>
+        <item name="android:src">@drawable/ic_action_more</item>
+    </style>
+
+    <!--Collapsed Toolbar-->
+    <style name="CollapsedAppBarTitle" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textColor">#00BFA5</item>
     </style>
 
     <style name="DetailLabels" >

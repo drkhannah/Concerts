@@ -105,9 +105,14 @@ public class ConcertsRecyclerViewAdapter extends RecyclerView.Adapter<ConcertsRe
         final String city = mCursor.getString(mCursor.getColumnIndexOrThrow(ConcertsContract.ConcertEntry.COLUMN_VENUE_CITY));
         final String date = mCursor.getString(mCursor.getColumnIndexOrThrow(ConcertsContract.ConcertEntry.COLUMN_FORMATTED_DATE_TIME));
         final String ticketStatus = mCursor.getString(mCursor.getColumnIndexOrThrow(ConcertsContract.ConcertEntry.COLUMN_TICKET_STATUS));
+
+        //set ticket icon type
         if (ticketStatus.equalsIgnoreCase("available")) {
-            holder.mTicketsIconImageView.setImageResource(R.drawable.ic_tickets);
+            holder.mTicketsIconImageView.setImageResource(R.drawable.tickets_available);
+        } else {
+            holder.mTicketsIconImageView.setImageResource(R.drawable.tickets_unavailable);
         }
+
         switch (getItemViewType(position)) {
             case VIEW_TYPE_LARGE: {
                 holder.mConcertTitleView.setText(title);

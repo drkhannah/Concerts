@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!--Blue Gray 500-->
-    <color name="colorPrimary">#607D8B</color>
-    <!--Blue Gray 900-->
+    <!--white-->
+    <color name="colorPrimary">#FFFFFF</color>
+    <!--Blue Gray 700-->
     <color name="colorPrimaryDark">#455A64</color>
-    <!--Teal A400-->
+    <!--Teal A700-->
     <color name="colorAccent">#00BFA5</color>
 </resources>
