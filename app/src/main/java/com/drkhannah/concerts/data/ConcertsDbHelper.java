@@ -34,7 +34,8 @@ public class ConcertsDbHelper extends SQLiteOpenHelper {
                 "CREATE TABLE " + ConcertsContract.ConcertEntry.TABLE_NAME + " (" +
                         ConcertsContract.ConcertEntry._ID + " INTEGER PRIMARY KEY," +
                         ConcertsContract.ConcertEntry.COLUMN_ARTIST_KEY + " INTEGER NOT NULL," +
-                        ConcertsContract.ConcertEntry.COLUMN_TTILE + " TEXT," +
+                        ConcertsContract.ConcertEntry.COLUMN_TITLE + " TEXT," +
+                        ConcertsContract.ConcertEntry.COLUMN_DATE_TIME + " TEXT," +
                         ConcertsContract.ConcertEntry.COLUMN_FORMATTED_DATE_TIME + " TEXT," +
                         ConcertsContract.ConcertEntry.COLUMN_FORMATTED_LOCATION + " TEXT," +
                         ConcertsContract.ConcertEntry.COLUMN_TICKET_URL + " TEXT," +

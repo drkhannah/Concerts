@@ -101,7 +101,7 @@ public class ConcertsRecyclerViewAdapter extends RecyclerView.Adapter<ConcertsRe
     @Override
     public void onBindViewHolder(ConcertsRecyclerViewAdapter.ViewHolder holder, int position) {
         mCursor.moveToPosition(position);
-        final String title = mCursor.getString(mCursor.getColumnIndexOrThrow(ConcertsContract.ConcertEntry.COLUMN_TTILE));
+        final String title = mCursor.getString(mCursor.getColumnIndexOrThrow(ConcertsContract.ConcertEntry.COLUMN_TITLE));
         final String city = mCursor.getString(mCursor.getColumnIndexOrThrow(ConcertsContract.ConcertEntry.COLUMN_VENUE_CITY));
         final String date = mCursor.getString(mCursor.getColumnIndexOrThrow(ConcertsContract.ConcertEntry.COLUMN_FORMATTED_DATE_TIME));
         final String ticketStatus = mCursor.getString(mCursor.getColumnIndexOrThrow(ConcertsContract.ConcertEntry.COLUMN_TICKET_STATUS));

@@ -40,6 +40,7 @@ public class TestUtils {
     static final String TEST_VENUE_COUNTRY = "United States";
     static final String TEST_VENUE_LONGITUDE = "33.2709964";
     static final String TEST_VENUE_LATITUDE = "-111.986939";
+    private static final String TEST_DATE_TIME = "2017-04-08T21:00:00";
 
 
     //compares values in a Cursor against expected values
@@ -75,7 +76,8 @@ public class TestUtils {
     public static ContentValues createConcertValues(long artistRowId) {
         ContentValues concertValues = new ContentValues();
         concertValues.put(ConcertsContract.ConcertEntry.COLUMN_ARTIST_KEY, artistRowId);
-        concertValues.put(ConcertsContract.ConcertEntry.COLUMN_TTILE, TEST_TITLE);
+        concertValues.put(ConcertsContract.ConcertEntry.COLUMN_TITLE, TEST_TITLE);
+        concertValues.put(ConcertsContract.ConcertEntry.COLUMN_DATE_TIME, TEST_DATE_TIME);
         concertValues.put(ConcertsContract.ConcertEntry.COLUMN_FORMATTED_DATE_TIME, TEST_DATE);
         concertValues.put(ConcertsContract.ConcertEntry.COLUMN_FORMATTED_LOCATION, TEST_LOCATION);
         concertValues.put(ConcertsContract.ConcertEntry.COLUMN_TICKET_URL, TEST_TICKET_URL);
@@ -95,7 +97,8 @@ public class TestUtils {
     public static ContentValues createDiffConcertValues(long artistRowId) {
         ContentValues concertValues = new ContentValues();
         concertValues.put(ConcertsContract.ConcertEntry.COLUMN_ARTIST_KEY, artistRowId);
-        concertValues.put(ConcertsContract.ConcertEntry.COLUMN_TTILE, TEST_TITLE);
+        concertValues.put(ConcertsContract.ConcertEntry.COLUMN_TITLE, TEST_TITLE);
+        concertValues.put(ConcertsContract.ConcertEntry.COLUMN_DATE_TIME, TEST_DATE_TIME);
         concertValues.put(ConcertsContract.ConcertEntry.COLUMN_FORMATTED_DATE_TIME, TEST_SECOND_DATE);
         concertValues.put(ConcertsContract.ConcertEntry.COLUMN_FORMATTED_LOCATION, TEST_LOCATION);
         concertValues.put(ConcertsContract.ConcertEntry.COLUMN_TICKET_URL, TEST_TICKET_URL);

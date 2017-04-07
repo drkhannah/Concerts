@@ -43,7 +43,8 @@ public class ConcertListFragment extends Fragment implements LoaderManager.Loade
     final String[] CONCERTS_LIST_PROJECTION = new String[] {
             ConcertsContract.ArtistEntry.COLUMN_ARTIST_NAME,
             ConcertsContract.ArtistEntry.COLUMN_TIME_STAMP,
-            ConcertsContract.ConcertEntry.COLUMN_TTILE,
+            ConcertsContract.ConcertEntry.COLUMN_TITLE,
+            ConcertsContract.ConcertEntry.COLUMN_DATE_TIME,
             ConcertsContract.ConcertEntry.COLUMN_FORMATTED_DATE_TIME,
             ConcertsContract.ConcertEntry.COLUMN_VENUE_CITY,
             ConcertsContract.ConcertEntry.COLUMN_TICKET_STATUS
@@ -147,7 +148,7 @@ public class ConcertListFragment extends Fragment implements LoaderManager.Loade
                 CONCERTS_LIST_PROJECTION,
                 null,
                 null,
-                ConcertsContract.ConcertEntry.COLUMN_FORMATTED_DATE_TIME + " DESC");
+                ConcertsContract.ConcertEntry.COLUMN_DATE_TIME + " ASC");
     }
 
     @Override

@@ -36,6 +36,7 @@
 
     <!--response object keys-->
     <string name="response_object_key_title" translatable="false">title</string>
+    <string name="response_object_key_datetime" translatable="false">datetime</string>
     <string name="response_object_key_formatted_datetime" translatable="false">formatted_datetime</string>
     <string name="response_object_key_formatted_location" translatable="false">formatted_location</string>
     <string name="response_object_key_ticket_url" translatable="false">ticket_url</string>

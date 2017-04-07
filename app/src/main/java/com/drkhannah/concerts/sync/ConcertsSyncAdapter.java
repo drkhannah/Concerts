@@ -269,6 +269,7 @@ public class ConcertsSyncAdapter extends AbstractThreadedSyncAdapter {
 
                 //concert object in response
                 String title = concertJsonObject.optString(getContext().getString(R.string.response_object_key_title), getContext().getString(R.string.no_title_available));
+                String dateTime = concertJsonObject.optString(getContext().getString(R.string.response_object_key_datetime), getContext().getString(R.string.no_date_available));
                 String formattedDateTime = concertJsonObject.optString(getContext().getString(R.string.response_object_key_formatted_datetime), getContext().getString(R.string.no_date_available));
                 String formattedLocation = concertJsonObject.optString(getContext().getString(R.string.response_object_key_formatted_location), getContext().getString(R.string.no_location_available));
                 String ticketUrl = concertJsonObject.optString(getContext().getString(R.string.response_object_key_ticket_url), getContext().getString(R.string.no_ticket_url_available));
@@ -289,7 +290,8 @@ public class ConcertsSyncAdapter extends AbstractThreadedSyncAdapter {
                 ContentValues concertValues = new ContentValues();
 
                 concertValues.put(ConcertsContract.ConcertEntry.COLUMN_ARTIST_KEY, newArtistId);
-                concertValues.put(ConcertsContract.ConcertEntry.COLUMN_TTILE, title);
+                concertValues.put(ConcertsContract.ConcertEntry.COLUMN_TITLE, title);
+                concertValues.put(ConcertsContract.ConcertEntry.COLUMN_DATE_TIME, dateTime);
                 concertValues.put(ConcertsContract.ConcertEntry.COLUMN_FORMATTED_DATE_TIME, formattedDateTime);
                 concertValues.put(ConcertsContract.ConcertEntry.COLUMN_FORMATTED_LOCATION, formattedLocation);
                 concertValues.put(ConcertsContract.ConcertEntry.COLUMN_TICKET_URL, ticketUrl);

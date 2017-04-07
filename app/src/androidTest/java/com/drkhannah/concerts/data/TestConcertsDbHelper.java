@@ -105,7 +105,8 @@ public class TestConcertsDbHelper {
         final HashSet<String> concertTableColumnHashSet = new HashSet<String>();
         concertTableColumnHashSet.add(ConcertsContract.ConcertEntry._ID);
         concertTableColumnHashSet.add(ConcertsContract.ConcertEntry.COLUMN_ARTIST_KEY);
-        concertTableColumnHashSet.add(ConcertsContract.ConcertEntry.COLUMN_TTILE);
+        concertTableColumnHashSet.add(ConcertsContract.ConcertEntry.COLUMN_TITLE);
+        concertTableColumnHashSet.add(ConcertsContract.ConcertEntry.COLUMN_DATE_TIME);
         concertTableColumnHashSet.add(ConcertsContract.ConcertEntry.COLUMN_FORMATTED_DATE_TIME);
         concertTableColumnHashSet.add(ConcertsContract.ConcertEntry.COLUMN_FORMATTED_LOCATION);
         concertTableColumnHashSet.add(ConcertsContract.ConcertEntry.COLUMN_TICKET_URL);

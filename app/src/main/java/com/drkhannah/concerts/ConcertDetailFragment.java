@@ -55,7 +55,7 @@ public class ConcertDetailFragment extends Fragment implements LoaderManager.Loa
             ConcertsContract.ArtistEntry.COLUMN_ARTIST_NAME,
             ConcertsContract.ArtistEntry.COLUMN_ARTIST_IMAGE,
             ConcertsContract.ArtistEntry.COLUMN_ARTIST_WEBSITE,
-            ConcertsContract.ConcertEntry.COLUMN_TTILE,
+            ConcertsContract.ConcertEntry.COLUMN_TITLE,
             ConcertsContract.ConcertEntry.COLUMN_FORMATTED_DATE_TIME,
             ConcertsContract.ConcertEntry.COLUMN_FORMATTED_LOCATION,
             ConcertsContract.ConcertEntry.COLUMN_TICKET_URL,
@@ -215,7 +215,7 @@ public class ConcertDetailFragment extends Fragment implements LoaderManager.Loa
 
             mArtistNameTextView.setText(cursor.getString(cursor.getColumnIndexOrThrow(ConcertsContract.ArtistEntry.COLUMN_ARTIST_NAME)));
             mArtistWebsiteTextView.setText(cursor.getString(cursor.getColumnIndexOrThrow(ConcertsContract.ArtistEntry.COLUMN_ARTIST_WEBSITE)));
-            mTitleTextView.setText(cursor.getString(cursor.getColumnIndexOrThrow(ConcertsContract.ConcertEntry.COLUMN_TTILE)));
+            mTitleTextView.setText(cursor.getString(cursor.getColumnIndexOrThrow(ConcertsContract.ConcertEntry.COLUMN_TITLE)));
             mFormattedDateTextView.setText(cursor.getString(cursor.getColumnIndexOrThrow(ConcertsContract.ConcertEntry.COLUMN_FORMATTED_DATE_TIME)));
             mFormattedLocationTextView.setText(cursor.getString(cursor.getColumnIndexOrThrow(ConcertsContract.ConcertEntry.COLUMN_FORMATTED_LOCATION)));
             mTicketUrlTextView.setText(cursor.getString(cursor.getColumnIndexOrThrow(ConcertsContract.ConcertEntry.COLUMN_TICKET_URL)));

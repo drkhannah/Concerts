@@ -64,7 +64,8 @@ public class ConcertsContract {
     public static class ConcertEntry implements BaseColumns {
         public static final String TABLE_NAME = "concert";
         public static final String COLUMN_ARTIST_KEY = "artist_id";
-        public static final String COLUMN_TTILE = "title";
+        public static final String COLUMN_TITLE = "title";
+        public static final String COLUMN_DATE_TIME = "datetime";
         public static final String COLUMN_FORMATTED_DATE_TIME = "formatted_date_time";
         public static final String COLUMN_FORMATTED_LOCATION = "formatted_location";
         public static final String COLUMN_TICKET_URL = "ticket_url";
@@ -91,6 +92,7 @@ public class ConcertsContract {
         //MIME type for returning a single row from the concert table
         //example vnd.android.cursor.item/com.drkhannah.concerts.provider/concert
         public static final String CONTENT_ITEM_TYPE = ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_CONCERT;
+
 
         //builds a URI to get a list of concerts for a given artist
         //example URI path content://com.drkhannah.concerts.provider/concert/ARTIST_NAME_HERE
