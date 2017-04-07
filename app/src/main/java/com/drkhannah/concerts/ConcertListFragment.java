@@ -140,7 +140,14 @@ public class ConcertListFragment extends Fragment implements LoaderManager.Loade
         //called when a new Loader needs to be created.
         String artistName = Utils.getSharedPrefsArtistName(getActivity());
         Uri concertListForArtistUri = ConcertsContract.ConcertEntry.buildConcertListForArtistUri(artistName);
-        return new CursorLoader(getActivity(), concertListForArtistUri, CONCERTS_LIST_PROJECTION, null, null, ConcertsContract.ConcertEntry.COLUMN_FORMATTED_DATE_TIME + " DESC");
+
+        return new CursorLoader(
+                getActivity(),
+                concertListForArtistUri,
+                CONCERTS_LIST_PROJECTION,
+                null,
+                null,
+                ConcertsContract.ConcertEntry.COLUMN_FORMATTED_DATE_TIME + " DESC");
     }
 
     @Override
