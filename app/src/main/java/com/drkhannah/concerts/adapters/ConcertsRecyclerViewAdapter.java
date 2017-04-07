@@ -41,7 +41,7 @@ public class ConcertsRecyclerViewAdapter extends RecyclerView.Adapter<ConcertsRe
         private TextView mConcertTitleView;
         private TextView mConcertFormattedDateView;
         private TextView mConcertTicketStatusView;
-        private TextView mVenueCity;
+        private TextView mLocation;
         private ImageView mTicketsIconImageView;
 
         //ViewHolder constructor
@@ -50,7 +50,7 @@ public class ConcertsRecyclerViewAdapter extends RecyclerView.Adapter<ConcertsRe
             mConcertTitleView = (TextView) view.findViewById(R.id.concert_title);
             mConcertFormattedDateView = (TextView) view.findViewById(R.id.concert_formatted_date);
             mConcertTicketStatusView = (TextView) view.findViewById(R.id.concert_ticket_status);
-            mVenueCity = (TextView) view.findViewById(R.id.venue_city);
+            mLocation = (TextView) view.findViewById(R.id.concert_formatted_location);
             mTicketsIconImageView = (ImageView) view.findViewById(R.id.tickets_icon);
             view.setOnClickListener(this);
         }
@@ -102,7 +102,7 @@ public class ConcertsRecyclerViewAdapter extends RecyclerView.Adapter<ConcertsRe
     public void onBindViewHolder(ConcertsRecyclerViewAdapter.ViewHolder holder, int position) {
         mCursor.moveToPosition(position);
         final String title = mCursor.getString(mCursor.getColumnIndexOrThrow(ConcertsContract.ConcertEntry.COLUMN_TITLE));
-        final String city = mCursor.getString(mCursor.getColumnIndexOrThrow(ConcertsContract.ConcertEntry.COLUMN_VENUE_CITY));
+        final String location = mCursor.getString(mCursor.getColumnIndexOrThrow(ConcertsContract.ConcertEntry.COLUMN_FORMATTED_LOCATION));
         final String date = mCursor.getString(mCursor.getColumnIndexOrThrow(ConcertsContract.ConcertEntry.COLUMN_FORMATTED_DATE_TIME));
         final String ticketStatus = mCursor.getString(mCursor.getColumnIndexOrThrow(ConcertsContract.ConcertEntry.COLUMN_TICKET_STATUS));
 
@@ -119,7 +119,7 @@ public class ConcertsRecyclerViewAdapter extends RecyclerView.Adapter<ConcertsRe
                 break;
             }
             case VIEW_TYPE_SMALL: {
-                holder.mVenueCity.setText(city);
+                holder.mLocation.setText(location);
                 break;
             }
         }

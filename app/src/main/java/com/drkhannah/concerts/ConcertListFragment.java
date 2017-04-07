@@ -46,7 +46,7 @@ public class ConcertListFragment extends Fragment implements LoaderManager.Loade
             ConcertsContract.ConcertEntry.COLUMN_TITLE,
             ConcertsContract.ConcertEntry.COLUMN_DATE_TIME,
             ConcertsContract.ConcertEntry.COLUMN_FORMATTED_DATE_TIME,
-            ConcertsContract.ConcertEntry.COLUMN_VENUE_CITY,
+            ConcertsContract.ConcertEntry.COLUMN_FORMATTED_LOCATION,
             ConcertsContract.ConcertEntry.COLUMN_TICKET_STATUS
     };
 
