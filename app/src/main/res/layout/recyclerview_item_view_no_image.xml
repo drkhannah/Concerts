@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:background="?attr/selectableItemBackground"
@@ -10,7 +11,9 @@
         android:id="@+id/tickets_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="16dp"/>
+        android:padding="16dp"
+        tools:src="@drawable/tickets_available"
+        android:contentDescription="@string/content_description_ticket_availability"/>
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -23,20 +26,23 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@android:color/black"
-            android:textStyle="bold"/>
+            android:textStyle="bold"
+            tools:text="Date"/>
 
         <TextView
             android:id="@+id/concert_formatted_location"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@android:color/black"/>
+            android:textColor="@android:color/black"
+            tools:text="Location"/>
 
         <TextView
             android:id="@+id/concert_ticket_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@android:color/black"
-            android:textStyle="italic"/>
+            android:textStyle="italic"
+            tools:text="Availability"/>
 
     </LinearLayout>
 </LinearLayout>

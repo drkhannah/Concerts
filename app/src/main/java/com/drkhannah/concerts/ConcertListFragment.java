@@ -42,6 +42,7 @@ public class ConcertListFragment extends Fragment implements LoaderManager.Loade
     // projection for our concert list loader
     final String[] CONCERTS_LIST_PROJECTION = new String[] {
             ConcertsContract.ArtistEntry.COLUMN_ARTIST_NAME,
+            ConcertsContract.ArtistEntry.COLUMN_ARTIST_IMAGE,
             ConcertsContract.ArtistEntry.COLUMN_TIME_STAMP,
             ConcertsContract.ConcertEntry.COLUMN_TITLE,
             ConcertsContract.ConcertEntry.COLUMN_DATE_TIME,

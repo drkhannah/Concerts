@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.drkhannah.concerts.MainActivity;
 import com.drkhannah.concerts.R;
 import com.drkhannah.concerts.data.ConcertsContract;
+import com.squareup.picasso.Picasso;
 
 /**
  * Created by dhannah on 11/14/16.
@@ -26,8 +27,8 @@ public class ConcertsRecyclerViewAdapter extends RecyclerView.Adapter<ConcertsRe
     private Cursor mCursor;
 
     //constants for which layout to use for Recycler view list items
-    private static final int VIEW_TYPE_LARGE = 0;
-    private static final int VIEW_TYPE_SMALL = 1;
+    private static final int VIEW_TYPE_WITH_IMAGE = 0;
+    private static final int VIEW_TYPE_NO_IMAGE = 1;
 
     //constructor
     public ConcertsRecyclerViewAdapter(Context context, Cursor cursor) {
@@ -41,8 +42,10 @@ public class ConcertsRecyclerViewAdapter extends RecyclerView.Adapter<ConcertsRe
         private TextView mConcertTitleView;
         private TextView mConcertFormattedDateView;
         private TextView mConcertTicketStatusView;
+        private ImageView mArtistImageView;
         private TextView mLocation;
         private ImageView mTicketsIconImageView;
+
 
         //ViewHolder constructor
         ViewHolder(View view) {
@@ -50,6 +53,7 @@ public class ConcertsRecyclerViewAdapter extends RecyclerView.Adapter<ConcertsRe
             mConcertTitleView = (TextView) view.findViewById(R.id.concert_title);
             mConcertFormattedDateView = (TextView) view.findViewById(R.id.concert_formatted_date);
             mConcertTicketStatusView = (TextView) view.findViewById(R.id.concert_ticket_status);
+            mArtistImageView = (ImageView) view.findViewById(R.id.artist_image);
             mLocation = (TextView) view.findViewById(R.id.concert_formatted_location);
             mTicketsIconImageView = (ImageView) view.findViewById(R.id.tickets_icon);
             view.setOnClickListener(this);
@@ -69,23 +73,23 @@ public class ConcertsRecyclerViewAdapter extends RecyclerView.Adapter<ConcertsRe
     //get an item's view type
     @Override
     public int getItemViewType(int position) {
-        return (position == 0 && !((MainActivity) mContext).isTwoPane()) ? VIEW_TYPE_LARGE : VIEW_TYPE_SMALL;
+        return (position == 0 && !((MainActivity) mContext).isTwoPane()) ? VIEW_TYPE_WITH_IMAGE : VIEW_TYPE_NO_IMAGE;
     }
 
     // create a new ViewHolder object that uses one of two layout resources:
-    // recyclerview_item_view_large if it is the first item in the list
-    // recyclerview_item_view_small for every other item in the list
+    // recyclerview_item_view_with_image if it is the first item in the list
+    // recyclerview_item_view_no_image for every other item in the list
     @Override
     public ConcertsRecyclerViewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (parent instanceof RecyclerView) {
             int layoutId = -1;
             switch (viewType) {
-                case VIEW_TYPE_LARGE: {
-                    layoutId = R.layout.recyclerview_item_view_large;
+                case VIEW_TYPE_WITH_IMAGE: {
+                    layoutId = R.layout.recyclerview_item_view_with_image;
                     break;
                 }
-                case VIEW_TYPE_SMALL: {
-                    layoutId = R.layout.recyclerview_item_view_small;
+                case VIEW_TYPE_NO_IMAGE: {
+                    layoutId = R.layout.recyclerview_item_view_no_image;
                     break;
                 }
             }
@@ -101,6 +105,7 @@ public class ConcertsRecyclerViewAdapter extends RecyclerView.Adapter<ConcertsRe
     @Override
     public void onBindViewHolder(ConcertsRecyclerViewAdapter.ViewHolder holder, int position) {
         mCursor.moveToPosition(position);
+        final String imageUrl = mCursor.getString(mCursor.getColumnIndexOrThrow(ConcertsContract.ArtistEntry.COLUMN_ARTIST_IMAGE));
         final String title = mCursor.getString(mCursor.getColumnIndexOrThrow(ConcertsContract.ConcertEntry.COLUMN_TITLE));
         final String location = mCursor.getString(mCursor.getColumnIndexOrThrow(ConcertsContract.ConcertEntry.COLUMN_FORMATTED_LOCATION));
         final String date = mCursor.getString(mCursor.getColumnIndexOrThrow(ConcertsContract.ConcertEntry.COLUMN_FORMATTED_DATE_TIME));
@@ -114,11 +119,16 @@ public class ConcertsRecyclerViewAdapter extends RecyclerView.Adapter<ConcertsRe
         }
 
         switch (getItemViewType(position)) {
-            case VIEW_TYPE_LARGE: {
+            case VIEW_TYPE_WITH_IMAGE: {
                 holder.mConcertTitleView.setText(title);
+                Picasso.with(mContext)
+                        .load(imageUrl)
+                        .placeholder(R.drawable.artist_placeholder_img)
+                        .error(R.drawable.artist_placeholder_img)
+                        .into(holder.mArtistImageView);
                 break;
             }
-            case VIEW_TYPE_SMALL: {
+            case VIEW_TYPE_NO_IMAGE: {
                 holder.mLocation.setText(location);
                 break;
             }

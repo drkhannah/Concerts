@@ -131,6 +131,8 @@
 
     <!--Custom View-->
     <string name="custom_view_content_description">How often should data be automatically synced</string>
+    <string name="content_description_ticket_availability">Ticket Availability</string>
+    <string name="content_description_artist_image">Artist Image</string>
 
 
 </resources>
