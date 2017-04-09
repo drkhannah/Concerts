@@ -24,17 +24,18 @@
     </style>
 
     <style name="DetailLabels" >
-        <item name="android:textSize">16sp</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:fontFamily">sans-serif-condensed</item>
-        <item name="android:paddingTop">8dp</item>
-        <item name="android:paddingLeft">8dp</item>
-        <item name="android:layout_gravity">fill</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:layout_gravity"></item>
+        <item name="android:textColor">@color/colorAccent</item>
+        <item name="android:layout_margin">8dp</item>
+        <item name="android:padding">4dp</item>
+        <item name="android:background">@drawable/border_bottom</item>
     </style>
 
     <style name="Details" >
-        <item name="android:paddingLeft">16dp</item>
-        <item name="android:paddingRight">8dp</item>
+        <item name="android:paddingLeft">12dp</item>
+        <item name="android:paddingRight">12dp</item>
+        <item name="android:paddingBottom">12dp</item>
         <item name="android:layout_gravity">fill</item>
     </style>
     
