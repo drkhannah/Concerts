@@ -1,6 +1,7 @@
 package com.drkhannah.concerts.adapters;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
@@ -73,7 +74,9 @@ public class ConcertsRecyclerViewAdapter extends RecyclerView.Adapter<ConcertsRe
     //get an item's view type
     @Override
     public int getItemViewType(int position) {
-        return (position == 0 && !((MainActivity) mContext).isTwoPane()) ? VIEW_TYPE_WITH_IMAGE : VIEW_TYPE_NO_IMAGE;
+        //get device orientation
+        int orientation = mContext.getResources().getConfiguration().orientation;
+        return (position == 0 && !((MainActivity) mContext).isTwoPane() && orientation == Configuration.ORIENTATION_PORTRAIT) ? VIEW_TYPE_WITH_IMAGE : VIEW_TYPE_NO_IMAGE;
     }
 
     // create a new ViewHolder object that uses one of two layout resources:

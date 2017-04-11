@@ -62,7 +62,6 @@ public class MainActivity extends AppCompatActivity implements ConcertsRecyclerV
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-        getSupportActionBar().setLogo(R.drawable.concerts_logo);
     }
 
     //check if Google Play Services is installed on the device

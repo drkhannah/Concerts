@@ -37,7 +37,6 @@ public class ConcertDetailFragment extends Fragment implements LoaderManager.Loa
     private TextView mTicketUrlTextView;
     private TextView mVenueNameTextView;
     private ImageView mArtistImageView;
-    private String mGeo;
     private TextView mArtistNameTextView;
     private TextView mArtistWebsiteTextView;
     private TextView mFormattedDateTextView;
@@ -49,6 +48,13 @@ public class ConcertDetailFragment extends Fragment implements LoaderManager.Loa
     private TextView mVenueCityTextView;
     private TextView mVenueRegionTextView;
     private TextView mVenueCountryTextView;
+
+
+    private String mGeo;
+
+    private ImageView mTicketsIconImageView;
+
+    private View mBuyTicketsCardView;
 
     // projection for our concert list loader
     final String[] CONCERTS_DETAIL_PROJECTION = new String[]{
@@ -69,7 +75,6 @@ public class ConcertDetailFragment extends Fragment implements LoaderManager.Loa
             ConcertsContract.ConcertEntry.COLUMN_VENUE_COUNTRY,
             ConcertsContract.ConcertEntry.COLUMN_VENUE_LATITUDE,
             ConcertsContract.ConcertEntry.COLUMN_VENUE_LONGITUDE,
-
     };
 
     public ConcertDetailFragment() {
@@ -112,6 +117,7 @@ public class ConcertDetailFragment extends Fragment implements LoaderManager.Loa
             //the concert_detail_artist_image ImageView is in the ConcertDetailActivity's Toolbar
             mArtistImageView = (ImageView) getActivity().findViewById(R.id.concert_detail_artist_image);
         } else {
+            //the concert_detail_artist_image ImageView is in the rootView
             mArtistImageView = (ImageView) rootView.findViewById(R.id.concert_detail_artist_image);
         }
 
@@ -122,6 +128,8 @@ public class ConcertDetailFragment extends Fragment implements LoaderManager.Loa
         mFormattedDateTextView = (TextView) rootView.findViewById(R.id.concert_detail_formatted_date);
         mFormattedLocationTextView = (TextView) rootView.findViewById(R.id.concert_detail_formatted_location);
         mTicketUrlTextView = (TextView) rootView.findViewById(R.id.concert_detail_ticket_url);
+        mTicketsIconImageView = (ImageView) rootView.findViewById(R.id.tickets_icon);
+        mBuyTicketsCardView = rootView.findViewById(R.id.buy_tickets_cardview);
         mTicketTypeTextView = (TextView) rootView.findViewById(R.id.concert_detail_ticket_type);
         mTicketStatusTextView = (TextView) rootView.findViewById(R.id.concert_detail_ticket_status);
         mDescriptionTextView = (TextView) rootView.findViewById(R.id.concert_detail_description);
@@ -218,7 +226,33 @@ public class ConcertDetailFragment extends Fragment implements LoaderManager.Loa
             mTitleTextView.setText(cursor.getString(cursor.getColumnIndexOrThrow(ConcertsContract.ConcertEntry.COLUMN_TITLE)));
             mFormattedDateTextView.setText(cursor.getString(cursor.getColumnIndexOrThrow(ConcertsContract.ConcertEntry.COLUMN_FORMATTED_DATE_TIME)));
             mFormattedLocationTextView.setText(cursor.getString(cursor.getColumnIndexOrThrow(ConcertsContract.ConcertEntry.COLUMN_FORMATTED_LOCATION)));
-            mTicketUrlTextView.setText(cursor.getString(cursor.getColumnIndexOrThrow(ConcertsContract.ConcertEntry.COLUMN_TICKET_URL)));
+
+            //set buy tickets link url
+            final String url = cursor.getString(cursor.getColumnIndexOrThrow(ConcertsContract.ConcertEntry.COLUMN_TICKET_URL));
+            mBuyTicketsCardView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent myIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                    startActivity(myIntent);
+                }
+            });
+
+            //set text for available or unavailable tickets
+            String ticketStatus = cursor.getString(cursor.getColumnIndexOrThrow(ConcertsContract.ConcertEntry.COLUMN_TICKET_STATUS));
+            if (ticketStatus.equalsIgnoreCase("available")) {
+                mTicketUrlTextView.setText(R.string.tickets_available_buy_now);
+            } else {
+                mTicketUrlTextView.setText(R.string.tickets_sold_out);
+                mBuyTicketsCardView.setOnClickListener(null);
+            }
+
+            //set ticket availability icon
+            if (cursor.getString(cursor.getColumnIndexOrThrow(ConcertsContract.ConcertEntry.COLUMN_TICKET_STATUS)).equalsIgnoreCase("available")) {
+                mTicketsIconImageView.setImageResource(R.drawable.tickets_available);
+            } else {
+                mTicketsIconImageView.setImageResource(R.drawable.tickets_unavailable);
+            }
+
             mTicketTypeTextView.setText(cursor.getString(cursor.getColumnIndexOrThrow(ConcertsContract.ConcertEntry.COLUMN_TICKET_TYPE)));
             mTicketStatusTextView.setText(cursor.getString(cursor.getColumnIndexOrThrow(ConcertsContract.ConcertEntry.COLUMN_TICKET_STATUS)));
             mDescriptionTextView.setText(cursor.getString(cursor.getColumnIndexOrThrow(ConcertsContract.ConcertEntry.COLUMN_DESCRIPTION)));
