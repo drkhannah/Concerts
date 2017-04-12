@@ -105,7 +105,7 @@ public class ConcertListFragment extends Fragment implements LoaderManager.Loade
         mConcertsRecyclerViewAdapter = new ConcertsRecyclerViewAdapter(getActivity(), null);
         mConcertsRecyclerView.setAdapter(mConcertsRecyclerViewAdapter);
 
-        //add item divider to recyclerview
+        //add item divider to RecyclerView
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mConcertsRecyclerView.getContext(), DividerItemDecoration.VERTICAL);
         mConcertsRecyclerView.addItemDecoration(dividerItemDecoration);
 
