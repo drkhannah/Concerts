@@ -25,7 +25,6 @@
 
     <style name="DetailLabels" >
         <item name="android:textSize">12sp</item>
-        <item name="android:layout_gravity"></item>
         <item name="android:textColor">@color/colorAccent</item>
         <item name="android:background">@drawable/border_bottom</item>
     </style>
