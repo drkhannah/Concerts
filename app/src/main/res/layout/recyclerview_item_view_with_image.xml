@@ -1,19 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
               xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
               android:background="@android:color/white"
-              android:orientation="vertical"
-              android:elevation="4dp">
+              android:elevation="4dp"
+              android:orientation="vertical">
 
-    <ImageView
-        android:id="@+id/artist_image"
+    <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:contentDescription="@string/content_description_artist_image"
-        android:scaleType="centerCrop"/>
+        app:cardElevation="@dimen/detail_card_elevation"
+        android:layout_margin="12dp">
+
+        <ImageView
+            android:id="@+id/artist_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/content_description_artist_image"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"/>
+
+    </android.support.v7.widget.CardView>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -35,6 +44,7 @@
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:layout_marginRight="16dp"
+            android:layout_marginEnd="16dp"
             android:gravity="center"
             android:orientation="vertical">
 
