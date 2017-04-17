@@ -227,12 +227,9 @@ public class ConcertDetailFragment extends Fragment implements LoaderManager.Loa
             mFormattedDateTextView.setText(cursor.getString(cursor.getColumnIndexOrThrow(ConcertsContract.ConcertEntry.COLUMN_FORMATTED_DATE_TIME)));
             mFormattedLocationTextView.setText(cursor.getString(cursor.getColumnIndexOrThrow(ConcertsContract.ConcertEntry.COLUMN_FORMATTED_LOCATION)));
 
-            //set text for available or unavailable tickets, and ticket availability icons
+            //ticket availability
             String ticketStatus = cursor.getString(cursor.getColumnIndexOrThrow(ConcertsContract.ConcertEntry.COLUMN_TICKET_STATUS));
             if (ticketStatus.equalsIgnoreCase("available")) {
-                mTicketUrlTextView.setText(R.string.tickets_available_buy_now);
-                mTicketsIconImageView.setImageResource(R.drawable.tickets_available);
-
                 //set buy tickets link url
                 final String url = cursor.getString(cursor.getColumnIndexOrThrow(ConcertsContract.ConcertEntry.COLUMN_TICKET_URL));
                 mBuyTicketsCardView.setOnClickListener(new View.OnClickListener() {
@@ -242,6 +239,10 @@ public class ConcertDetailFragment extends Fragment implements LoaderManager.Loa
                         startActivity(myIntent);
                     }
                 });
+
+                //set text and icon
+                mTicketUrlTextView.setText(R.string.tickets_available_buy_now);
+                mTicketsIconImageView.setImageResource(R.drawable.tickets_available);
             } else {
                 mTicketUrlTextView.setText(R.string.tickets_sold_out);
                 mTicketsIconImageView.setImageResource(R.drawable.tickets_unavailable);
