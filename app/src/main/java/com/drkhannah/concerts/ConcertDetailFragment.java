@@ -227,29 +227,23 @@ public class ConcertDetailFragment extends Fragment implements LoaderManager.Loa
             mFormattedDateTextView.setText(cursor.getString(cursor.getColumnIndexOrThrow(ConcertsContract.ConcertEntry.COLUMN_FORMATTED_DATE_TIME)));
             mFormattedLocationTextView.setText(cursor.getString(cursor.getColumnIndexOrThrow(ConcertsContract.ConcertEntry.COLUMN_FORMATTED_LOCATION)));
 
-            //set buy tickets link url
-            final String url = cursor.getString(cursor.getColumnIndexOrThrow(ConcertsContract.ConcertEntry.COLUMN_TICKET_URL));
-            mBuyTicketsCardView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent myIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-                    startActivity(myIntent);
-                }
-            });
-
-            //set text for available or unavailable tickets
+            //set text for available or unavailable tickets, and ticket availability icons
             String ticketStatus = cursor.getString(cursor.getColumnIndexOrThrow(ConcertsContract.ConcertEntry.COLUMN_TICKET_STATUS));
             if (ticketStatus.equalsIgnoreCase("available")) {
                 mTicketUrlTextView.setText(R.string.tickets_available_buy_now);
+                mTicketsIconImageView.setImageResource(R.drawable.tickets_available);
+
+                //set buy tickets link url
+                final String url = cursor.getString(cursor.getColumnIndexOrThrow(ConcertsContract.ConcertEntry.COLUMN_TICKET_URL));
+                mBuyTicketsCardView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent myIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                        startActivity(myIntent);
+                    }
+                });
             } else {
                 mTicketUrlTextView.setText(R.string.tickets_sold_out);
-                mBuyTicketsCardView.setOnClickListener(null);
-            }
-
-            //set ticket availability icon
-            if (cursor.getString(cursor.getColumnIndexOrThrow(ConcertsContract.ConcertEntry.COLUMN_TICKET_STATUS)).equalsIgnoreCase("available")) {
-                mTicketsIconImageView.setImageResource(R.drawable.tickets_available);
-            } else {
                 mTicketsIconImageView.setImageResource(R.drawable.tickets_unavailable);
             }
 
