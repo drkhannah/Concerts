@@ -17,7 +17,7 @@
             android:id="@+id/layout_space_center"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_centerInParent="true" />
+            android:layout_centerInParent="true"/>
 
         <!--ConcertListFragment Static Fragment-->
         <fragment
@@ -29,21 +29,26 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_alignRight="@id/layout_space_center"
+            android:layout_alignParentBottom="true"
             android:layout_below="@id/appbar"
-            tools:layout="@layout/fragment_main"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            tools:layout="@layout/fragment_main"/>
 
         <!--ConcertDetail Fragment Container-->
         <android.support.v7.widget.CardView
             android:id="@+id/concert_detail_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="?attr/actionBarSize"
             android:layout_alignLeft="@id/layout_space_center"
             android:layout_alignStart="@id/layout_space_center"
-            android:layout_marginRight="@dimen/abc_list_item_padding_horizontal_material"
-            android:layout_marginEnd="@dimen/abc_list_item_padding_horizontal_material"
             android:layout_marginBottom="@dimen/abc_list_item_padding_horizontal_material"
+            android:layout_marginEnd="@dimen/abc_list_item_padding_horizontal_material"
+            android:layout_marginRight="@dimen/abc_list_item_padding_horizontal_material"
+            android:layout_marginTop="?attr/actionBarSize"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             app:cardCornerRadius="4dp"
             app:cardElevation="@dimen/detail_card_elevation"
             app:cardPreventCornerOverlap="false"/>
@@ -68,8 +73,8 @@
                 android:layout_height="?attr/listPreferredItemHeight"
                 android:layout_marginLeft="@dimen/logo_margin"
                 android:layout_marginStart="@dimen/logo_margin"
-                android:src="@drawable/concerts_logo"
-                android:contentDescription="@string/app_name"/>
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/concerts_logo"/>
 
         </android.support.design.widget.AppBarLayout>
     </RelativeLayout>
@@ -81,5 +86,5 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
         app:srcCompat="@drawable/ic_search_white_24dp"/>
-    
+
 </android.support.design.widget.CoordinatorLayout>

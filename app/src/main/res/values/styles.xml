@@ -25,7 +25,7 @@
 
     <!--Collapsed Toolbar-->
     <style name="CollapsedAppBarTitle" parent="@android:style/TextAppearance.Medium">
-        <item name="android:textColor">#00BFA5</item>
+        <item name="android:textColor">@color/colorAccent</item>
     </style>
 
     <style name="DetailLabels" >

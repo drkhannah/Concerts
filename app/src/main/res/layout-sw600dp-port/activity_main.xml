@@ -48,6 +48,11 @@
             android:layout_marginRight="@dimen/abc_list_item_padding_horizontal_material"
             android:layout_marginStart="@dimen/abc_list_item_padding_horizontal_material"
             android:layout_marginTop="?attr/actionBarSize"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             app:cardCornerRadius="4dp"
             app:cardElevation="@dimen/detail_card_elevation"
             app:cardPreventCornerOverlap="false"/>
