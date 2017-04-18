@@ -31,6 +31,9 @@ public class MainActivity extends AppCompatActivity implements ConcertsRecyclerV
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        //switch theme from SplashTheme to AppTheme
+        setTheme(R.style.AppTheme);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         handleIntent(getIntent());

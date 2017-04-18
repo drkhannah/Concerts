@@ -13,6 +13,11 @@
         <item name="android:homeAsUpIndicator">@drawable/ic_action_back</item>
     </style>
 
+    <!-- Splash Screen theme. -->
+    <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowBackground">@drawable/splash_background</item>
+    </style>
+
     <!--overflow menu icon-->
     <style name="CustomOverFlowMenu" parent="android:Widget.ActionButton.Overflow">
         <item name="android:src">@drawable/ic_action_more</item>
