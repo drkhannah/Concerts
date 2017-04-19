@@ -41,7 +41,6 @@
             android:id="@+id/concert_detail_container"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_alignTop="@id/appbar"
             android:layout_alignBottom="@id/layout_space_center"
             android:layout_marginEnd="@dimen/abc_list_item_padding_horizontal_material"
             android:layout_marginLeft="@dimen/abc_list_item_padding_horizontal_material"
