@@ -79,6 +79,9 @@ public class ConcertListFragment extends Fragment implements LoaderManager.Loade
         //register for mEmptyTextView local broadcast receiver
         LocalBroadcastManager.getInstance(getActivity()).registerReceiver(
                 mEmptyTextViewBroadcastReceiver, new IntentFilter(getString(R.string.empty_text_action)));
+
+        //scroll recyclerview to selected position
+        mConcertsRecyclerView.scrollToPosition(mConcertsRecyclerViewAdapter.getSelectedPos());
     }
 
     @Override

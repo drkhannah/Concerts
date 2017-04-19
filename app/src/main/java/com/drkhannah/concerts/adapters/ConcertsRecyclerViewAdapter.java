@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.drkhannah.concerts.MainActivity;
@@ -26,6 +27,8 @@ public class ConcertsRecyclerViewAdapter extends RecyclerView.Adapter<ConcertsRe
 
     private Context mContext;
     private Cursor mCursor;
+
+    static public int selectedPos = 0;
 
     //constants for which layout to use for Recycler view list items
     private static final int VIEW_TYPE_WITH_IMAGE = 0;
@@ -46,6 +49,7 @@ public class ConcertsRecyclerViewAdapter extends RecyclerView.Adapter<ConcertsRe
         private ImageView mArtistImageView;
         private TextView mLocation;
         private ImageView mTicketsIconImageView;
+        private LinearLayout mItemBackground;
 
 
         //ViewHolder constructor
@@ -57,18 +61,36 @@ public class ConcertsRecyclerViewAdapter extends RecyclerView.Adapter<ConcertsRe
             mArtistImageView = (ImageView) view.findViewById(R.id.artist_image);
             mLocation = (TextView) view.findViewById(R.id.concert_formatted_location);
             mTicketsIconImageView = (ImageView) view.findViewById(R.id.tickets_icon);
+            mItemBackground = (LinearLayout) view.findViewById(R.id.recyclerview_item_background);
             view.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
+            //set selected item
+            notifyItemChanged(selectedPos);
+            selectedPos = getLayoutPosition();
+            notifyItemChanged(selectedPos);
+
             //get a record from mCursor using the adapter position
-            mCursor.moveToPosition(getAdapterPosition());
-            final String artistName = mCursor.getString(mCursor.getColumnIndexOrThrow(ConcertsContract.ArtistEntry.COLUMN_ARTIST_NAME));
-            final String concertDate = mCursor.getString(mCursor.getColumnIndexOrThrow(ConcertsContract.ConcertEntry.COLUMN_FORMATTED_DATE_TIME));
-            //handle item selection back in MainActivity
-            ((ConcertsRecyclerViewAdapterItemClick) mContext).onConcertsRecyclerViewItemClick(ConcertsContract.ConcertEntry.buildConcertForArtistWithDate(artistName, concertDate));
+            showSelectedItemDetails();
         }
+    }
+
+    //show details of selected item
+    public void showSelectedItemDetails() {
+        //get a record from mCursor using the adapter position
+        mCursor.moveToPosition(selectedPos);
+        final String artistName = mCursor.getString(mCursor.getColumnIndexOrThrow(ConcertsContract.ArtistEntry.COLUMN_ARTIST_NAME));
+        final String concertDate = mCursor.getString(mCursor.getColumnIndexOrThrow(ConcertsContract.ConcertEntry.COLUMN_FORMATTED_DATE_TIME));
+        //handle item selection back in MainActivity
+        ((ConcertsRecyclerViewAdapterItemClick) mContext).onConcertsRecyclerViewItemClick(ConcertsContract.ConcertEntry.buildConcertForArtistWithDate(artistName, concertDate));
+
+    }
+
+    //get selected position
+    public int getSelectedPos() {
+        return selectedPos;
     }
 
     //get an item's view type
@@ -138,9 +160,17 @@ public class ConcertsRecyclerViewAdapter extends RecyclerView.Adapter<ConcertsRe
         }
         holder.mConcertFormattedDateView.setText(date);
         holder.mConcertTicketStatusView.setText(ticketStatus);
+
+        //set selected item only in TwoPane Tablet UI
+        if (((MainActivity) mContext).isTwoPane()) {
+            holder.mItemBackground.setSelected(selectedPos == position);
+            if (selectedPos == position) {
+                showSelectedItemDetails();
+            }
+        }
     }
 
-    public void swapCursor(Cursor newCursor){
+    public void swapCursor(Cursor newCursor) {
         mCursor = newCursor;
         notifyDataSetChanged();
     }
