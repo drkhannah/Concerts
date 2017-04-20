@@ -178,5 +178,4 @@ public class ConcertListFragment extends Fragment implements LoaderManager.Loade
         mEmptyView.setVisibility(View.VISIBLE);
         mEmptyView.setText(getString(R.string.searching_for_artist,Utils.getSharedPrefsArtistName(getActivity())));
     }
-
 }

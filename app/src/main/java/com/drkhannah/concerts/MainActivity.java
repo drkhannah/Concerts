@@ -118,6 +118,17 @@ public class MainActivity extends AppCompatActivity implements ConcertsRecyclerV
 
     @Override
     protected void onPause() {
+        popDetailsOffBackStack();
+        super.onPause();
+    }
+
+    @Override
+    public void onBackPressed() {
+        popDetailsOffBackStack();
+        super.onBackPressed();
+    }
+
+    void popDetailsOffBackStack(){
         //remove the ConcertDetailFragment, and clear all ConcertDetailFragments from the Activity's BackStack
         ConcertDetailFragment concertDetailFragment = (ConcertDetailFragment) getSupportFragmentManager().findFragmentByTag(DETAIL_FRAGMENT_TAG);
         if (concertDetailFragment != null) {
@@ -126,7 +137,6 @@ public class MainActivity extends AppCompatActivity implements ConcertsRecyclerV
                     .remove(concertDetailFragment)
                     .commit();
         }
-        super.onPause();
     }
 
     //fired when user clicks an item in the ConcertsRecyclerViewAdapter
