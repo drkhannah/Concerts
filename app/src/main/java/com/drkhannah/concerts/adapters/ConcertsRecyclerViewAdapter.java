@@ -79,13 +79,12 @@ public class ConcertsRecyclerViewAdapter extends RecyclerView.Adapter<ConcertsRe
 
     //show details of selected item
     public void showSelectedItemDetails() {
-        //get a record from mCursor using the adapter position
+        //get a record from mCursor using the selected position position
         mCursor.moveToPosition(selectedPos);
         final String artistName = mCursor.getString(mCursor.getColumnIndexOrThrow(ConcertsContract.ArtistEntry.COLUMN_ARTIST_NAME));
         final String concertDate = mCursor.getString(mCursor.getColumnIndexOrThrow(ConcertsContract.ConcertEntry.COLUMN_FORMATTED_DATE_TIME));
         //handle item selection back in MainActivity
         ((ConcertsRecyclerViewAdapterItemClick) mContext).onConcertsRecyclerViewItemClick(ConcertsContract.ConcertEntry.buildConcertForArtistWithDate(artistName, concertDate));
-
     }
 
     //get selected position
