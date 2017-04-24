@@ -83,12 +83,11 @@ public class ConcertsRecyclerViewAdapter extends RecyclerView.Adapter<ConcertsRe
                 sSelectionHistory.push(getLayoutPosition());
                 showSelectedItemDetails();
             }
-
         }
     }
 
     //show details of selected item
-    public void showSelectedItemDetails() {
+    private void showSelectedItemDetails() {
         //get a record from mCursor using the selected position position
         mCursor.moveToPosition(sSelectionHistory.peek());
         final String artistName = mCursor.getString(mCursor.getColumnIndexOrThrow(ConcertsContract.ArtistEntry.COLUMN_ARTIST_NAME));
