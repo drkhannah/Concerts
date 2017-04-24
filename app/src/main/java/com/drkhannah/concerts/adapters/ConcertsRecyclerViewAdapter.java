@@ -71,9 +71,6 @@ public class ConcertsRecyclerViewAdapter extends RecyclerView.Adapter<ConcertsRe
             notifyItemChanged(selectedPos);
             selectedPos = getLayoutPosition();
             notifyItemChanged(selectedPos);
-
-            //get a record from mCursor using the adapter position
-            showSelectedItemDetails();
         }
     }
 
