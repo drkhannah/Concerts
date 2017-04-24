@@ -6,7 +6,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.SearchRecentSuggestions;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -125,6 +124,8 @@ public class MainActivity extends AppCompatActivity implements ConcertsRecyclerV
     @Override
     public void onBackPressed() {
         popDetailsOffBackStack();
+        ConcertListFragment concertListFragment = (ConcertListFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_concert_list);
+        concertListFragment.onBackPressed();
         super.onBackPressed();
     }
 
@@ -132,7 +133,7 @@ public class MainActivity extends AppCompatActivity implements ConcertsRecyclerV
         //remove the ConcertDetailFragment, and clear all ConcertDetailFragments from the Activity's BackStack
         ConcertDetailFragment concertDetailFragment = (ConcertDetailFragment) getSupportFragmentManager().findFragmentByTag(DETAIL_FRAGMENT_TAG);
         if (concertDetailFragment != null) {
-            getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+            getSupportFragmentManager().popBackStack();
             getSupportFragmentManager().beginTransaction()
                     .remove(concertDetailFragment)
                     .commit();

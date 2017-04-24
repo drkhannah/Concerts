@@ -17,6 +17,8 @@ import com.drkhannah.concerts.R;
 import com.drkhannah.concerts.data.ConcertsContract;
 import com.squareup.picasso.Picasso;
 
+import java.util.Stack;
+
 /**
  * Created by dhannah on 11/14/16.
  */
@@ -28,7 +30,12 @@ public class ConcertsRecyclerViewAdapter extends RecyclerView.Adapter<ConcertsRe
     private Context mContext;
     private Cursor mCursor;
 
-    static public int selectedPos = 0;
+    static private Stack<Integer> sSelectionHistory = new Stack<>();
+
+    static {
+        //select the first concert in the list
+        sSelectionHistory.push(0);
+    }
 
     //constants for which layout to use for Recycler view list items
     private static final int VIEW_TYPE_WITH_IMAGE = 0;
@@ -68,16 +75,22 @@ public class ConcertsRecyclerViewAdapter extends RecyclerView.Adapter<ConcertsRe
         @Override
         public void onClick(View v) {
             //set selected item
-            notifyItemChanged(selectedPos);
-            selectedPos = getLayoutPosition();
-            notifyItemChanged(selectedPos);
+            if (((MainActivity) mContext).isTwoPane()) {
+                notifyItemChanged(sSelectionHistory.peek());
+                sSelectionHistory.push(getLayoutPosition());
+                notifyItemChanged(sSelectionHistory.peek());
+            } else {
+                sSelectionHistory.push(getLayoutPosition());
+                showSelectedItemDetails();
+            }
+
         }
     }
 
     //show details of selected item
     public void showSelectedItemDetails() {
         //get a record from mCursor using the selected position position
-        mCursor.moveToPosition(selectedPos);
+        mCursor.moveToPosition(sSelectionHistory.peek());
         final String artistName = mCursor.getString(mCursor.getColumnIndexOrThrow(ConcertsContract.ArtistEntry.COLUMN_ARTIST_NAME));
         final String concertDate = mCursor.getString(mCursor.getColumnIndexOrThrow(ConcertsContract.ConcertEntry.COLUMN_FORMATTED_DATE_TIME));
         //handle item selection back in MainActivity
@@ -86,7 +99,18 @@ public class ConcertsRecyclerViewAdapter extends RecyclerView.Adapter<ConcertsRe
 
     //get selected position
     public int getSelectedPos() {
-        return selectedPos;
+        return (!sSelectionHistory.empty()) ? sSelectionHistory.peek() : 0;
+    }
+
+    //pop selection off top of stack
+    public void popSelectionHistory() {
+        if (!sSelectionHistory.empty()) {
+            notifyItemChanged(sSelectionHistory.peek());
+            sSelectionHistory.pop();
+            if (!sSelectionHistory.empty()) {
+                notifyItemChanged(sSelectionHistory.peek());
+            }
+        }
     }
 
     //get an item's view type
@@ -158,9 +182,9 @@ public class ConcertsRecyclerViewAdapter extends RecyclerView.Adapter<ConcertsRe
         holder.mConcertTicketStatusView.setText(ticketStatus);
 
         //set selected item only in TwoPane Tablet UI
-        if (((MainActivity) mContext).isTwoPane()) {
-            holder.mItemBackground.setSelected(selectedPos == position);
-            if (selectedPos == position) {
+        if (((MainActivity) mContext).isTwoPane() && !sSelectionHistory.empty()) {
+            holder.mItemBackground.setSelected(sSelectionHistory.peek() == position);
+            if (sSelectionHistory.peek() == position) {
                 showSelectedItemDetails();
             }
         }

@@ -178,4 +178,10 @@ public class ConcertListFragment extends Fragment implements LoaderManager.Loade
         mEmptyView.setVisibility(View.VISIBLE);
         mEmptyView.setText(getString(R.string.searching_for_artist,Utils.getSharedPrefsArtistName(getActivity())));
     }
+
+    public void onBackPressed() {
+        mConcertsRecyclerViewAdapter.popSelectionHistory();
+        //scroll recyclerview to selected position
+        mConcertsRecyclerView.scrollToPosition(mConcertsRecyclerViewAdapter.getSelectedPos());
+    }
 }
