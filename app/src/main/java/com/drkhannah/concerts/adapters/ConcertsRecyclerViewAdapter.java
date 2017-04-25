@@ -187,7 +187,7 @@ public class ConcertsRecyclerViewAdapter extends RecyclerView.Adapter<ConcertsRe
     public void swapCursor(Cursor newCursor) {
         mCursor = newCursor;
         notifyDataSetChanged();
-        if (sSelectionHistory.empty()) {
+        if (((MainActivity) mContext).isTwoPane() && sSelectionHistory.empty()) {
             sSelectionHistory.push(0);
         }
     }
