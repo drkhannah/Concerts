@@ -32,11 +32,6 @@ public class ConcertsRecyclerViewAdapter extends RecyclerView.Adapter<ConcertsRe
 
     static private Stack<Integer> sSelectionHistory = new Stack<>();
 
-    static {
-        //select the first concert in the list
-        sSelectionHistory.push(0);
-    }
-
     //constants for which layout to use for Recycler view list items
     private static final int VIEW_TYPE_WITH_IMAGE = 0;
     private static final int VIEW_TYPE_NO_IMAGE = 1;
@@ -192,6 +187,9 @@ public class ConcertsRecyclerViewAdapter extends RecyclerView.Adapter<ConcertsRe
     public void swapCursor(Cursor newCursor) {
         mCursor = newCursor;
         notifyDataSetChanged();
+        if (sSelectionHistory.empty()) {
+            sSelectionHistory.push(0);
+        }
     }
 
     public Cursor getCursor() {
