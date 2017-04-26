@@ -40,7 +40,8 @@
             android:layout_gravity="center"
             android:layout_margin="16dp"
             android:contentDescription="@string/content_description_ticket_availability"
-            tools:src="@drawable/tickets_available"/>
+            tools:src="@drawable/tickets_available"
+            android:transitionName="@string/detail_icon_transition_name"/>
 
         <LinearLayout
             android:layout_width="match_parent"

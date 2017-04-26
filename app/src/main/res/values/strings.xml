@@ -139,5 +139,8 @@
     <string name="tickets_available_buy_now">Available, Buy Now!</string>
     <string name="tickets_sold_out">Sold Out!</string>
 
+    <!--Shared element transition name-->
+    <string name="detail_icon_transition_name">detail_icon_transition</string>
+
 
 </resources>

@@ -1,5 +1,6 @@
 package com.drkhannah.concerts;
 
+import android.app.ActivityOptions;
 import android.app.SearchManager;
 import android.content.Intent;
 import android.net.Uri;
@@ -142,7 +143,7 @@ public class MainActivity extends AppCompatActivity implements ConcertsRecyclerV
 
     //fired when user clicks an item in the ConcertsRecyclerViewAdapter
     @Override
-    public void onConcertsRecyclerViewItemClick(Uri concertUri) {
+    public void onConcertsRecyclerViewItemClick(Uri concertUri, ConcertsRecyclerViewAdapter.ViewHolder viewHolder) {
         if (mTwoPane) {
             //replace the ConcertDetailFragment with a new one
             ConcertDetailFragment concertDetailFragment = ConcertDetailFragment.newInstance(concertUri);
@@ -154,8 +155,20 @@ public class MainActivity extends AppCompatActivity implements ConcertsRecyclerV
             //create an explicit Intent to start ConcertDetailActivity
             //include the Concert object in the Intent
             Intent intent = new Intent(this, ConcertDetailActivity.class);
+
+            // create the transition animation - ticket icon images in the layouts
+            // of both activities are defined with android:transitionName="@string/detail_icon_transition_name"
+            ActivityOptions options = null;
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+                options = ActivityOptions
+                        .makeSceneTransitionAnimation(this, viewHolder.mTicketsIconImageView, getString(R.string.detail_icon_transition_name));
+            }
+
+            //set data of Intent
             intent.setData(concertUri);
-            startActivity(intent);
+
+            // start the new activity
+            startActivity(intent, options.toBundle());
         }
     }
 

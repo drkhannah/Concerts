@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+
+    <style name="AppTheme" parent="@style/AppThemeBase">
+        <!-- enable window content transitions -->
+        <item name="android:windowActivityTransitions">true</item>
+
+        <!--&lt;!&ndash; specify shared element transitions &ndash;&gt;-->
+        <!--<item name="android:windowSharedElementEnterTransition">@transition/ticket_icon_transition</item>-->
+        <!--<item name="android:windowSharedElementExitTransition">@transition/ticket_icon_transition</item>-->
+    </style>
+
+</resources>

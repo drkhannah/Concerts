@@ -43,14 +43,14 @@ public class ConcertsRecyclerViewAdapter extends RecyclerView.Adapter<ConcertsRe
     }
 
     //This ViewHolder object will be used in onBindViewHolder
-    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         // each data item is a Concert object
         private TextView mConcertTitleView;
         private TextView mConcertFormattedDateView;
         private TextView mConcertTicketStatusView;
         private ImageView mArtistImageView;
         private TextView mLocation;
-        private ImageView mTicketsIconImageView;
+        public ImageView mTicketsIconImageView;
         private LinearLayout mItemBackground;
 
 
@@ -76,19 +76,19 @@ public class ConcertsRecyclerViewAdapter extends RecyclerView.Adapter<ConcertsRe
                 notifyItemChanged(sSelectionHistory.peek());
             } else {
                 sSelectionHistory.push(getLayoutPosition());
-                showSelectedItemDetails();
+                showSelectedItemDetails(this);
             }
         }
     }
 
     //show details of selected item
-    private void showSelectedItemDetails() {
+    private void showSelectedItemDetails(ViewHolder viewHolder) {
         //get a record from mCursor using the selected position position
         mCursor.moveToPosition(sSelectionHistory.peek());
         final String artistName = mCursor.getString(mCursor.getColumnIndexOrThrow(ConcertsContract.ArtistEntry.COLUMN_ARTIST_NAME));
         final String concertDate = mCursor.getString(mCursor.getColumnIndexOrThrow(ConcertsContract.ConcertEntry.COLUMN_FORMATTED_DATE_TIME));
         //handle item selection back in MainActivity
-        ((ConcertsRecyclerViewAdapterItemClick) mContext).onConcertsRecyclerViewItemClick(ConcertsContract.ConcertEntry.buildConcertForArtistWithDate(artistName, concertDate));
+        ((ConcertsRecyclerViewAdapterItemClick) mContext).onConcertsRecyclerViewItemClick(ConcertsContract.ConcertEntry.buildConcertForArtistWithDate(artistName, concertDate), viewHolder);
     }
 
     //get selected position
@@ -179,7 +179,7 @@ public class ConcertsRecyclerViewAdapter extends RecyclerView.Adapter<ConcertsRe
         if (((MainActivity) mContext).isTwoPane() && !sSelectionHistory.empty()) {
             holder.mItemBackground.setSelected(sSelectionHistory.peek() == position);
             if (sSelectionHistory.peek() == position) {
-                showSelectedItemDetails();
+                showSelectedItemDetails(holder);
             }
         }
     }
@@ -204,6 +204,6 @@ public class ConcertsRecyclerViewAdapter extends RecyclerView.Adapter<ConcertsRe
 
     //interface to communicate the selected concert back to MainActivity
     public interface ConcertsRecyclerViewAdapterItemClick {
-        void onConcertsRecyclerViewItemClick(Uri concertUri);
+        void onConcertsRecyclerViewItemClick(Uri concertUri, ConcertsRecyclerViewAdapter.ViewHolder viewHolder);
     }
 }
