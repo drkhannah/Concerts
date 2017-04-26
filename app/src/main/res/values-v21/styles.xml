@@ -6,9 +6,9 @@
         <!-- enable window content transitions -->
         <item name="android:windowActivityTransitions">true</item>
 
-        <!--&lt;!&ndash; specify shared element transitions &ndash;&gt;-->
-        <!--<item name="android:windowSharedElementEnterTransition">@transition/ticket_icon_transition</item>-->
-        <!--<item name="android:windowSharedElementExitTransition">@transition/ticket_icon_transition</item>-->
+        <!-- specify enter and exit transitions -->
+        <item name="android:windowEnterTransition">@transition/details_enter_transition</item>
+        <item name="android:windowExitTransition">@transition/details_exit_transition</item>
     </style>
 
 </resources>
