@@ -5,7 +5,6 @@
     <style name="AppTheme" parent="@style/AppThemeBase">
         <!-- enable window content transitions -->
         <item name="android:windowActivityTransitions">true</item>
-
         <!-- specify enter and exit transitions -->
         <item name="android:windowEnterTransition">@transition/details_enter_transition</item>
         <item name="android:windowExitTransition">@transition/details_exit_transition</item>

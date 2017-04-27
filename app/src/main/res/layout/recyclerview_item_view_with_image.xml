@@ -22,7 +22,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:contentDescription="@string/content_description_artist_image"
-            android:scaleType="centerCrop"/>
+            android:scaleType="centerCrop"
+            android:transitionName="@string/artist_image_transition_name"/>
 
     </android.support.v7.widget.CardView>
 
@@ -41,7 +42,7 @@
             android:layout_margin="16dp"
             android:contentDescription="@string/content_description_ticket_availability"
             tools:src="@drawable/tickets_available"
-            android:transitionName="@string/detail_icon_transition_name"/>
+            android:transitionName="@string/ticket_icon_transition_name"/>
 
         <LinearLayout
             android:layout_width="match_parent"

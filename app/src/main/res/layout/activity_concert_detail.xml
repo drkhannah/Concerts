@@ -36,7 +36,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
-                app:layout_collapseMode="parallax"/>
+                app:layout_collapseMode="parallax"
+                android:transitionName="@string/artist_image_transition_name"/>
 
             <View
                 android:layout_width="match_parent"

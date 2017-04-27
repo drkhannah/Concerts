@@ -149,7 +149,7 @@
                             android:layout_margin="16dp"
                             android:contentDescription="@string/content_description_ticket_availability"
                             tools:src="@drawable/tickets_available"
-                            android:transitionName="@string/detail_icon_transition_name"/>
+                            android:transitionName="@string/ticket_icon_transition_name"/>
 
                         <TextView
                             android:id="@+id/concert_detail_ticket_url"

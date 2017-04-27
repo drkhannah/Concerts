@@ -48,7 +48,7 @@ public class ConcertsRecyclerViewAdapter extends RecyclerView.Adapter<ConcertsRe
         private TextView mConcertTitleView;
         private TextView mConcertFormattedDateView;
         private TextView mConcertTicketStatusView;
-        private ImageView mArtistImageView;
+        public ImageView mArtistImageView;
         private TextView mLocation;
         public ImageView mTicketsIconImageView;
         private LinearLayout mItemBackground;
