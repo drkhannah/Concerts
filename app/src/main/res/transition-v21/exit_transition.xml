@@ -3,12 +3,12 @@
                android:transitionOrdering="together"
                android:duration="250">
 
-    <fade>
+    <slide android:slideEdge="left">
         <targets>
             <target android:excludeId="@android:id/statusBarBackground" />
             <target android:excludeId="@android:id/navigationBarBackground" />
         </targets>
-    </fade>
+    </slide>
 
 
 </transitionSet>

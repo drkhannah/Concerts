@@ -2,11 +2,12 @@
 <transitionSet xmlns:android="http://schemas.android.com/apk/res/android"
                android:transitionOrdering="together"
                android:duration="250">
-    <fade>
+
+    <slide android:slideEdge="right">
         <targets>
             <target android:excludeId="@android:id/statusBarBackground" />
             <target android:excludeId="@android:id/navigationBarBackground" />
         </targets>
-    </fade>
+    </slide>
 
 </transitionSet>
