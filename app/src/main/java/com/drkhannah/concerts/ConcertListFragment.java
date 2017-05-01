@@ -1,6 +1,8 @@
 package com.drkhannah.concerts;
 
+import android.appwidget.AppWidgetManager;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -40,7 +42,7 @@ public class ConcertListFragment extends Fragment implements LoaderManager.Loade
     private BroadcastReceiver mEmptyTextViewBroadcastReceiver;
 
     // projection for our concert list loader
-    final String[] CONCERTS_LIST_PROJECTION = new String[] {
+    final String[] CONCERTS_LIST_PROJECTION = new String[]{
             ConcertsContract.ArtistEntry.COLUMN_ARTIST_NAME,
             ConcertsContract.ArtistEntry.COLUMN_ARTIST_IMAGE,
             ConcertsContract.ArtistEntry.COLUMN_TIME_STAMP,
@@ -158,16 +160,21 @@ public class ConcertListFragment extends Fragment implements LoaderManager.Loade
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
         if (cursor.getCount() > 0) {
-                //show data to the user
-                mConcertsRecyclerViewAdapter.swapCursor(cursor);
-                mConcertsRecyclerView.setVisibility(View.VISIBLE);
-                mEmptyView.setVisibility(View.GONE);
+            //show data to the user
+            mConcertsRecyclerViewAdapter.swapCursor(cursor);
+            mConcertsRecyclerView.setVisibility(View.VISIBLE);
+            mEmptyView.setVisibility(View.GONE);
+
+            //update the app widget
+            int[] ids = AppWidgetManager.getInstance(getActivity()).getAppWidgetIds(new ComponentName(getActivity(), ConcertsAppWidgetProvider.class));
+            ConcertsAppWidgetProvider myWidget = new ConcertsAppWidgetProvider();
+            myWidget.onUpdate(getActivity(), AppWidgetManager.getInstance(getActivity()),ids);
         } else {
             //no data returned from database
             mConcertsRecyclerViewAdapter.swapCursor(null);
             mConcertsRecyclerView.setVisibility(View.GONE);
             mEmptyView.setVisibility(View.VISIBLE);
-            mEmptyView.setText(getString(R.string.searching_for_artist,Utils.getSharedPrefsArtistName(getActivity())));
+            mEmptyView.setText(getString(R.string.searching_for_artist, Utils.getSharedPrefsArtistName(getActivity())));
         }
     }
 
@@ -176,7 +183,7 @@ public class ConcertListFragment extends Fragment implements LoaderManager.Loade
         mConcertsRecyclerViewAdapter.swapCursor(null);
         mConcertsRecyclerView.setVisibility(View.GONE);
         mEmptyView.setVisibility(View.VISIBLE);
-        mEmptyView.setText(getString(R.string.searching_for_artist,Utils.getSharedPrefsArtistName(getActivity())));
+        mEmptyView.setText(getString(R.string.searching_for_artist, Utils.getSharedPrefsArtistName(getActivity())));
     }
 
     public void onBackPressed() {
