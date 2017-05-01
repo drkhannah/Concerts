@@ -140,8 +140,8 @@
     <string name="tickets_sold_out">Sold Out!</string>
 
     <!--Shared element transition name-->
-    <string name="ticket_icon_transition_name">ticket_icon_transition</string>
-    <string name="artist_image_transition_name">artist_image_transition</string>
+    <string name="ticket_icon_transition_name" translatable="false">ticket_icon_transition</string>
+    <string name="artist_image_transition_name" translatable="false">artist_image_transition</string>
 
 
 </resources>
