@@ -130,6 +130,7 @@ public class ConcertsSyncAdapter extends AbstractThreadedSyncAdapter {
         //dont make network call if artist is in database already
         //and they were updated within the last 24 hours
         if (!checkArtistTimestamp(artistName)) {
+            Utils.updateAppWidget(getContext());
             Log.d(LOG_TAG, "artist searched within the last 24 hours");
             return;
         }
@@ -322,6 +323,7 @@ public class ConcertsSyncAdapter extends AbstractThreadedSyncAdapter {
             if (oldArtistId > 0) {
                 purgeOldConcerts(oldArtistId);
             }
+            Utils.updateAppWidget(getContext());
         }
     }
 

@@ -1,8 +1,6 @@
 package com.drkhannah.concerts;
 
-import android.appwidget.AppWidgetManager;
 import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -164,11 +162,6 @@ public class ConcertListFragment extends Fragment implements LoaderManager.Loade
             mConcertsRecyclerViewAdapter.swapCursor(cursor);
             mConcertsRecyclerView.setVisibility(View.VISIBLE);
             mEmptyView.setVisibility(View.GONE);
-
-            //update the app widget
-            int[] ids = AppWidgetManager.getInstance(getActivity()).getAppWidgetIds(new ComponentName(getActivity(), ConcertsAppWidgetProvider.class));
-            ConcertsAppWidgetProvider myWidget = new ConcertsAppWidgetProvider();
-            myWidget.onUpdate(getActivity(), AppWidgetManager.getInstance(getActivity()),ids);
         } else {
             //no data returned from database
             mConcertsRecyclerViewAdapter.swapCursor(null);
