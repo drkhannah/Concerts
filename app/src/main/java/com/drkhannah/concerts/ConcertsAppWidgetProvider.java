@@ -21,8 +21,6 @@ public class ConcertsAppWidgetProvider extends AppWidgetProvider {
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         super.onUpdate(context, appWidgetManager, appWidgetIds);
 
-        final int N = appWidgetIds.length;
-
         // Perform this loop procedure for each App Widget that belongs to this provider
         for (int appWidgetId : appWidgetIds) {
             // Create an Intent to launch ExampleActivity
@@ -57,10 +55,8 @@ public class ConcertsAppWidgetProvider extends AppWidgetProvider {
 
                 views.setTextViewText(R.id.location, cursor.getString(cursor.getColumnIndexOrThrow(ConcertsContract.ConcertEntry.COLUMN_FORMATTED_LOCATION)));
                 views.setTextViewText(R.id.availability, cursor.getString(cursor.getColumnIndexOrThrow(ConcertsContract.ConcertEntry.COLUMN_TICKET_STATUS)));
-
-                cursor.close();
             }
-
+            cursor.close();
 
             // Tell the AppWidgetManager to perform an update on the current app widget
             appWidgetManager.updateAppWidget(appWidgetId, views);
