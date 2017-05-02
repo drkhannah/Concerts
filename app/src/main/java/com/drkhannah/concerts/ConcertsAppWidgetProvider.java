@@ -43,6 +43,8 @@ public class ConcertsAppWidgetProvider extends AppWidgetProvider {
 
             if (cursor.moveToFirst()) {
                 views.setTextViewText(R.id.artist_name, artist);
+                views.setTextViewText(R.id.date, cursor.getString(cursor.getColumnIndexOrThrow(ConcertsContract.ConcertEntry.COLUMN_FORMATTED_DATE_TIME)));
+                views.setTextViewText(R.id.location, cursor.getString(cursor.getColumnIndexOrThrow(ConcertsContract.ConcertEntry.COLUMN_FORMATTED_LOCATION)));
 
                 final String ticketStatus = cursor.getString(cursor.getColumnIndexOrThrow(ConcertsContract.ConcertEntry.COLUMN_TICKET_STATUS));
 
@@ -52,9 +54,6 @@ public class ConcertsAppWidgetProvider extends AppWidgetProvider {
                 } else {
                     Picasso.with(context).load(R.drawable.tickets_unavailable).into(views, R.id.tickets_icon, appWidgetIds);
                 }
-
-                views.setTextViewText(R.id.location, cursor.getString(cursor.getColumnIndexOrThrow(ConcertsContract.ConcertEntry.COLUMN_FORMATTED_LOCATION)));
-                views.setTextViewText(R.id.availability, cursor.getString(cursor.getColumnIndexOrThrow(ConcertsContract.ConcertEntry.COLUMN_TICKET_STATUS)));
             }
             cursor.close();
 
