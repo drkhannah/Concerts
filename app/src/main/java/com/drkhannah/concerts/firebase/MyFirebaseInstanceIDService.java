@@ -1,7 +1,5 @@
 package com.drkhannah.concerts.firebase;
 
-import android.util.Log;
-
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.FirebaseInstanceIdService;
 
@@ -23,6 +21,6 @@ public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService {
     public void onTokenRefresh() {
         //get updated ID token
         String refreshedToken = FirebaseInstanceId.getInstance().getToken();
-        Log.d(LOG_TAG, "Refreshed token: " + refreshedToken);
+        //Log.d(LOG_TAG, "Refreshed token: " + refreshedToken);
     }
 }

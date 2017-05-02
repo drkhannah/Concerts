@@ -16,7 +16,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
-import android.util.Log;
 
 import com.drkhannah.concerts.R;
 import com.drkhannah.concerts.Utils;
@@ -131,7 +130,7 @@ public class ConcertsSyncAdapter extends AbstractThreadedSyncAdapter {
         //and they were updated within the last 24 hours
         if (!checkArtistTimestamp(artistName)) {
             Utils.updateAppWidget(getContext());
-            Log.d(LOG_TAG, "artist searched within the last 24 hours");
+            //Log.d(LOG_TAG, "artist searched within the last 24 hours");
             return;
         }
 
@@ -161,7 +160,7 @@ public class ConcertsSyncAdapter extends AbstractThreadedSyncAdapter {
 
             //create a URL from the URI we built above
             URL url = new URL(validUri.toString());
-            Log.d(LOG_TAG, "URL for request: " + url);
+            //Log.d(LOG_TAG, "URL for request: " + url);
 
             // Create a GET request to the BandsInTown api and open the connection
             urlConnection = (HttpURLConnection) url.openConnection();
@@ -169,7 +168,7 @@ public class ConcertsSyncAdapter extends AbstractThreadedSyncAdapter {
             urlConnection.connect();
 
             if (urlConnection.getResponseCode() != HttpURLConnection.HTTP_OK) {
-                Log.d(LOG_TAG, "Request Response Code: " + urlConnection.getResponseCode());
+                //Log.d(LOG_TAG, "Request Response Code: " + urlConnection.getResponseCode());
                 //send local broadcast to ConcertListFragment
                 sendEmptyTextViewLocalBroadcast(getContext().getString(R.string.no_such_artist, Utils.getSharedPrefsArtistName(getContext())));
                 return;
@@ -210,11 +209,10 @@ public class ConcertsSyncAdapter extends AbstractThreadedSyncAdapter {
                 return;
             }
 
-            //return a parsed response List<Concert>
-            Log.d(LOG_TAG, "RESPONSE FROM BANDSINTOWN: " + concertsJsonStr);
+            //Log.d(LOG_TAG, "RESPONSE FROM BANDSINTOWN: " + concertsJsonStr);
 
         } catch (IOException e) {
-            Log.e(LOG_TAG, "Error ", e);
+            //Log.e(LOG_TAG, "Error ", e);
             return;
         } finally {
             //no matter success or error of try/catch
@@ -226,14 +224,14 @@ public class ConcertsSyncAdapter extends AbstractThreadedSyncAdapter {
                 try {
                     reader.close();
                 } catch (final IOException e) {
-                    Log.e(LOG_TAG, "Error closing stream", e);
+                    //Log.e(LOG_TAG, "Error closing stream", e);
                 }
             }
         }
         try {
             parseJson(concertsJsonStr);
         } catch (JSONException e) {
-            Log.e(LOG_TAG, e.getMessage());
+            //Log.e(LOG_TAG, e.getMessage());
             e.printStackTrace();
         }
     }

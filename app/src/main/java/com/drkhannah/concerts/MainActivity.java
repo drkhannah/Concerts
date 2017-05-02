@@ -11,7 +11,6 @@ import android.support.v4.util.Pair;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -80,7 +79,7 @@ public class MainActivity extends AppCompatActivity implements ConcertsRecyclerV
                 apiAvailability.getErrorDialog(this, resultCode, PLAY_SERVICES_RESOLUTION_REQUEST)
                         .show();
             } else {
-                Log.i(LOG_TAG, "This device is not supported.");
+                //Log.i(LOG_TAG, "This device is not supported.");
                 finish();
             }
             return false;
