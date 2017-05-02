@@ -164,12 +164,19 @@ public class MainActivity extends AppCompatActivity implements ConcertsRecyclerV
             View firstItemView = concertsList.getLayoutManager().findViewByPosition(0);
             if (firstItemView != null) {
                 ImageView artistImageView = (ImageView) firstItemView.findViewById(R.id.artist_image);
-                // create the transition animation - ticket icon images in the layouts
-                // of both activities are defined with android:transitionName="@string/ticket_icon_transition_name"
-                // artist images are defined with android:transitionName="@string/artist_image_transition_name"
-                activityOptions = ActivityOptionsCompat.makeSceneTransitionAnimation(this,
-                        new Pair<View, String>(viewHolder.mTicketsIconImageView, getString(R.string.ticket_icon_transition_name)),
-                        new Pair<View, String>(artistImageView, getString(R.string.artist_image_transition_name)));
+                if (artistImageView != null) {
+                    // create the transition animation - ticket icon images in the layouts
+                    // of both activities are defined with android:transitionName="@string/ticket_icon_transition_name"
+                    // artist images are defined with android:transitionName="@string/artist_image_transition_name"
+                    activityOptions = ActivityOptionsCompat.makeSceneTransitionAnimation(this,
+                            new Pair<View, String>(viewHolder.mTicketsIconImageView, getString(R.string.ticket_icon_transition_name)),
+                            new Pair<View, String>(artistImageView, getString(R.string.artist_image_transition_name)));
+                } else {
+                    //only animate the ticket icon
+                    activityOptions = ActivityOptionsCompat.makeSceneTransitionAnimation(this,
+                            new Pair<View, String>(viewHolder.mTicketsIconImageView, getString(R.string.ticket_icon_transition_name)));
+                }
+
             } else {
                 //only animate the ticket icon
                 activityOptions = ActivityOptionsCompat.makeSceneTransitionAnimation(this,
