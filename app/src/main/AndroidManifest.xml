@@ -2,11 +2,34 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.drkhannah.concerts">
 
+    <!-- READ and WRITE permissions for ConcertsProvider-->
+    <permission android:name="com.drkhannah.concerts.provider.READ"/>
+    <permission android:name="com.drkhannah.concerts.provider.WRITE"/>
+
+    <!-- Allows READING and WRITING to the ConcertsProvider-->
+    <uses-permission android:name="com.drkhannah.concerts.provider.READ"/>
+    <uses-permission android:name="com.drkhannah.concerts.provider.WRITE"/>
+
     <!-- Allows applications to open network sockets.-->
     <uses-permission android:name="android.permission.INTERNET"/>
 
     <!-- Allows applications to access information about networks-->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+
+    <!-- Allows JobScheduler jobs to be persisted across device reboots-->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+
+    <!--Allows AccountManager to Authenticate Accounts-->
+    <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS"/>
+
+    <!--Allows AccountManager to Get Accounts from AccountManager-->
+    <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
+
+    <!--Allows Concerts app to read the current com.drkhannah.concerts.sync adapter settings-->
+    <uses-permission android:name="android.permission.READ_SYNC_SETTINGS"/>
+
+    <!--Allows Concerts app to write the current com.drkhannah.concerts.sync adapter settings-->
+    <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS"/>
 
 
     <application
@@ -18,11 +41,20 @@
 
         <activity
             android:name=".MainActivity"
-            android:label="@string/app_name">
+            android:label="@string/app_name"
+            android:launchMode="singleTop"
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH"/>
+            </intent-filter>
+
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable"/>
         </activity>
 
         <activity
@@ -31,13 +63,68 @@
             android:parentActivityName=".MainActivity">
         </activity>
 
-        <activity
-            android:name=".ArtistSearchActivity"
-            android:label="@string/artist_search_activity_title"
-            android:parentActivityName=".MainActivity"
-            android:windowSoftInputMode="stateVisible">
+        <activity android:name=".SettingsActivity"
+                  android:label="@string/settings_label">
+            <intent-filter>
+                <action android:name="android.intent.action.MANAGE_NETWORK_USAGE"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
         </activity>
 
-    </application>
+        <provider
+            android:name=".data.ConcertsProvider"
+            android:authorities="@string/content_authority"
+            android:exported="true"
+            android:readPermission="com.drkhannah.concerts.provider.READ"
+            android:syncable="true"
+            android:writePermission="com.drkhannah.concerts.provider.WRITE"/>
 
+        <provider
+            android:name=".ArtistSuggestionsProvider"
+            android:authorities="@string/suggestions_authority"/>
+
+        <service android:name="com.drkhannah.concerts.sync.AuthenticatorService">
+            <intent-filter>
+                <action android:name="android.accounts.AccountAuthenticator"/>
+            </intent-filter>
+            <meta-data
+                android:name="android.accounts.AccountAuthenticator"
+                android:resource="@xml/authenticator"/>
+        </service>
+
+        <service
+            android:name="com.drkhannah.concerts.sync.SyncAdapterService"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.content.SyncAdapter"/>
+            </intent-filter>
+            <meta-data
+                android:name="android.content.SyncAdapter"
+                android:resource="@xml/syncadapter"/>
+        </service>
+
+        <service
+            android:name="com.drkhannah.concerts.firebase.MyFirebaseMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>
+
+        <service
+            android:name="com.drkhannah.concerts.firebase.MyFirebaseInstanceIDService">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
+            </intent-filter>
+        </service>
+
+
+        <receiver android:name=".ConcertsAppWidgetProvider" >
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data android:name="android.appwidget.provider"
+                       android:resource="@xml/appwidget_info" />
+        </receiver>
+
+    </application>
 </manifest>

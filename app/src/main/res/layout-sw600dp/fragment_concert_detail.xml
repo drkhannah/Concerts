@@ -1,223 +1,504 @@
-<android.support.v7.widget.CardView
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_margin="16dp"
-    app:cardCornerRadius="4dp"
-    app:cardElevation="@dimen/detail_card_elevation"
-    app:cardPreventCornerOverlap="true">
+    android:layout_height="match_parent">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <ImageView
-            android:id="@+id/concert_detail_artist_image"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="2"
-            android:layout_gravity="center"
-            android:scaleType="centerCrop"/>
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-
-        <android.support.v4.widget.NestedScrollView
-            android:id="@+id/concert_detail_nested_scrollview"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="2">
-
-            <LinearLayout
+            <ImageView
+                android:id="@+id/concert_detail_artist_image"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:padding="16dp">
+                android:layout_height="0dp"
+                android:layout_gravity="center"
+                android:layout_weight="3"
+                android:scaleType="centerCrop"/>
 
 
-                <TextView
-                    android:id="@+id/label_concert_detail_title"
-                    style="@style/DetailLables"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Title:"/>
+            <android.support.v4.widget.NestedScrollView
+                android:id="@+id/concert_detail_nested_scrollview"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="4">
 
-                <TextView
-                    android:id="@+id/concert_detail_title"
-                    style="@style/Details"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <android.support.v7.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_margin="8dp"
+                        app:cardCornerRadius="@dimen/cardview_default_radius"
+                        app:cardElevation="@dimen/cardview_default_elevation">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:padding="8dp"
+                            >
+
+                            <TextView
+                                android:id="@+id/label_concert_detail_title"
+                                style="@style/DetailLabels"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/title_label"/>
+
+                            <TextView
+                                android:id="@+id/concert_detail_title"
+                                style="@style/Details"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"/>
+
+                        </LinearLayout>
+
+                    </android.support.v7.widget.CardView>
+
+                    <android.support.v7.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_margin="8dp"
+                        app:cardCornerRadius="@dimen/cardview_default_radius"
+                        app:cardElevation="@dimen/cardview_default_elevation">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:padding="8dp"
+                            >
+
+                            <TextView
+                                android:id="@+id/label_concert_detail_formatted_date"
+                                style="@style/DetailLabels"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/date_label"/>
+
+                            <TextView
+                                android:id="@+id/concert_detail_formatted_date"
+                                style="@style/Details"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"/>
+
+                        </LinearLayout>
+
+                    </android.support.v7.widget.CardView>
+
+                    <android.support.v7.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_margin="8dp"
+                        app:cardCornerRadius="@dimen/cardview_default_radius"
+                        app:cardElevation="@dimen/cardview_default_elevation">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:padding="8dp"
+                            >
+
+                            <TextView
+                                android:id="@+id/label_concert_detail_formatted_location"
+                                style="@style/DetailLabels"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/location_label"/>
+
+                            <TextView
+                                android:id="@+id/concert_detail_formatted_location"
+                                style="@style/Details"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"/>
+
+                        </LinearLayout>
+
+                    </android.support.v7.widget.CardView>
+
+                    <android.support.v7.widget.CardView
+                        android:id="@+id/buy_tickets_cardview"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_margin="8dp"
+                        app:cardCornerRadius="@dimen/cardview_default_radius"
+                        app:cardElevation="@dimen/cardview_default_elevation">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:padding="8dp"
+                            >
+
+                            <TextView
+                                android:id="@+id/label_concert_detail_ticket_url"
+                                style="@style/DetailLabels"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/ticket_url_label"/>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:orientation="horizontal"
+                                >
+
+                                <ImageView
+                                    android:id="@+id/tickets_icon"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_margin="16dp"
+                                    android:contentDescription="@string/content_description_ticket_availability"
+                                    tools:src="@drawable/tickets_available"/>
+
+                                <TextView
+                                    android:id="@+id/concert_detail_ticket_url"
+                                    style="@style/Details"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:textColor="@color/colorAccent"
+                                    android:text="Buy Tickets!"/>
+
+                            </LinearLayout>
+                        </LinearLayout>
+
+                    </android.support.v7.widget.CardView>
+
+                    <android.support.v7.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_margin="8dp"
+                        app:cardCornerRadius="@dimen/cardview_default_radius"
+                        app:cardElevation="@dimen/cardview_default_elevation">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:padding="8dp"
+                            >
+
+                            <TextView
+                                android:id="@+id/label_concert_detail_ticket_type"
+                                style="@style/DetailLabels"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/ticket_type_label"/>
+
+                            <TextView
+                                android:id="@+id/concert_detail_ticket_type"
+                                style="@style/Details"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"/>
+
+                        </LinearLayout>
+
+                    </android.support.v7.widget.CardView>
+
+                    <android.support.v7.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_margin="8dp"
+                        app:cardCornerRadius="@dimen/cardview_default_radius"
+                        app:cardElevation="@dimen/cardview_default_elevation">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:padding="8dp"
+                            >
+
+                            <TextView
+                                android:id="@+id/label_concert_detail_ticket_status"
+                                style="@style/DetailLabels"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/ticket_status_label"/>
+
+                            <TextView
+                                android:id="@+id/concert_detail_ticket_status"
+                                style="@style/Details"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"/>
+
+                        </LinearLayout>
+
+                    </android.support.v7.widget.CardView>
+
+                    <android.support.v7.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_margin="8dp"
+                        app:cardCornerRadius="@dimen/cardview_default_radius"
+                        app:cardElevation="@dimen/cardview_default_elevation">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:padding="8dp"
+                            >
+
+                            <TextView
+                                android:id="@+id/label_concert_detail_description"
+                                style="@style/DetailLabels"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/description_label"/>
+
+                            <TextView
+                                android:id="@+id/concert_detail_description"
+                                style="@style/Details"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"/>
+
+                        </LinearLayout>
+
+                    </android.support.v7.widget.CardView>
+
+                    <android.support.v7.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_margin="8dp"
+                        app:cardCornerRadius="@dimen/cardview_default_radius"
+                        app:cardElevation="@dimen/cardview_default_elevation">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:padding="8dp"
+                            >
+
+                            <TextView
+                                android:id="@+id/label_concert_detail_artist_name"
+                                style="@style/DetailLabels"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/artist_name_label"/>
+
+                            <TextView
+                                android:id="@+id/concert_detail_artist_name"
+                                style="@style/Details"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"/>
+
+                        </LinearLayout>
+
+                    </android.support.v7.widget.CardView>
+
+                    <android.support.v7.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_margin="8dp"
+                        app:cardCornerRadius="@dimen/cardview_default_radius"
+                        app:cardElevation="@dimen/cardview_default_elevation">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:padding="8dp"
+                            >
+
+                            <TextView
+                                android:id="@+id/label_concert_detail_artist_website"
+                                style="@style/DetailLabels"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/artist_website_label"/>
+
+                            <TextView
+                                android:id="@+id/concert_detail_artist_website"
+                                style="@style/Details"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:autoLink="web"/>
+
+                        </LinearLayout>
+
+                    </android.support.v7.widget.CardView>
+
+                    <android.support.v7.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_margin="8dp"
+                        app:cardCornerRadius="@dimen/cardview_default_radius"
+                        app:cardElevation="@dimen/cardview_default_elevation">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:padding="8dp"
+                            >
+
+                            <TextView
+                                android:id="@+id/label_concert_detail_venue_name"
+                                style="@style/DetailLabels"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/venue_name_label"/>
+
+                            <TextView
+                                android:id="@+id/concert_detail_venue_name"
+                                style="@style/Details"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"/>
+
+                        </LinearLayout>
+
+                    </android.support.v7.widget.CardView>
+
+                    <android.support.v7.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_margin="8dp"
+                        app:cardCornerRadius="@dimen/cardview_default_radius"
+                        app:cardElevation="@dimen/cardview_default_elevation">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:padding="8dp"
+                            >
+
+                            <TextView
+                                android:id="@+id/label_concert_detail_venue_place"
+                                style="@style/DetailLabels"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/venue_place_label"/>
+
+                            <TextView
+                                android:id="@+id/concert_detail_venue_place"
+                                style="@style/Details"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"/>
+
+                        </LinearLayout>
+
+                    </android.support.v7.widget.CardView>
+
+                    <android.support.v7.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_margin="8dp"
+                        app:cardCornerRadius="@dimen/cardview_default_radius"
+                        app:cardElevation="@dimen/cardview_default_elevation">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:padding="8dp"
+                            >
+
+                            <TextView
+                                android:id="@+id/label_concert_detail_venue_city"
+                                style="@style/DetailLabels"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/venue_city_label"/>
+
+                            <TextView
+                                android:id="@+id/concert_detail_venue_city"
+                                style="@style/Details"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"/>
+
+                        </LinearLayout>
+
+                    </android.support.v7.widget.CardView>
 
 
-                <TextView
-                    android:id="@+id/label_concert_detail_formatted_date"
-                    style="@style/DetailLables"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Date:"/>
+                    <android.support.v7.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_margin="8dp"
+                        app:cardCornerRadius="@dimen/cardview_default_radius"
+                        app:cardElevation="@dimen/cardview_default_elevation">
 
-                <TextView
-                    android:id="@+id/concert_detail_formatted_date"
-                    style="@style/Details"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:padding="8dp"
+                            >
 
+                            <TextView
+                                android:id="@+id/label_concert_detail_venue_region"
+                                style="@style/DetailLabels"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/venue_region_label"/>
 
-                <TextView
-                    android:id="@+id/label_concert_detail_formatted_location"
-                    style="@style/DetailLables"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Location:"/>
+                            <TextView
+                                android:id="@+id/concert_detail_venue_region"
+                                style="@style/Details"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"/>
 
-                <TextView
-                    android:id="@+id/concert_detail_formatted_location"
-                    style="@style/Details"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                        </LinearLayout>
 
+                    </android.support.v7.widget.CardView>
 
-                <TextView
-                    android:id="@+id/label_concert_detail_ticket_url"
-                    style="@style/DetailLables"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Ticket URL:"/>
+                    <android.support.v7.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_margin="8dp"
+                        app:cardCornerRadius="@dimen/cardview_default_radius"
+                        app:cardElevation="@dimen/cardview_default_elevation">
 
-                <TextView
-                    android:id="@+id/concert_detail_ticket_url"
-                    style="@style/Details"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:autoLink="web"/>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:padding="8dp"
+                            >
 
+                            <TextView
+                                android:id="@+id/label_concert_detail_venue_country"
+                                style="@style/DetailLabels"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/venue_country_label"/>
 
-                <TextView
-                    android:id="@+id/label_concert_detail_ticket_type"
-                    style="@style/DetailLables"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Ticket Type:"/>
+                            <TextView
+                                android:id="@+id/concert_detail_venue_country"
+                                style="@style/Details"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"/>
 
-                <TextView
-                    android:id="@+id/concert_detail_ticket_type"
-                    style="@style/Details"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-
-
-                <TextView
-                    android:id="@+id/label_concert_detail_ticket_status"
-                    style="@style/DetailLables"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Ticket Status:"/>
-
-                <TextView
-                    android:id="@+id/concert_detail_ticket_status"
-                    style="@style/Details"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-
-
-                <TextView
-                    android:id="@+id/label_concert_detail_description"
-                    style="@style/DetailLables"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Description:"/>
-
-                <TextView
-                    android:id="@+id/concert_detail_description"
-                    style="@style/Details"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-
-
-                <TextView
-                    android:id="@+id/label_concert_detail_artist_name"
-                    style="@style/DetailLables"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Artist Name:"/>
-
-                <TextView
-                    android:id="@+id/concert_detail_artist_name"
-                    style="@style/Details"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-
-
-                <TextView
-                    android:id="@+id/label_concert_detail_artist_website"
-                    style="@style/DetailLables"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Artist Website:"/>
-
-                <TextView
-                    android:id="@+id/concert_detail_artist_website"
-                    style="@style/Details"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-
-
-                <TextView
-                    android:id="@+id/label_concert_detail_venue_name"
-                    style="@style/DetailLables"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Venue Name:"/>
-
-                <TextView
-                    android:id="@+id/concert_detail_venue_name"
-                    style="@style/Details"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-
-
-                <TextView
-                    android:id="@+id/label_concert_detail_venue_place"
-                    style="@style/DetailLables"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Venue Place:"/>
-
-                <TextView
-                    android:id="@+id/concert_detail_venue_place"
-                    style="@style/Details"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-
-
-                <TextView
-                    android:id="@+id/label_concert_detail_venue_city"
-                    style="@style/DetailLables"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Venue City:"/>
-
-                <TextView
-                    android:id="@+id/concert_detail_venue_city"
-                    style="@style/Details"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-
-
-                <TextView
-                    android:id="@+id/label_concert_detail_venue_country"
-                    style="@style/DetailLables"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Venue Country:"/>
-
-                <TextView
-                    android:id="@+id/concert_detail_venue_country"
-                    style="@style/Details"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-
-            </LinearLayout>
-        </android.support.v4.widget.NestedScrollView>
-    </LinearLayout>
-</android.support.v7.widget.CardView>
+                        </LinearLayout>
+                    </android.support.v7.widget.CardView>
+                </LinearLayout>
+            </android.support.v4.widget.NestedScrollView>
+        </LinearLayout>
+</FrameLayout>

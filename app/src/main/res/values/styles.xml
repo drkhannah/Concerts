@@ -1,29 +1,45 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="AppThemeBase" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
 
-        <item name="actionModeShareDrawable">@drawable/ic_share_white_24dp</item>
-        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp</item>
+        <!--Toolbar icon styles-->
+        <item name="actionModeShareDrawable">@drawable/ic_action_share</item>
+        <item name="android:actionOverflowButtonStyle">@style/CustomOverFlowMenu</item>
+        <item name="android:homeAsUpIndicator">@drawable/ic_action_back</item>
     </style>
 
-    <style name="DetailLables" >
-        <item name="android:textSize">16sp</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:fontFamily">sans-serif-condensed</item>
-        <item name="android:paddingTop">8dp</item>
-        <item name="android:paddingLeft">8dp</item>
-        <item name="android:layout_gravity">fill</item>
+    <style name="AppTheme" parent="@style/AppThemeBase"/>
+
+    <!-- Splash Screen theme. -->
+    <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowBackground">@drawable/splash_background</item>
+    </style>
+
+    <!--overflow menu icon-->
+    <style name="CustomOverFlowMenu" parent="android:Widget.ActionButton.Overflow">
+        <item name="android:src">@drawable/ic_action_more</item>
+    </style>
+
+    <!--Collapsed Toolbar-->
+    <style name="CollapsedAppBarTitle" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textColor">@color/colorAccent</item>
+    </style>
+
+    <style name="DetailLabels" >
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/colorAccent</item>
+        <item name="android:background">@drawable/border_bottom</item>
     </style>
 
     <style name="Details" >
-        <item name="android:paddingLeft">16dp</item>
-        <item name="android:paddingRight">8dp</item>
-        <item name="android:layout_gravity">fill</item>
-    </style>
+        <item name="android:layout_margin">4dp</item>
+        <item name="android:layout_gravity">center_vertical</item>
 
+    </style>
+    
 </resources>

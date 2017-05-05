@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "910972296842",
+    "firebase_url": "https://concerts-8b920.firebaseio.com",
+    "project_id": "concerts-8b920",
+    "storage_bucket": "concerts-8b920.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:910972296842:android:cd1b61fc8273533a",
+        "android_client_info": {
+          "package_name": "com.drkhannah.concerts"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "910972296842-09s12thbp5vatpoepro6dijqr97vcep3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.drkhannah.concerts",
+            "certificate_hash": "73690ba20aefaa48f33607b1dedc93ce257e0a36"
+          }
+        },
+        {
+          "client_id": "910972296842-t62f056acumhumh0l514rb12vp81tfmo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDQL52WMHCW0sLEOeLV4QPAbqQ14FWxDU8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "910972296842-t62f056acumhumh0l514rb12vp81tfmo.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+                  xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.drkhannah.concerts.NumberPickerPreference
+        android:defaultValue="1"
+        app:minValue="1"
+        app:maxValue="10"
+        android:key="@string/sync_interval_preference"
+        android:title="Automatic Sync Interval:"
+        android:contentDescription="@string/custom_view_content_description"/>
+
+</PreferenceScreen>

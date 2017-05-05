@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:xliff="http://schemas.android.com/apk/res-auto">
     <string name="app_name">Concerts</string>
 
     <!--activity titles-->
@@ -27,6 +27,7 @@
     <string name="no_venue_name_available">No Venue Name Available</string>
     <string name="no_venue_place_available">No Venue Place Available</string>
     <string name="no_venue_city_available">No Venue City Available</string>
+    <string name="no_venue_region_available">No Venue Region Available</string>
     <string name="no_venue_country_available">No Venue Country Available</string>
     <string name="no_longitude_available" translatable="false">0.00</string>
     <string name="no_latitude_available" translatable="false">0.00</string>
@@ -35,6 +36,7 @@
 
     <!--response object keys-->
     <string name="response_object_key_title" translatable="false">title</string>
+    <string name="response_object_key_datetime" translatable="false">datetime</string>
     <string name="response_object_key_formatted_datetime" translatable="false">formatted_datetime</string>
     <string name="response_object_key_formatted_location" translatable="false">formatted_location</string>
     <string name="response_object_key_ticket_url" translatable="false">ticket_url</string>
@@ -49,13 +51,22 @@
     <string name="response_object_key_venue_name" translatable="false">name</string>
     <string name="response_object_key_place" translatable="false">place</string>
     <string name="response_object_key_city" translatable="false">city</string>
+    <string name="response_object_key_region" translatable="false">region</string>
     <string name="response_object_key_country" translatable="false">country</string>
     <string name="response_object_key_longitude" translatable="false">longitude</string>
     <string name="response_object_key_latitude" translatable="false">latitude</string>
+
+    <!-- Shown when No items in Concert List-->
     <string name="no_data_available">no data available</string>
+    <string name="reloading_data_from_database">Reloading Data From Database</string>
+    <string name="making_network_call">Making network call</string>
+    <string name="searching_for_artist">"Searching for artist: <xliff:g name="name">%s</xliff:g>"</string>
+    <string name="no_concerts_for">"no concerts for: <xliff:g name="name">%s</xliff:g>"</string>
+    <string name="no_such_artist">"no such artist: <xliff:g name="name">%s</xliff:g>"</string>
 
     <!--custom Intent Extras-->
-    <string name="extra_concert" translatable="false">concert</string>
+    <string name="extra_artist_name" translatable="false">artist_name</string>
+    <string name="extra_concert_date" translatable="false">concert_date</string>
 
     <!--Action Button Titles-->
     <string name="action_get_concerts">Get Concerts</string>
@@ -64,14 +75,73 @@
     <string name="action_share_concert">Share</string>
 
     <!-- Hint for Search Artist EditText-->
-    <string name="search_artist_by_name">Search Artist By Name</string>
+    <string name="search_artist_by_name">Search Artist</string>
 
     <!-- The artist you would like to search-->
-    <string name="artist_to_search">artist</string>
+    <string name="artist_to_search" translatable="false">artist</string>
 
     <!-- Shared Preferences Constants-->
     <string name="preference_file_key" translatable="false">com.drkhannah.concerts.CONCERTS_SHARED_PREFERENCE_FILE</string>
     <string name="shared_prefs_artist_name" translatable="false">artist_name</string>
-    <string name="default_artsit_name">steve aoki</string>
+    <string name="default_artist_name" translatable="false">steve aoki</string>
+
+    <!-- Content Authority -->
+    <string name="content_authority" translatable="false">com.drkhannah.concerts.provider</string>
+
+    <!-- Content Authority for ArtistSuggestionsProvider-->
+    <string name="suggestions_authority" translatable="false">com.drkhannah.concerts.ArtistSuggestionsProvider</string>
+
+    <!--Concert Detail Labels-->
+    <string name="title_label">Title:</string>
+    <string name="date_label">Date:</string>
+    <string name="location_label">Location:</string>
+    <string name="ticket_url_label">Ticket URL:</string>
+    <string name="ticket_type_label">Ticket Type:</string>
+    <string name="ticket_status_label">Ticket Status:</string>
+    <string name="description_label">Description:</string>
+    <string name="artist_name_label">Artist Name:</string>
+    <string name="artist_website_label">Artist Website:</string>
+    <string name="venue_name_label">Venue Name:</string>
+    <string name="venue_place_label">Venue Place:</string>
+    <string name="venue_city_label">Venue City:</string>
+    <string name="venue_region_label">Venue Region:</string>
+    <string name="venue_country_label">Venue Country:</string>
+
+    <!-- ConcertsService constants-->
+    <string name="concerts_service_description">Downloads concerts from the BandsInTown API, stores them in the database of the Concerts app</string>
+    <string name="empty_text_action">EMPTY_TEXT_ACTION</string>
+    <string name="empty_text_view_extra" translatable="false">empty_text_view</string>
+
+    <!-- Alarm Notification constants -->
+    <string name="alarm_notification_title">Artist updated</string>
+    <string name="alarm_notification_description">"Alarm ran to update concerts for <xliff:g name="name">%s</xliff:g>"</string>
+
+    <!--ConcertsJobService constants-->
+    <string name="job_finished_action" translatable="false">JOB_FINISHED_ACTION</string>
+    <string name="extra_from_concerts_job_service" translatable="false">extra_from_concerts_job_service</string>
+    <string name="job_notification_title">Artist updated</string>
+    <string name="job_notification_description">"Job ran to update concerts for <xliff:g name="name">%s</xliff:g>"</string>
+
+    <!--Sync Adapter Constants-->
+    <string name="dummy_account" translatable="false">dummy_account</string>
+    <string name="account_type" translatable="false">softwareguild.com</string>
+    <string name="sync_interval_preference">sync_interval</string>
+    <string name="action_show_settings">Settings</string>
+    <string name="settings_label">Settings</string>
+
+    <!--Custom View-->
+    <string name="custom_view_content_description">How often should data be automatically synced</string>
+
+
+
+    <string name="content_description_ticket_availability">Ticket Availability</string>
+    <string name="content_description_artist_image">Artist Image</string>
+    <string name="tickets_available_buy_now">Available, Buy Now!</string>
+    <string name="tickets_sold_out">Sold Out!</string>
+
+    <!--Shared element transition name-->
+    <string name="ticket_icon_transition_name" translatable="false">ticket_icon_transition</string>
+    <string name="artist_image_transition_name" translatable="false">artist_image_transition</string>
+
 
 </resources>
